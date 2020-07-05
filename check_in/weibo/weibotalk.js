@@ -1,7 +1,7 @@
 /**********
 
   🐬主要作者：Evilbutcher （签到、cookie等主体逻辑编写）
-  📕地址：https://github.com/evilbutcher
+  📕地址：https://github.com/evilbutcher/Quantumult_X
 
   🐬次要作者: toulanboy （细节完善，支持多平台）
   📕地址：https://github.com/toulanboy/scripts
@@ -61,21 +61,24 @@
 
 *********/
 
-//自定参数👇
-const wait = 1000; //签到间隔默认1s
-const deletecookie = false; //如果需要清除Cookie请改为true，清除后改为false
+const $ = new Env("微博超话");
+
+//可自定参数👇
+$.time = 1000; //签到间隔默认1s
+$.delete_cookie = false; //如果需要清除Cookie请改为true，清除后改为false
+$.msg_max_num = 30; //自定义超话页面数量
+
+//debug选项
 const debugurl = false;
 const debugstatus = false;
 const debugcheckin = false;
 
-const $ = new Env("微博超话");
 const tokenurl = "evil_tokenurl";
 const tokencheckinurl = "evil_tokencheckinurl";
 const tokenheaders = "evil_tokenheaders";
 const tokensinceurl = "evil_tokensinceurl";
 const tokensinceheaders = "evil_tokensinceheaders";
 const tokencheckinheaders = "evil_tokencheckinheaders";
-
 var allnumber;
 var pagenumber;
 var listurl = $.getdata(tokenurl);
@@ -89,12 +92,11 @@ $.name_list = [];
 $.id_list = [];
 $.sign_status = [];
 $.sinceinserturl = [];
-$.msg_max_num = 30;
 $.successNum = 0;
 $.failNum = 0;
 
 !(async () => {
-  if (deletecookie) {
+  if ($.delete_cookie) {
     $.setdata("", tokenurl);
     $.setdata("", tokenheaders);
     $.setdata("", tokencheckinurl);
@@ -103,8 +105,8 @@ $.failNum = 0;
     $.setdata("", tokensinceheaders);
     $.msg(
       "微博超话",
-      "",
-      "✅Cookie清除成功，请将脚本内deletecookie改为false，按照流程重新获取Cookie。"
+      "✅Cookie清除成功",
+      "请将脚本内deletecookie改为false，按照流程重新获取Cookie。"
     );
     return;
   }
@@ -120,40 +122,40 @@ $.failNum = 0;
   ) {
     $.msg(
       `微博超话`,
-      "检测到没有cookie或者cookie不完整",
-      "🚫请认真阅读配置流程，并重新获取cookie。"
+      "🚫检测到没有cookie或者cookie不完整",
+      "请认真阅读配置流程，并重新获取cookie。"
     );
     return;
   }
   await getnumber();
-  var firsturl = sinceurl.replace(
-    new RegExp("&since_id=.*?&moduleID"),
-    "&moduleID"
-  );
-  $.sinceinserturl.push(firsturl);
-  for (var i = 0; i <= pagenumber - 2; i++) {
-    await geturl(i);
-  }
   if (
     sinceurl != "" &&
     sinceheaders != "" &&
     sinceurl != undefined &&
     sinceheaders != undefined
   ) {
+    var firsturl = sinceurl.replace(
+      new RegExp("&since_id=.*?&moduleID"),
+      "&moduleID"
+    );
+    $.sinceinserturl.push(firsturl);
+    for (var i = 0; i <= pagenumber - 2; i++) {
+      await geturl(i);
+    }
     for (i = 0; i < pagenumber; i++) {
       await getSignStatus(i);
     }
     for (i in $.name_list) {
       await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
-      $.wait(wait);
+      $.wait($.time);
     }
   } else {
-    for (var i = 1; i <= pagenumber; i++) {
+    for (i = 1; i <= pagenumber; i++) {
       await getid(i);
     }
     for (i in $.name_list) {
       await checkin($.id_list[i], $.name_list[i], false);
-      $.wait(wait);
+      $.wait($.time);
     }
   }
   output();
@@ -171,9 +173,9 @@ function output() {
     if (i && i % $.msg_max_num == 0) {
       $.msg(
         `${$.name}: 成功${$.successNum}个，失败${$.failNum}个`,
-        `当前第${parseInt(i / $.msg_max_num)}页，共${parseInt(
+        `当前第${Math.ceil(i / $.msg_max_num)}页 ，共${Math.ceil(
           $.message.length / $.msg_max_num
-        ) + 1}页`,
+        )}页`,
         $.this_msg
       );
       $.this_msg = "";
@@ -183,9 +185,9 @@ function output() {
   if ($.message.length % $.msg_max_num != 0) {
     $.msg(
       `${$.name}: 成功${$.successNum}个，失败${$.failNum}个`,
-      `当前第${parseInt(i / $.msg_max_num) + 1}页，共${parseInt(
+      `当前第${Math.ceil(i / $.msg_max_num)}页 ，共${Math.ceil(
         $.message.length / $.msg_max_num
-      ) + 1}页`,
+      )}页`,
       $.this_msg
     );
   }
@@ -230,19 +232,23 @@ function geturl(i) {
     header: listheaders
   };
   $.get(idrequest, (error, response, data) => {
-    var body = response.body;
-    var obj = JSON.parse(body);
-    var group = obj.cards[0]["card_group"];
-    var insertid = group[0].scheme.slice(33, 71);
-    if (debugurl) console.log(insertid);
-    var inserturl = sinceurl
-      .replace(
-        new RegExp("follow%22%3A%221022%3A.*?%22"),
-        "follow%22%3A%221022%3A" + insertid + "%22"
-      )
-      .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
-    $.sinceinserturl.push(inserturl);
-    if (debugurl) console.log($.sinceinserturl);
+    if (response.statusCode == 418) {
+      $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+    } else {
+      var body = response.body;
+      var obj = JSON.parse(body);
+      var group = obj.cards[0]["card_group"];
+      var insertid = group[0].scheme.slice(33, 71);
+      if (debugurl) console.log(insertid);
+      var inserturl = sinceurl
+        .replace(
+          new RegExp("follow%22%3A%221022%3A.*?%22"),
+          "follow%22%3A%221022%3A" + insertid + "%22"
+        )
+        .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
+      $.sinceinserturl.push(inserturl);
+      if (debugurl) console.log($.sinceinserturl);
+    }
   });
 }
 
@@ -303,8 +309,8 @@ function getid(page) {
       var body = response.body;
       var obj = JSON.parse(body);
       var group = obj.cards[0]["card_group"];
-      number = group.length;
-      for (i = 0; i < number; i++) {
+      var number = group.length;
+      for (var i = 0; i < number; i++) {
         var name = group[i]["title_sub"];
         $.name_list.push(name);
         var id = group[i].scheme.slice(33, 71);
