@@ -8,7 +8,7 @@
 
   🐬 另，感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议。
 
-  @evilbutcher:非专业人士制作，头一次写签到脚本，感谢@柠檬精帮忙调试代码、感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议，感谢@chavyleung模版。
+  evilbutcher:非专业人士制作，头一次写签到脚本，感谢@柠檬精帮忙调试代码、感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议，感谢@chavyleung模版。
   
   📌不定期更新各种签到、有趣的脚本，欢迎star🌟
 
@@ -18,14 +18,20 @@
   1. 根据你当前的软件，配置好srcipt。 Tips:由于是远程文件，记得顺便更新文件。
   2. 打开微博APP，”我的“， ”超话社区“， ”底部栏--我的“， ”关注“， 弹出通知，提示获取已关注超话链接成功。
   3. 点进一个超话页面，手动签到一次，弹出通知，提示获取超话签到链接成功。 若之前所有已经签到，请关注一个新超话进行签到。
-  4.点开底部栏“关注”，上面切换到“关注”，下拉，提示获取超话签到状态成功。
+  4.（额外步骤）如果超话数量大于40个，建议点开底部栏“关注”，上面切换到“关注”，从下往上拉，提示获取超话签到状态成功。
   5. 回到quanx等软件，关掉获取cookie的rewrite。（loon是关掉获取cookie的脚本）
-  提示：如果超话过多提示频繁，可间隔一个小时再执行一次。
+  提示：如果超话过多提示频繁，可间隔半个小时以上再执行一次。
+
+   ***************************************
+  【boxjs 订阅， 可以让你修改远程文件里面的变量】
+   ***************************************
+   box订阅链接：https://raw.githubusercontent.com/toulanboy/scripts/master/toulanboy.boxjs.json
+   订阅后，可以在box里面进行 cookie清空、通知个数、签到延迟 等设置.
 
   *************************
   【Surge 4.2+ 脚本配置】
   *************************
-  微博超话cookie获取 = type=http-request,pattern=^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page),script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false
+  微博超话cookie获取 = type=http-request,pattern=^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button),script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false
   微博超话 = type=cron,cronexp="5 0  * * *",script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js,wake-system=true,timeout=600
 
   [MITM]
@@ -36,7 +42,7 @@
   *************************
   [script]
   cron "5 0 * * *" script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js, timeout=600, tag=微博超话
-  http-request ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page) script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false, tag=微博超话cookie获取
+  http-request ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button) script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false, tag=微博超话cookie获取
   
   [MITM]
   hostname = api.weibo.cn
@@ -45,7 +51,7 @@
   【 QX 1.0.10+ 脚本配置 】 
   *************************
   [rewrite_local]
-  ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page) url script-request-header https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js
+  ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button) url script-request-header https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js
 
   [task]
   5 0 * * * https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js, tag=微博超话
@@ -55,11 +61,14 @@
 
 *********/
 
-const $ = new Env("微博超话");
-const deletecookie = false; //如果需要清楚Cookie请改为true，清除后改为false
+//自定参数👇
+const wait = 1000; //签到间隔默认1s
+const deletecookie = false; //如果需要清除Cookie请改为true，清除后改为false
 const debugurl = false;
 const debugstatus = false;
 const debugcheckin = false;
+
+const $ = new Env("微博超话");
 const tokenurl = "evil_tokenurl";
 const tokencheckinurl = "evil_tokencheckinurl";
 const tokenheaders = "evil_tokenheaders";
@@ -67,7 +76,6 @@ const tokensinceurl = "evil_tokensinceurl";
 const tokensinceheaders = "evil_tokensinceheaders";
 const tokencheckinheaders = "evil_tokencheckinheaders";
 
-var wait = 1000; //签到间隔默认1s
 var allnumber;
 var pagenumber;
 var listurl = $.getdata(tokenurl);
@@ -93,7 +101,11 @@ $.failNum = 0;
     $.setdata("", tokencheckinheaders);
     $.setdata("", tokensinceurl);
     $.setdata("", tokensinceheaders);
-    $.msg("微博超话", "", "Cookie清除成功✅");
+    $.msg(
+      "微博超话",
+      "",
+      "✅Cookie清除成功，请将脚本内deletecookie改为false，按照流程重新获取Cookie。"
+    );
     return;
   }
   if (
@@ -101,19 +113,15 @@ $.failNum = 0;
     listheaders == undefined ||
     checkinurl == undefined ||
     checkinheaders == undefined ||
-    sinceurl == undefined ||
-    sinceheaders == undefined ||
     listurl == "" ||
     listheaders == "" ||
     checkinurl == "" ||
-    checkinheaders == "" ||
-    sinceurl == "" ||
-    sinceheaders == ""
+    checkinheaders == ""
   ) {
     $.msg(
       `微博超话`,
-      "",
-      `🚫检测到没有cookie或者cookie不完整。\n🚫请认真阅读配置流程，并重新获取cookie。`
+      "检测到没有cookie或者cookie不完整",
+      "🚫请认真阅读配置流程，并重新获取cookie。"
     );
     return;
   }
@@ -126,12 +134,27 @@ $.failNum = 0;
   for (var i = 0; i <= pagenumber - 2; i++) {
     await geturl(i);
   }
-  for (i = 0; i < pagenumber; i++) {
-    await getSignStatus(i);
-  }
-  for (i in $.name_list) {
-    await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
-    $.wait(wait);
+  if (
+    sinceurl != "" &&
+    sinceheaders != "" &&
+    sinceurl != undefined &&
+    sinceheaders != undefined
+  ) {
+    for (i = 0; i < pagenumber; i++) {
+      await getSignStatus(i);
+    }
+    for (i in $.name_list) {
+      await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
+      $.wait(wait);
+    }
+  } else {
+    for (var i = 1; i <= pagenumber; i++) {
+      await getid(i);
+    }
+    for (i in $.name_list) {
+      await checkin($.id_list[i], $.name_list[i], false);
+      $.wait(wait);
+    }
   }
   output();
 })()
@@ -176,17 +199,21 @@ function getnumber() {
       header: listheaders
     };
     $.get(idrequest, (error, response, data) => {
-      var body = response.body;
-      var obj = JSON.parse(body);
-      if (debugurl) console.log(obj);
-      allnumber = obj.cardlistInfo.total;
-      console.log(
-        "当前已关注超话" +
-          allnumber +
-          "个(数量存在延迟，仅参考，以签到执行为准)"
-      );
-      pagenumber = Math.ceil(allnumber / 20);
-      resolve();
+      if (response.statusCode == 418) {
+        $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+      } else {
+        var body = response.body;
+        var obj = JSON.parse(body);
+        if (debugurl) console.log(obj);
+        allnumber = obj.cardlistInfo.total;
+        console.log(
+          "当前已关注超话" +
+            allnumber +
+            "个(数量存在延迟，仅参考，以签到执行为准)"
+        );
+        pagenumber = Math.ceil(allnumber / 20);
+        resolve();
+      }
     });
   });
 }
@@ -254,6 +281,37 @@ function getSignStatus(i) {
           console.log($.name_list);
           console.log($.sign_status);
           console.log($.id_list);
+        }
+      }
+      resolve();
+    });
+  });
+}
+
+//获取超话签到id
+function getid(page) {
+  var getlisturl = listurl.replace(
+    new RegExp("&page=.*?&"),
+    "&page=" + page + "&"
+  );
+  var idrequest = {
+    url: getlisturl,
+    header: listheaders
+  };
+  return new Promise(resolve => {
+    $.get(idrequest, (error, response, data) => {
+      var body = response.body;
+      var obj = JSON.parse(body);
+      var group = obj.cards[0]["card_group"];
+      number = group.length;
+      for (i = 0; i < number; i++) {
+        var name = group[i]["title_sub"];
+        $.name_list.push(name);
+        var id = group[i].scheme.slice(33, 71);
+        $.id_list.push(id);
+        if (debugstatus) {
+          console.log(name);
+          console.log(id);
         }
       }
       resolve();

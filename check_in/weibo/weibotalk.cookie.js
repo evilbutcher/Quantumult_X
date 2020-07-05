@@ -18,14 +18,20 @@
   1. 根据你当前的软件，配置好srcipt。 Tips:由于是远程文件，记得顺便更新文件。
   2. 打开微博APP，”我的“， ”超话社区“， ”底部栏--我的“， ”关注“， 弹出通知，提示获取已关注超话链接成功。
   3. 点进一个超话页面，手动签到一次，弹出通知，提示获取超话签到链接成功。 若之前所有已经签到，请关注一个新超话进行签到。
-  4.点开底部栏“关注”，上面切换到“关注”，下拉，提示获取超话签到状态成功。
+  4.（额外步骤）如果超话数量大于40个，建议点开底部栏“关注”，上面切换到“关注”，从下往上拉，提示获取超话签到状态成功。
   5. 回到quanx等软件，关掉获取cookie的rewrite。（loon是关掉获取cookie的脚本）
-  提示：如果超话过多提示频繁，可间隔一个小时再执行一次。
+  提示：如果超话过多提示频繁，可间隔半个小时以上再执行一次。
+
+   ***************************************
+  【boxjs 订阅， 可以让你修改远程文件里面的变量】
+   ***************************************
+   box订阅链接：https://raw.githubusercontent.com/toulanboy/scripts/master/toulanboy.boxjs.json
+   订阅后，可以在box里面进行 cookie清空、通知个数、签到延迟 等设置.
 
   *************************
   【Surge 4.2+ 脚本配置】
   *************************
-  微博超话cookie获取 = type=http-request,pattern=^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page),script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false
+  微博超话cookie获取 = type=http-request,pattern=^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button),script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false
   微博超话 = type=cron,cronexp="5 0  * * *",script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js,wake-system=true,timeout=600
 
   [MITM]
@@ -36,7 +42,7 @@
   *************************
   [script]
   cron "5 0 * * *" script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js, timeout=600, tag=微博超话
-  http-request ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page) script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false, tag=微博超话cookie获取
+  http-request ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button) script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js,requires-body=false, tag=微博超话cookie获取
   
   [MITM]
   hostname = api.weibo.cn
@@ -45,7 +51,7 @@
   【 QX 1.0.10+ 脚本配置 】 
   *************************
   [rewrite_local]
-  ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button|page) url script-request-header https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js
+  ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button) url script-request-header https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.cookie.js
 
   [task]
   5 0 * * * https://raw.githubusercontent.com/toulanboy/scripts/master/weibo/weibotalk.js, tag=微博超话
@@ -74,7 +80,8 @@ if (
   const listheaders = JSON.stringify($request.headers);
   $.setdata(listurl, tokenurl);
   $.setdata(listheaders, tokenheaders);
-  $.msg("微博超话", "", "获取已关注超话列表成功✅");
+  //$.msg("微博超话", "", "获取已关注超话列表成功✅");
+  $.msg("微博超话", "✅获取已关注超话列表成功", "✨接下来，请点进一个超话进行签到。（如果没有需要签到的超话，请关注新的进行签到。）")
 } else if (
   $request &&
   $request.method != "OPTIONS" &&
@@ -86,7 +93,8 @@ if (
   const checkinheaders = JSON.stringify($request.headers);
   $.setdata(checkinurl, tokencheckinurl);
   $.setdata(checkinheaders, tokencheckinheaders);
-  $.msg("微博超话", "", "获取超话签到链接成功🎉");
+  //$.msg("微博超话", "", "获取超话签到链接成功🎉");
+  $.msg("微博超话", "🎉获取超话签到链接成功", `若之前已弹出【获取已关注列表成功】的通知，则已完成cookie获取，可以关闭获取cookie的脚本或重写。\n🚨如果超话数量在40个以上，建议回到底部栏“关注”，上面切换到“关注”，从下往上拉，额外获取签到状态。`)
 } else if (
   $request &&
   $request.method != "OPTIONS" &&
@@ -98,7 +106,8 @@ if (
   const sinceheaders = JSON.stringify($request.headers);
   $.setdata(sinceurl, tokensinceurl);
   $.setdata(sinceheaders, tokensinceheaders);
-  $.msg("微博超话", "", "获取超话签到状态成功🉑");
+  //$.msg("微博超话", "", "获取超话签到状态成功🆗");
+  $.msg("微博超话", "🆗获取超话签到状态成功", `可以现在去关闭获取cookie的脚本或重写。`)
 }
 
 $.done();
