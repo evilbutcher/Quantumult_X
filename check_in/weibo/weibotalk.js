@@ -67,6 +67,7 @@ const $ = new Env("微博超话");
 $.time = 1000; //签到间隔默认1s
 $.delete_cookie = false; //如果需要清除Cookie请改为true，清除后改为false
 $.msg_max_num = 30; //自定义超话页面数量
+$.check_first = true; //true为先检查签到状态，再签到；false则为直接签到
 
 //debug选项
 const debugurl = false;
@@ -110,30 +111,49 @@ $.failNum = 0;
     );
     return;
   }
-  if (
-    listurl == undefined ||
-    listheaders == undefined ||
-    checkinurl == undefined ||
-    checkinheaders == undefined ||
-    listurl == "" ||
-    listheaders == "" ||
-    checkinurl == "" ||
-    checkinheaders == ""
-  ) {
-    $.msg(
-      `微博超话`,
-      "🚫检测到没有cookie或者cookie不完整",
-      "请认真阅读配置流程，并重新获取cookie。"
-    );
-    return;
+  if ($.check_first) {
+    if (
+      listurl == undefined ||
+      listheaders == undefined ||
+      checkinurl == undefined ||
+      checkinheaders == undefined ||
+      sinceurl == undefined ||
+      sinceheaders == undefined ||
+      listurl == "" ||
+      listheaders == "" ||
+      checkinurl == "" ||
+      checkinheaders == "" ||
+      sinceurl == "" ||
+      sinceheaders == ""
+    ) {
+      $.msg(
+        `微博超话`,
+        "🚫检测到没有cookie或者cookie不完整",
+        "请认真阅读配置流程，并重新获取cookie。"
+      );
+      return;
+    }
+  } else {
+    if (
+      listurl == undefined ||
+      listheaders == undefined ||
+      checkinurl == undefined ||
+      checkinheaders == undefined ||
+      listurl == "" ||
+      listheaders == "" ||
+      checkinurl == "" ||
+      checkinheaders == ""
+    ) {
+      $.msg(
+        `微博超话`,
+        "🚫检测到没有cookie或者cookie不完整",
+        "请认真阅读配置流程，并重新获取cookie。"
+      );
+      return;
+    }
   }
   await getnumber();
-  if (
-    sinceurl != "" &&
-    sinceheaders != "" &&
-    sinceurl != undefined &&
-    sinceheaders != undefined
-  ) {
+  if ($.check_first) {
     var firsturl = sinceurl.replace(
       new RegExp("&since_id=.*?&moduleID"),
       "&moduleID"
