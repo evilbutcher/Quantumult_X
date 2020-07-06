@@ -81,7 +81,7 @@ if (
   $.setdata(listurl, tokenurl);
   $.setdata(listheaders, tokenheaders);
   //$.msg("微博超话", "", "获取已关注超话列表成功✅");
-  $.msg("微博超话", "✅获取已关注超话列表成功", "✨接下来，请点进一个超话进行签到。（如果没有需要签到的超话，请关注新的进行签到。）")
+  $.msg("微博超话", "✅获取已关注超话列表成功", "✨接下来，请点进一个超话进行签到，如果没有需要签到的超话，请关注新的进行签到。")
 } else if (
   $request &&
   $request.method != "OPTIONS" &&
@@ -94,7 +94,7 @@ if (
   $.setdata(checkinurl, tokencheckinurl);
   $.setdata(checkinheaders, tokencheckinheaders);
   //$.msg("微博超话", "", "获取超话签到链接成功🎉");
-  $.msg("微博超话", "🎉获取超话签到链接成功", `若之前已弹出【获取已关注列表成功】的通知，则已完成cookie获取，可以关闭获取cookie的脚本或重写。\n🚨如果超话数量在40个以上，建议回到底部栏“关注”，上面切换到“关注”，从下往上拉，额外获取签到状态。`)
+  $.msg("微博超话", "🎉获取超话签到链接成功", `🚨请回到底部栏“关注”，上面切换到“关注”，从下往上滑，获取签到状态。`)
 } else if (
   $request &&
   $request.method != "OPTIONS" &&
@@ -107,7 +107,7 @@ if (
   $.setdata(sinceurl, tokensinceurl);
   $.setdata(sinceheaders, tokensinceheaders);
   //$.msg("微博超话", "", "获取超话签到状态成功🆗");
-  $.msg("微博超话", "🆗获取超话签到状态成功", `可以现在去关闭获取cookie的脚本或重写。`)
+  $.msg("微博超话", "🆗获取超话签到状态成功", `Cookie获取完成，可以关闭获取Cookie的脚本或重写。`)
 }
 
 $.done();
