@@ -95,6 +95,7 @@ $.sign_status = [];
 $.sinceinserturl = [];
 $.successNum = 0;
 $.failNum = 0;
+$.stopNum = 0;
 
 !(async () => {
   if ($.delete_cookie) {
@@ -166,16 +167,28 @@ $.failNum = 0;
       await getSignStatus(i);
     }
     for (i in $.name_list) {
-      await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
-      $.wait($.time);
+      if ($.stopNum < 10) {
+        await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
+        $.wait($.time);
+      } else {
+        $.message.push(`🚨检测到Cookie失效，脚本已自动停止`);
+        console.log(`🚨检测到Cookie失效，脚本已自动停止`);
+        break;
+      }
     }
   } else {
     for (i = 1; i <= pagenumber; i++) {
       await getid(i);
     }
     for (i in $.name_list) {
-      await checkin($.id_list[i], $.name_list[i], false);
-      $.wait($.time);
+      if ($.stopNum < 10) {
+        await checkin($.id_list[i], $.name_list[i], false);
+        $.wait($.time);
+      } else {
+        $.message.push(`🚨检测到Cookie失效，脚本已自动停止`);
+        console.log(`🚨检测到Cookie失效，脚本已自动停止`);
+        break;
+      }
     }
   }
   output();
@@ -394,6 +407,7 @@ function checkin(id, name, isSign = false) {
           console.log(`【${idname}】执行签到：超话不存在⚠️`);
           if (debugcheckin) console.log(response);
         } else if (obj["errno"] == -100) {
+          $.stopNum += 1;
           $.message.push(`【${idname}】：签到失败，请重新签到获取Cookie⚠️`);
           console.log(
             `【${idname}】执行签到：签到失败，请重新签到获取Cookie⚠️`
