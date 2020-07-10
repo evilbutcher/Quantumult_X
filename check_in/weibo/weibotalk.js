@@ -74,6 +74,31 @@ const debugurl = false;
 const debugstatus = false;
 const debugcheckin = false;
 
+if ($.getdata("wb_delete_cookie") != undefined) {
+  if (
+    $.getdata("wb_delete_cookie") == true ||
+    $.getdata("wb_delete_cookie") == "true"
+  )
+    $.delete_cookie = true;
+  else $.delete_cookie = false;
+}
+if ($.getdata("wb_msg_max_num") != undefined) {
+  if ($.getdata("wb_msg_max_num") != "")
+    $.msg_max_num = $.getdata("wb_msg_max_num") * 1;
+}
+if ($.getdata("wb_request_time") != undefined) {
+  if ($.getdata("wb_request_time") != "")
+    $.time = $.getdata("wb_request_time") * 1;
+}
+if ($.getdata("wb_check_first") != undefined) {
+  if (
+    $.getdata("wb_check_first") == true ||
+    $.getdata("wb_check_first") == "true"
+  )
+    $.check_first = true;
+  else $.check_first = false;
+}
+
 const tokenurl = "evil_tokenurl";
 const tokencheckinurl = "evil_tokencheckinurl";
 const tokenheaders = "evil_tokenheaders";
