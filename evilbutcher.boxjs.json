@@ -1,0 +1,15 @@
+{
+  "id": "evilbutcher.app.sub",
+  "name": "evilbutcher 脚本订阅",
+  "author": "@evilbutcher",
+  "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
+  "repo": "https://github.com/evilbutcher/Quantumult_X",
+  "apps": [{
+    "id": "weibotalk",
+    "name": "微博超话",
+    "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
+    "author": "@toulanboy, @evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
+  }]
+}
