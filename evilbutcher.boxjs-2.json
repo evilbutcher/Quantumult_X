@@ -1,6 +1,6 @@
 {
   "id": "evilbutcher.app.sub",
-  "name": "evilbutcher 应用订阅",
+  "name": "evilbutcher 订阅",
   "author": "@evilbutcher",
   "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
   "repo": "https://github.com/evilbutcher/Quantumult_X",
@@ -17,13 +17,12 @@
     "author": "@toulanboy, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
-  },{
-  "id": "yunmai",
+  }, {
+    "id": "yunmai",
     "name": "云麦好轻",
     "keys": ["evil_lotteryurl", "evil_lotterycookie"],
-    "author": "@toulanboy, @evilbutcher",
+    "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
-  }
-  ]
+  }]
 }
