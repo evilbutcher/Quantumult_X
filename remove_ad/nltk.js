@@ -13,6 +13,8 @@ https:\/\/ai\.ablesky\.com\/ajax\/ads\/appads url script-response-body local/Qua
 https:\/\/www\.ablesky\.com\/s\/sr\.do\?action\=single\&appRandom url reject
 #推荐页面
 https:\/\/mobile\.ablesky\.com\/course\.do\?action\=recommended\&appRandom url reject
+#首页推荐
+https:\/\/www\.ablesky\.com\/ajax\/ableskytag\/account\/getTabMenuList url reject
 #杂七杂八
 https:\/\/www\.ablesky\.com\/ajax\/account\/history\/list\?\&appRandom url reject
 https:\/\/www\.ablesky\.com\/taskTrigger\.do\?appRandom url reject
