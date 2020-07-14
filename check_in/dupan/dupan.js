@@ -4,6 +4,7 @@
 
 [rewrite_local]
 https:\/\/pan\.baidu\.com\/pmall\/points\/signin url script-request-header dupan.js
+https:\/\/pan\.baidu\.com\/pmall\/points\/balance url script-request-header dupan.js
 
 [task_local]
 5 0 * * * dupan.js
@@ -14,9 +15,13 @@ hostname = pan.baidu.com
 const $ = new Env("百度网盘");
 const signurl = "evil_signurl";
 const signcookie = "evil_signcookie";
+const infourl = "evil_infourl";
+const infocookie = "evil_infocookie";
 
-var url = $.getdata(signurl);
-var header = $.getdata(signcookie);
+var siurl = $.getdata(signurl);
+var sicookie = $.getdata(signcookie);
+var ifurl = $.getdata(infourl);
+var ifcookie = $.getdata(infocookie);
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -24,6 +29,7 @@ var header = $.getdata(signcookie);
     return;
   }
   signin();
+  getinfo();
   $.done();
 })()
   .catch(e => {
@@ -34,17 +40,50 @@ var header = $.getdata(signcookie);
   });
 
 function signin() {
+  var time = new Date().getTime();
+  var siheader = { Cookie: sicookie };
+  var siurlsend = siurl
+    .replace(new RegExp(/time\=.*?&/), `time\=${time}&`)
+    .replace(new RegExp(/&\_t\=.*?/), `&\_t\=${time}`);
   return new Promise(resolve => {
     const signinRequest = {
-      url: url,
-      headers: header
+      url: siurl,
+      headers: siheader
     };
     $.get(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      if (obj.errno == 374) {
-        $.msg("百度网盘","","今日已签到");
+      if (obj.errno == 373) {
+        //$.msg("百度网盘", "", "今日已签到");
         console.log(obj);
+      } else {
+        console.log(obj);
+      }
+      resolve();
+    });
+  });
+}
+
+function getinfo() {
+  //var time = new Date().getTime();
+  var ifheader = { Cookie: ifcookie };
+  return new Promise(resolve => {
+    const infoRequest = {
+      url: ifurl,
+      headers: ifheader
+    };
+    $.get(infoRequest, (error, response, data) => {
+      var body = response.body;
+      var obj = JSON.parse(body);
+      if (obj.errno == 0) {
+        var all = obj.balance;
+        var exp = obj["exp_points"];
+        if (exp != 0) {
+          var tip = "有积分将要过期，请尽快使用";
+        } else {
+          tip = "";
+        }
+        $.msg("百度网盘", `${tip}`, `总积分：${all}分，将要过期：${exp}分`);
       } else {
         console.log(obj);
       }
@@ -57,15 +96,28 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/points\/signin\?/)
+    $request.url.match(/points\/signin\?rand/)
   ) {
-    const url = $request.url;
-    $.log(url);
-    const headers = JSON.stringify($request.headers);
-    $.log(headers);
-    $.setdata(url, signurl);
-    $.setdata(headers, signcookie);
+    const siurl = $request.url;
+    $.log(siurl);
+    const sicookie = $request.headers["Cookie"];
+    $.log(sicookie);
+    $.setdata(siurl, signurl);
+    $.setdata(sicookie, signcookie);
     $.msg("百度网盘", "", "获取签到Cookie成功");
+  }
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/points\/balance\?\_t/)
+  ) {
+    const ifurl = $request.url;
+    $.log(ifurl);
+    const ifcookie = $request.headers["Cookie"];
+    $.log(ifcookie);
+    $.setdata(ifurl, infourl);
+    $.setdata(ifcookie, infocookie);
+    $.msg("百度网盘", "", "获取信息Cookie成功");
   }
 }
 
