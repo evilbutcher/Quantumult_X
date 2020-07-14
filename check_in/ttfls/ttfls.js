@@ -1,8 +1,8 @@
 /*
 
 [rewrite_local]
-https:\/\/api\.kuaidihelp\.com\/g\_tbk\/v1\/Sign\/signDetails url script-request-header ttfls.js
-https:\/\/api\.kuaidihelp\.com\/g\_tbk\/v1\/Benefits\/prizeDraw url script-request-header ttfls.js
+https:\/\/api\.kuaidihelp\.com\/g\_tbk\/v1\/Sign\/signDetails url script-request-body ttfls.js
+https:\/\/api\.kuaidihelp\.com\/g\_tbk\/v1\/Benefits\/prizeDraw url script-request-body ttfls.js
 
 [task_local]
 5 0 * * * ttfls.js
@@ -29,7 +29,7 @@ var lycookie = $.getdata(lotterycookie);
     return;
   }
   signin();
-  lottery();
+  //lottery();
   $.done();
 })()
   .catch(e => {
@@ -41,14 +41,13 @@ var lycookie = $.getdata(lotterycookie);
 
 function signin() {
   var time = new Date().getTime();
-  var time2 = time - 1;
-  var time3 = time2 - 50;
-  $.log(sicookie+ "\n\n")
+  var time2 = sicookie.slice(-10);
+  var time3 = time - 1;
+  //$.log(sicookie+ "\n\n")
   var sicookie2 = sicookie.slice(0,41)
-  $.log(sicookie2)
-  sicookiesend = sicookie2 + `|${time2}|${time3}`
-
-  $.log(sicookiesend)
+  //$.log(sicookie2)
+  sicookiesend = sicookie2 + `|${time3}|${time2}`
+  //$.log(sicookiesend)
   var siheader = { Cookie: sicookiesend };
   var siurlsend = siurl.replace(new RegExp(/ts\=.*?&/), `ts\=${time}&`);
   console.log(siurlsend);
@@ -71,6 +70,7 @@ function signin() {
 
 function lottery() {
   $.wait(1000);
+  var time = new Date().getTime();
   var lyurlsend = lyurl.replace(new RegExp(/ts\=.*?&/), `ts\=${time}&`);
   var lyheader = { Cookie: lycookie };
   return new Promise(resolve => {
@@ -88,17 +88,18 @@ function lottery() {
 }
 
 function getCookie() {
+  
   if (
     $request &&
     $request.method != "OPTIONS" &&
     $request.url.match(/signDetails/)
   ) {
     const siurl = $request.url;
-    $.log(siurl);
+    //$.log(siurl);
     const sicookie = $request.headers["Cookie"];
-    $.log(sicookie);
+    //$.log(sicookie);
     const sibody = $request.body;
-    $.log(sibody);
+    //$.log(sibody);
     $.setdata(siurl, signurl);
     $.setdata(sicookie, signcookie);
     $.setdata(sibody, signbody);
