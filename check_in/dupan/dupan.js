@@ -105,7 +105,7 @@ function getCookie() {
     $.log(sicookie);
     $.setdata(siurl, signurl);
     $.setdata(sicookie, signcookie);
-    $.msg("百度网盘", "", "获取签到Cookie成功");
+    $.msg("百度网盘", "", "获取签到Cookie成功🎉");
   }
   if (
     $request &&
@@ -118,7 +118,7 @@ function getCookie() {
     $.log(ifcookie);
     $.setdata(ifurl, infourl);
     $.setdata(ifcookie, infocookie);
-    $.msg("百度网盘", "", "获取信息Cookie成功");
+    $.msg("百度网盘", "", "获取信息Cookie成功🎉");
   }
 }
 
