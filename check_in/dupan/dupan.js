@@ -65,6 +65,7 @@ function signin() {
 }
 
 function getinfo() {
+  $.wait(1000)
   //var time = new Date().getTime();
   var ifheader = { Cookie: ifcookie };
   return new Promise(resolve => {
