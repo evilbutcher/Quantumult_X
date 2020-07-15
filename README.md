@@ -11,6 +11,11 @@
 2、自动签到。  
 3、支持BoxJs。  
 
+### [自用签到](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados)
+##### 功能特点
+1、自动签到。  
+2、查看流量信息。  
+
 ## 规则类
 ### [Remove AD](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 ##### 功能特点
