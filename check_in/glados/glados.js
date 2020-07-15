@@ -14,12 +14,12 @@ const $ = new Env("GLaDOS");
 //const signurl = "evil_signurl";
 const signcookie = "evil_signcookie";
 //const infourl = "evil_infourl";
-const infocookie = "evil_infocookie";
+//const infocookie = "evil_infocookie";
 
 //var siurl = $.getdata(signurl);
 var sicookie = $.getdata(signcookie);
 //var ifurl = $.getdata(infourl);
-var ifcookie = $.getdata(infocookie);
+//var ifcookie = $.getdata(infocookie);
 var account;
 var expday;
 var remain;
@@ -71,7 +71,7 @@ function status() {
   return new Promise(resolve => {
     const statusRequest = {
       url: "https://glados.rocks/api/user/status",
-      headers: { Cookie: ifcookie }
+      headers: { Cookie: sicookie }
     };
     $.get(statusRequest, (error, response, data) => {
       var body = response.body;
@@ -101,6 +101,7 @@ function getCookie() {
     $.setdata(sicookie, signcookie);
     $.msg("GLaDOS", "", "获取签到Cookie成功🎉");
   }
+/*
   if (
     $request &&
     $request.method != "OPTIONS" &&
@@ -113,6 +114,7 @@ function getCookie() {
     $.setdata(ifcookie, infocookie);
     $.msg("GLaDOS", "", "获取信息Cookie成功🎉");
   }
+*/
 }
 
 //chavyleung
