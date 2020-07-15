@@ -1,4 +1,5 @@
 /*
+有时间加密校验，弃坑
 
 [rewrite_local]
 https:\/\/api\.kuaidihelp\.com\/g\_tbk\/v1\/Sign\/signDetails url script-request-body ttfls.js
