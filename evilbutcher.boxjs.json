@@ -27,7 +27,11 @@
   },{
     "id": "微博热搜",
     "name": "热搜监控",
-    "keys": ["evil_hotsearchurl"，"evil_hotsearchcookie"],
+    "keys": ["evil_hotsearchurl","evil_hotsearchcookie"],
+    "settings": [
+      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜，QQ", "type": "text", "desc": "请输入关键词，以中文逗号分隔" },
+      { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"}
+      ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
