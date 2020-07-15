@@ -20,7 +20,7 @@ hostname = api.weibo.cn
 const $ = new Env("微博热搜");
 
 var keyword = ["万茜", "QQ"]; //👈关键词在这里设置
-var deletecookie = false;//👈清除Cookie
+var deletecookie = false; //👈清除Cookie
 
 if (
   $.getdata("evil_wb_keyword") != undefined &&
@@ -66,8 +66,10 @@ var result = [];
     $.log("停止");
     $.msg("微博热搜", "", "请先获取Cookie❌");
     return;
+  } else if (keyword.length == 0) {
+    $.msg("微博热搜", "", "请输入要监控的关键词");
   } else {
-    $.log("开始");
+    $.log("开始\n");
     gethotsearch();
     $.done();
   }
@@ -94,11 +96,12 @@ function gethotsearch() {
         var item = group[i].desc;
         items.push(item);
       }
-      $.log("全部热搜结果👇\n"+items);
+      $.log("全部热搜结果👇\n" + items);
       for (var j = 0; j < keyword.length; j++) {
         findkeyword(result, keyword[j], items);
       }
       //$.log(result);
+      $.log("\n关键词为👇\n" + keyword + "\n");
       if (result.length != 0) {
         $.this_msg = ``;
         for (var m = 0; m < result.length; m++) {
@@ -108,6 +111,8 @@ function gethotsearch() {
             $.msg("微博热搜", "⚠️您订阅的关键词有更新啦", $.this_msg);
           }
         }
+      } else {
+        $.log("微博热搜", "😫您订阅的关键词暂时没有更新", "");
       }
       resolve();
     });
