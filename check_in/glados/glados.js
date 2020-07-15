@@ -47,13 +47,15 @@ function signin() {
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      change = obj.list[0].change;
-      changeday = parseInt(change);
-      msge = obj.message;
-      if (msge == "Please Checkin Tomorrow") {
-        message.push("今日已签到");
-      } else {
-        message.push(`签到获得${changeday}天`);
+      if (obj.code == 0) {
+        change = obj.list[0].change;
+        changeday = parseInt(change);
+        msge = obj.message;
+        if (msge == "Please Checkin Tomorrow") {
+          message.push("今日已签到");
+        } else {
+          message.push(`签到获得${changeday}天`);
+        }
       }
       resolve();
     });
@@ -69,12 +71,16 @@ function status() {
     $.get(statusRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      account = obj.data.email;
-      expday = obj.data.days;
-      remain = obj.data.leftDays;
-      remainday = parseInt(remain);
-      message.push(`已用${expday}天,剩余${remainday}天`);
-      $.msg("GLaDOS", `账户：${account}`, message);
+      if (obj.code == 0) {
+        account = obj.data.email;
+        expday = obj.data.days;
+        remain = obj.data.leftDays;
+        remainday = parseInt(remain);
+        message.push(`已用${expday}天,剩余${remainday}天`);
+        $.msg("GLaDOS", `账户：${account}`, message);
+      } else {
+        $.msg("GLaDOS", "", "❌请重新登陆更新Cookie");
+      }
       resolve();
     });
   });
