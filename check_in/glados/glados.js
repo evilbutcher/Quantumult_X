@@ -11,15 +11,9 @@ hostname = glados.rocks
 */
 
 const $ = new Env("GLaDOS");
-//const signurl = "evil_signurl";
 const signcookie = "evil_gladoscookie";
-//const infourl = "evil_infourl";
-//const infocookie = "evil_infocookie";
 
-//var siurl = $.getdata(signurl);
 var sicookie = $.getdata(signcookie);
-//var ifurl = $.getdata(infourl);
-//var ifcookie = $.getdata(infocookie);
 var account;
 var expday;
 var remain;
@@ -91,30 +85,13 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/checkin/)
+    $request.url.match(/status/)
   ) {
-    //const siurl = $request.url;
-    //$.log(siurl);
     const sicookie = $request.headers["Cookie"];
     $.log(sicookie);
-    //$.setdata(siurl, signurl);
     $.setdata(sicookie, signcookie);
     $.msg("GLaDOS", "", "获取签到Cookie成功🎉");
   }
-/*
-  if (
-    $request &&
-    $request.method != "OPTIONS" &&
-    $request.url.match(/status/)
-  ) {
-    //const ifurl = $request.url;
-    //$.log(ifurl);
-    const ifcookie = $request.headers["Cookie"];
-    $.log(ifcookie);
-    $.setdata(ifcookie, infocookie);
-    $.msg("GLaDOS", "", "获取信息Cookie成功🎉");
-  }
-*/
 }
 
 //chavyleung
