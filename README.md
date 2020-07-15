@@ -15,6 +15,7 @@
 ##### 功能特点
 1、自动签到。  
 2、查看流量信息。  
+3、支持BoxJs。  
 
 ## 规则类
 ### [Remove AD](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
