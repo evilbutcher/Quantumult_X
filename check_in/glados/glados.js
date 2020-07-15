@@ -12,7 +12,7 @@ hostname = glados.rocks
 
 const $ = new Env("GLaDOS");
 //const signurl = "evil_signurl";
-const signcookie = "evil_signcookie";
+const signcookie = "evil_gladoscookie";
 //const infourl = "evil_infourl";
 //const infocookie = "evil_infocookie";
 
