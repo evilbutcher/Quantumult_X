@@ -1,26 +1,50 @@
 /*
 
-热搜监控@evilbutcher，仓库地址：https://github.com/evilbutcher/Quantumult_X
+热门监控@evilbutcher，仓库地址：https://github.com/evilbutcher/Quantumult_X/tree/master
 
-打开微博热搜获取Cookie即可，仅测试Quantumult X，理论上也支持Surge和Loon。
+打开微博热搜、知乎热榜获取Cookie即可，本地直接修改关键词，远程可通过BoxJs修改关键词。有关键词更新时会通知，否则不通知。
 
-本地脚本keyword按照样例设置关键词，注意英文逗号；BoxJs用中文逗号。
+本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
-有更新时会通知，否则不通知。
+BoxJs订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+订阅后，可以在BoxJs里面修改关键词，设置清除Cookie
 
-[rewrite_local]
-https:\/\/api\.weibo\.cn\/2\/page url script-request-header Local/check_in/hotsearch/hot.js
-https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header Local/check_in/hotsearch/hot.js
 
-[task_local]
-30 0 8-22/2 * * * Local/check_in/hotsearch/hot.js
+仅测试Quantumult X、Loon，理论上也支持Surge（没surge无法测试）。
 
-hostname = api.weibo.cn, api.zhihu.com
+【Surge】配置
+  热门监控微博cookie获取 = type=http-request,pattern=https:\/\/api\.weibo\.cn\/2\/page ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+  热门监控知乎cookie获取 = type=http-request,pattern=https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+  热门监控 = type=cron,cronexp="5 0  * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
+
+  [MITM]
+  hostname = api.weibo.cn, api.zhihu.com
+
+【Loon】配置
+  [script]
+  cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, timeout=600, tag=热门监控
+  http-request https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控微博cookie获取
+  http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
+  
+  [MITM]
+  hostname = api.weibo.cn, api.zhihu.com
+
+
+【Quantumult X】配置
+  [rewrite_local]
+  https:\/\/api\.weibo\.cn\/2\/page url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+  https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+
+  [task_local]
+  30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控
+
+  [MITM]
+  hostname = api.weibo.cn, api.zhihu.com
 */
 const $ = new Env("热门监控");
 
-var keyword = ["万茜"]; //👈关键词在这里设置
-var deletecookie = false; //👈清除Cookie
+var keyword = ["中国","万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
+var deletecookie = false; //👈清除Cookie选项
 
 if (
   $.getdata("evil_wb_keyword") != undefined &&

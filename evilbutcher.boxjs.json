@@ -18,15 +18,15 @@
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
   },{
-    "id": "GLaDOS",
+    "id": "glados",
     "name": "GLaDOS签到",
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/airport.png", "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png"]
   },{
-    "id": "微博热搜",
-    "name": "热搜监控",
+    "id": "hot",
+    "name": "热门监控",
     "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie"],
     "settings": [
       { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔" },
