@@ -8,7 +8,8 @@
 ##### 功能特点
 1、自动获取最新超话列表。  
 2、自动签到。  
-3、支持BoxJs。  
+3、如果超话数量大于100，可以先检查签到情况，未签到才会执行，更好解决签到频繁问题
+4、支持BoxJs。  
 
 ### [自用签到](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados)
 ##### 功能特点
