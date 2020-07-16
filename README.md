@@ -23,7 +23,7 @@
 3、支持BoxJs。  
 
 ## 规则类
-### [Remove AD](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
+### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 ##### 功能特点
 [readme](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad/README.md)  
 
