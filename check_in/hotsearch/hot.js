@@ -40,7 +40,7 @@ if ($.getdata("evil_wb_deetecookie") != undefined) {
 
 var url = "evil_hotsearchurl";
 var cookie = "evil_hotsearchcookie";
-var urlzh = "evil_zhihuhrl";
+var urlzh = "evil_zhihuurl";
 var cookiezh = "evil_zhihucookie";
 var siurl = $.getdata(url);
 var sicookie = $.getdata(cookie);
