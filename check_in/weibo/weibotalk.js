@@ -406,6 +406,10 @@ function checkin(id, name, isSign = false) {
         $.failNum += 1;
         $.message.push(`【${idname}】：太频繁啦，请稍后再试`);
         console.log(`【${idname}】执行签到：太频繁啦，请稍后再试`);
+      } else if (response.statusCode == 511) {
+        $.failNum += 1;
+        $.message.push(`【${idname}】：需要身份验证，请稍后再试`);
+        console.log(`【${idname}】执行签到：需要身份验证，请稍后再试`);
       } else {
         var body = response.body;
         var obj = JSON.parse(body);
