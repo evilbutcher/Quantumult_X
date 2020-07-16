@@ -206,7 +206,7 @@ $.stopNum = 0;
       await getid(i);
     }
     for (i in $.name_list) {
-      if ($.stopNum < 10) {
+      if ($.stopNum != 0) {
         await checkin($.id_list[i], $.name_list[i], false);
         $.wait($.time);
       } else {
@@ -252,18 +252,31 @@ function output() {
 }
 
 function getnumber() {
-  console.log("正在刷新链接");
+  console.log($.name + "  正在刷新链接");
   return new Promise(resolve => {
     var idrequest = {
       url: listurl,
       header: listheaders
     };
     $.get(idrequest, (error, response, data) => {
+      if (error) {
+        throw new Error(error);
+      }
       if (response.statusCode == 418) {
         $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
       } else {
         var body = response.body;
         var obj = JSON.parse(body);
+        if (obj.hasOwnProperty("errmsg")) {
+          $.msg(
+            $.name,
+            "🚨获取页数出现错误",
+            `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+          );
+          $.pagenumber = 0;
+          resolve();
+          return;
+        }
         if (debugurl) console.log(obj);
         allnumber = obj.cardlistInfo.total;
         console.log(
@@ -290,11 +303,23 @@ function geturl(i) {
     header: listheaders
   };
   $.get(idrequest, (error, response, data) => {
+    if (error) {
+      throw new Error(error);
+    }
     if (response.statusCode == 418) {
       $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
     } else {
       var body = response.body;
       var obj = JSON.parse(body);
+      if (obj.hasOwnProperty("errmsg")) {
+        $.msg(
+          $.name,
+          "🚨获取超话ID出现错误",
+          `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+        );
+        resolve();
+        return;
+      }
       var group = obj.cards[0]["card_group"];
       var insertid = group[0].scheme.slice(33, 71);
       if (debugurl) console.log(insertid);
