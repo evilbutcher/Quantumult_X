@@ -17,10 +17,11 @@
 2、查看流量信息。  
 3、支持BoxJs。 
  
-### [微博热搜](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch)
+### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch)
 ##### 功能特点
 1、监控微博热搜关键词。  
-2、支持BoxJs。  
+2、监控知乎热榜关键词。  
+3、支持BoxJs。  
 
 ## 规则类
 ### [Remove AD](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
