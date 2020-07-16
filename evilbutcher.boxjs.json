@@ -27,9 +27,9 @@
   },{
     "id": "微博热搜",
     "name": "热搜监控",
-    "keys": ["evil_hotsearchurl","evil_hotsearchcookie"],
+    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie"],
     "settings": [
-      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜，QQ", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔" },
+      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔" },
       { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"}
       ],
     "author": "@evilbutcher",
