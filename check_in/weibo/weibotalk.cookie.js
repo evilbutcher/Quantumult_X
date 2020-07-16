@@ -1,7 +1,7 @@
 /**********
 
   🐬主要作者：Evilbutcher （签到、cookie等主体逻辑编写）
-  📕地址：https://github.com/evilbutcher/Quantumult_X
+  📕地址：https://github.com/evilbutcher/Quantumult_X/tree/master
 
   🐬次要作者: toulanboy （细节完善，支持多平台）
   📕地址：https://github.com/toulanboy/scripts
