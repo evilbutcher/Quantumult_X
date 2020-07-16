@@ -25,7 +25,7 @@
    ***************************************
   【boxjs 订阅， 可以让你修改远程文件里面的变量】
    ***************************************
-   box订阅链接：https://raw.githubusercontent.com/toulanboy/scripts/master/toulanboy.boxjs.json
+   box订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
    订阅后，可以在box里面进行 cookie清空、通知个数、签到延迟 等设置.
 
   *************************
