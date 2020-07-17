@@ -192,13 +192,12 @@ $.stopNum = 0;
       await getSignStatus(i);
     }
     for (i in $.name_list) {
-      if ($.stopNum < 10) {
-        await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
-        $.wait($.time);
-      } else {
-        $.message.push(`🚨检测到Cookie失效，脚本已自动停止`);
-        console.log(`🚨检测到Cookie失效，脚本已自动停止`);
-        break;
+      await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
+      $.wait($.time);
+      if ($.stopNum != 0) {
+        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止");
+        console.log("🚨检测到Cookie失效，脚本已自动停止");
+        return;
       }
     }
   } else {
@@ -206,13 +205,12 @@ $.stopNum = 0;
       await getid(i);
     }
     for (i in $.name_list) {
+      await checkin($.id_list[i], $.name_list[i], false);
+      $.wait($.time);
       if ($.stopNum != 0) {
-        await checkin($.id_list[i], $.name_list[i], false);
-        $.wait($.time);
-      } else {
-        $.message.push(`🚨检测到Cookie失效，脚本已自动停止`);
-        console.log(`🚨检测到Cookie失效，脚本已自动停止`);
-        break;
+        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止");
+        console.log("🚨检测到Cookie失效，脚本已自动停止");
+        return;
       }
     }
   }
@@ -253,18 +251,18 @@ function output() {
 
 function getnumber() {
   console.log($.name + "  正在刷新链接");
+  var idrequest = {
+    url: listurl,
+    header: listheaders
+  };
   return new Promise(resolve => {
-    var idrequest = {
-      url: listurl,
-      header: listheaders
-    };
     $.get(idrequest, (error, response, data) => {
       if (error) {
         throw new Error(error);
       }
       if (response.statusCode == 418) {
         $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
-      } else {
+      } else if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
         if (obj.hasOwnProperty("errmsg")) {
@@ -286,6 +284,9 @@ function getnumber() {
         );
         pagenumber = Math.ceil(allnumber / 20);
         resolve();
+      } else {
+        $.log("请将以下内容发送给作者\n" + response);
+        resolve();
       }
     });
   });
@@ -302,40 +303,47 @@ function geturl(i) {
     url: getlisturl,
     header: listheaders
   };
-  $.get(idrequest, (error, response, data) => {
-    if (error) {
-      throw new Error(error);
-    }
-    if (response.statusCode == 418) {
-      $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
-    } else {
-      var body = response.body;
-      var obj = JSON.parse(body);
-      if (obj.hasOwnProperty("errmsg")) {
-        $.msg(
-          $.name,
-          "🚨获取超话ID出现错误",
-          `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
-        );
-        resolve();
-        return;
+  return new Promise(resolve => {
+    $.get(idrequest, (error, response, data) => {
+      if (error) {
+        throw new Error(error);
       }
-      var group = obj.cards[0]["card_group"];
-      var insertid = group[0].scheme.slice(33, 71);
-      if (debugurl) console.log(insertid);
-      var inserturl = sinceurl
-        .replace(
-          new RegExp("follow%22%3A%221022%3A.*?%22"),
-          "follow%22%3A%221022%3A" + insertid + "%22"
-        )
-        .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
-      $.sinceinserturl.push(inserturl);
-      if (debugurl) console.log($.sinceinserturl);
-    }
+      if (response.statusCode == 418) {
+        $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+      } else if (response.statusCode == 200) {
+        var body = response.body;
+        var obj = JSON.parse(body);
+        if (obj.hasOwnProperty("errmsg")) {
+          $.msg(
+            $.name,
+            "🚨获取超话ID出现错误",
+            `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+          );
+          resolve();
+          return;
+        }
+        var group = obj.cards[0]["card_group"];
+        var insertid = group[0].scheme.slice(33, 71);
+        if (debugurl) console.log(insertid);
+        var inserturl = sinceurl
+          .replace(
+            new RegExp("follow%22%3A%221022%3A.*?%22"),
+            "follow%22%3A%221022%3A" + insertid + "%22"
+          )
+          .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
+        $.sinceinserturl.push(inserturl);
+        if (debugurl) console.log($.sinceinserturl);
+        resolve();
+      } else {
+        $.log("请将以下内容发送给作者\n" + response);
+        resolve();
+      }
+    });
   });
 }
 
 function getSignStatus(i) {
+  $.log(`正在获取第${i + 1}页签到状态`);
   if (debugstatus) console.log("第" + i + "个 " + $.sinceinserturl[i]);
   var sincerequest = {
     url: $.sinceinserturl[i],
@@ -343,9 +351,12 @@ function getSignStatus(i) {
   };
   return new Promise(resolve => {
     $.get(sincerequest, (error, response, data) => {
+      if (error) {
+        throw new Error(error);
+      }
       if (response.statusCode == 418) {
         $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
-      } else {
+      } else if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
         var group = obj.cards[0]["card_group"];
@@ -371,14 +382,18 @@ function getSignStatus(i) {
           console.log($.sign_status);
           console.log($.id_list);
         }
+        resolve();
+      } else {
+        $.log("请将以下内容发送给作者\n" + response);
+        resolve();
       }
-      resolve();
     });
   });
 }
 
 //获取超话签到id
 function getid(page) {
+  $.log("正在获取超话id");
   var getlisturl = listurl.replace(
     new RegExp("&page=.*?&"),
     "&page=" + page + "&"
@@ -389,21 +404,31 @@ function getid(page) {
   };
   return new Promise(resolve => {
     $.get(idrequest, (error, response, data) => {
-      var body = response.body;
-      var obj = JSON.parse(body);
-      var group = obj.cards[0]["card_group"];
-      var number = group.length;
-      for (var i = 0; i < number; i++) {
-        var name = group[i]["title_sub"];
-        $.name_list.push(name);
-        var id = group[i].scheme.slice(33, 71);
-        $.id_list.push(id);
-        if (debugstatus) {
-          console.log(name);
-          console.log(id);
-        }
+      if (error) {
+        throw new Error(error);
       }
-      resolve();
+      if (response.statusCode == 418) {
+        $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
+      } else if (response.statusCode == 200) {
+        var body = response.body;
+        var obj = JSON.parse(body);
+        var group = obj.cards[0]["card_group"];
+        var number = group.length;
+        for (var i = 0; i < number; i++) {
+          var name = group[i]["title_sub"];
+          $.name_list.push(name);
+          var id = group[i].scheme.slice(33, 71);
+          $.id_list.push(id);
+          if (debugstatus) {
+            console.log(name);
+            console.log(id);
+          }
+        }
+        resolve();
+      } else {
+        $.log("请将以下内容发送给作者\n" + response);
+        resolve();
+      }
     });
   });
 }
@@ -425,56 +450,67 @@ function checkin(id, name, isSign = false) {
     header: checkinheaders
   };
   return new Promise(resolve => {
-    $.get(checkinrequest, (error, response, data) => {
-      if (debugcheckin) console.log(response);
-      if (response.statusCode == 418) {
-        $.failNum += 1;
-        $.message.push(`【${idname}】：太频繁啦，请稍后再试`);
-        console.log(`【${idname}】执行签到：太频繁啦，请稍后再试`);
-      } else if (response.statusCode == 511) {
-        $.failNum += 1;
-        $.message.push(`【${idname}】：需要身份验证，请稍后再试`);
-        console.log(`【${idname}】执行签到：需要身份验证，请稍后再试`);
-      } else {
-        var body = response.body;
-        var obj = JSON.parse(body);
-        if (debugcheckin) console.log(obj);
-        var result = obj.result;
-        if (debugcheckin) console.log(result);
-        if (result == 1 || result == 382004) {
-          $.successNum += 1;
-        } else {
+    try {
+      $.get(checkinrequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (debugcheckin) console.log(response);
+        if (response.statusCode == 418) {
           $.failNum += 1;
-        }
-        if (result == 1) {
-          $.message.push(`【${idname}】：✅${obj.button.name}`);
-          console.log(`【${idname}】执行签到：${obj.button.name}`);
-        } else if (result == 382004) {
-          $.message.push(`【${idname}】：✨今天已签到`);
-          console.log(`【${idname}】执行签到：${obj.error_msg}`);
-        } else if (result == 388000) {
-          $.message.push(`【${idname}】：需要拼图验证⚠️`);
-          console.log(`【${idname}】执行签到：需要拼图验证⚠️`);
-          if (debugcheckin) console.log(response);
-        } else if (result == 382010) {
-          $.message.push(`【${idname}】：超话不存在⚠️`);
-          console.log(`【${idname}】执行签到：超话不存在⚠️`);
-          if (debugcheckin) console.log(response);
-        } else if (obj["errno"] == -100) {
-          $.stopNum += 1;
-          $.message.push(`【${idname}】：签到失败，请重新签到获取Cookie⚠️`);
-          console.log(
-            `【${idname}】执行签到：签到失败，请重新签到获取Cookie⚠️`
-          );
-          if (debugcheckin) console.log(response);
+          $.message.push(`【${idname}】：太频繁啦，请稍后再试`);
+          console.log(`【${idname}】执行签到：太频繁啦，请稍后再试`);
+        } else if (response.statusCode == 511) {
+          $.failNum += 1;
+          $.message.push(`【${idname}】：需要身份验证，请稍后再试`);
+          console.log(`【${idname}】执行签到：需要身份验证，请稍后再试`);
+        } else if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (debugcheckin) console.log(obj);
+          var result = obj.result;
+          if (debugcheckin) console.log(result);
+          if (result == 1 || result == 382004) {
+            $.successNum += 1;
+          } else {
+            $.failNum += 1;
+          }
+          if (result == 1) {
+            $.message.push(`【${idname}】：✅${obj.button.name}`);
+            console.log(`【${idname}】执行签到：${obj.button.name}`);
+          } else if (result == 382004) {
+            $.message.push(`【${idname}】：✨今天已签到`);
+            console.log(`【${idname}】执行签到：${obj.error_msg}`);
+          } else if (result == 388000) {
+            $.message.push(`【${idname}】：需要拼图验证⚠️`);
+            console.log(`【${idname}】执行签到：需要拼图验证⚠️`);
+            if (debugcheckin) console.log(response);
+          } else if (result == 382010) {
+            $.message.push(`【${idname}】：超话不存在⚠️`);
+            console.log(`【${idname}】执行签到：超话不存在⚠️`);
+            if (debugcheckin) console.log(response);
+          } else if (obj["errno"] == -100) {
+            //$.stopNum += 1;
+            $.message.push(`【${idname}】：签到失败，请重新签到获取Cookie⚠️`);
+            console.log(
+              `【${idname}】执行签到：签到失败，请重新签到获取Cookie⚠️\n${response}`
+            );
+            if (debugcheckin) console.log(response);
+          } else {
+            $.message.push(`【${idname}】：未知错误⚠️`);
+            console.log(`【${idname}】执行签到：未知错误⚠️`);
+            console.log("请将以下内容发送给作者\n" + response);
+          }
+          resolve();
         } else {
-          $.message.push(`【${idname}】：未知错误⚠️`);
-          console.log(`【${idname}】执行签到：未知错误⚠️`);
-          console.log(response);
+          $.log("请将以下内容发送给作者\n" + response);
+          resolve();
         }
-      }
+      });
+    } catch (e) {
+      console.log(e);
       resolve();
-    });
+    }
   });
 }
 
