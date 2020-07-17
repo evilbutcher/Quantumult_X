@@ -33,7 +33,8 @@
       { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"},
       { "id": "evil_wb", "name": "微博热搜", "val": true, "type": "boolean", "desc": "打开则会监控微博热搜"},
       { "id": "evil_zh", "name": "知乎热榜", "val": true, "type": "boolean", "desc": "打开则会监控知乎热榜"},
-      { "id": "evil_bd", "name": "百度风云榜", "val": true, "type": "boolean", "desc": "打开则会监控百度风云榜"}
+      { "id": "evil_bd", "name": "百度风云榜", "val": true, "type": "boolean", "desc": "打开则会监控百度风云榜"},
+      { "id": "evil_attachurl", "name": "附带链接", "val": true, "type": "boolean", "desc": "打开则会附带相关话题链接"}
       ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
