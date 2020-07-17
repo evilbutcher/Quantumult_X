@@ -1,0 +1,39 @@
+{
+  "id": "evilbutcher.app.sub",
+  "name": "evilbutcher 应用订阅",
+  "author": "@evilbutcher",
+  "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
+  "repo": "https://github.com/evilbutcher/Quantumult_X",
+  "apps": [{
+    "id": "weibotalk",
+    "name": "微博超话（单账号版）",
+    "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
+    "settings": [
+      { "id": "wb_delete_cookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭" },
+      { "id": "wb_msg_max_num", "name": "每个通知显示超话数", "val": 30, "type": "text", "desc": "每页最显示多少个超话" },
+      { "id": "wb_request_time", "name": "签到间隔 (毫秒)", "val": 1000, "type": "text", "desc": "每个超话签到的间隔（超话大于50个的，建议填1000以上）" },
+      { "id": "wb_check_first", "name": "检查签到状态", "val": true, "type": "boolean", "desc": "打开则先检查签到状态，再签到；否则将直接签到" }
+    ],
+    "author": "@toulanboy, @evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
+  },{
+    "id": "glados",
+    "name": "GLaDOS签到",
+    "keys": ["evil_gladoscookie"],
+    "author": "@evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/airport.png", "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png"]
+  },{
+    "id": "hot",
+    "name": "热门监控",
+    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie"],
+    "settings": [
+      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔" },
+      { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"}
+      ],
+    "author": "@evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
+  }]
+}
