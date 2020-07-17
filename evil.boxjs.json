@@ -27,10 +27,13 @@
   },{
     "id": "hot",
     "name": "热门监控",
-    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie"],
+    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie","evil_baiduurl","evil_baiducookie"],
     "settings": [
       { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔" },
-      { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"}
+      { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"},
+      { "id": "evil_wb", "name": "微博热搜", "val": true, "type": "boolean", "desc": "打开则会监控微博热搜"},
+      { "id": "evil_zh", "name": "知乎热榜", "val": true, "type": "boolean", "desc": "打开则会监控知乎热榜"},
+      { "id": "evil_bd", "name": "百度风云榜", "val": true, "type": "boolean", "desc": "打开则会监控百度风云榜"}
       ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
