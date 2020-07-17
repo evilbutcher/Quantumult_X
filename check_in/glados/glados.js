@@ -81,6 +81,7 @@ function status() {
         message.push(`已用${expday}天,剩余${remainday}天`);
         $.msg("GLaDOS", `账户：${account}`, message);
       } else {
+        $.log(response)
         $.msg("GLaDOS", "", "❌请重新登陆更新Cookie");
       }
       resolve();
