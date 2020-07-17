@@ -90,28 +90,22 @@ var result = [];
     $.msg("热门监控", "", "Cookie已清除🆑");
     return;
   }
-  if (
-    siurl == undefined ||
-    sicookie == undefined ||
-    zhurl == undefined ||
-    zhcookie == undefined ||
-    siurl == "" ||
-    sicookie == "" ||
-    zhurl == "" ||
-    zhcookie == ""
-  ) {
-    $.log("停止");
-    $.msg("热门监控", "", "请先获取Cookie❌");
-    return;
-  } else if (keyword.length == 0) {
+  if (keyword.length == 0) {
     $.msg("热门监控", "", "请输入要监控的关键词");
-  } else {
-    $.log("开始\n");
-    await gethotsearch();
-    await gethotlist();
-    output();
-    $.done();
+    return;
   }
+  if (iswbcango()) {
+    await gethotsearch();
+  } else {
+    $.log("热门监控", "微博热搜Cookie未获取或不完整😫", "请获取Cookie❌");
+  }
+  if (iszhcango()) {
+    await gethotlist();
+  } else {
+    $.log("热门监控", "知乎热榜Cookie未获取或不完整😫", "请获取Cookie❌");
+  }
+  output();
+  $.done();
 })()
   .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
@@ -119,6 +113,32 @@ var result = [];
   .finally(() => {
     $.done();
   });
+
+function iswbcango() {
+  if (
+    siurl != undefined &&
+    sicookie != undefined &&
+    siurl != "" &&
+    sicookie != ""
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function iszhcango() {
+  if (
+    zhurl != undefined &&
+    zhcookie != undefined &&
+    zhurl != "" &&
+    zhcookie != ""
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function gethotsearch() {
   return new Promise(resolve => {
@@ -223,6 +243,8 @@ function output() {
 
       $.msg("热门监控", "", $.this_msg);
     }
+  } else if (iswbcango() == false && iszhcango() == false) {
+    $.msg("热门监控", "Cookie未获取或不完整😫", "请获取Cookie后再尝试哦❌");
   } else {
     $.log("热门监控", `😫您订阅的关键词“${keyword}”暂时没有更新`, "");
   }
