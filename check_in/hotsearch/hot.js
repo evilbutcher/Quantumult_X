@@ -15,14 +15,14 @@ BoxJs订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/m
 【Surge】配置
   热门监控微博cookie获取 = type=http-request,pattern=https:\/\/api\.weibo\.cn\/2\/page ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
   热门监控知乎cookie获取 = type=http-request,pattern=https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
-  热门监控 = type=cron,cronexp="5 0  * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
+  热门监控 = type=cron,cronexp="30 0 8-22/2 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
 
   [MITM]
   hostname = api.weibo.cn, api.zhihu.com
 
 【Loon】配置
   [script]
-  cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, timeout=600, tag=热门监控
+  cron "30 0 8-22/2 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, timeout=600, tag=热门监控
   http-request https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控微博cookie获取
   http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
   
@@ -43,7 +43,7 @@ BoxJs订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/m
 */
 const $ = new Env("热门监控");
 
-var keyword = ["中国","万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
+var keyword = ["中国", "万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
 var deletecookie = false; //👈清除Cookie选项
 
 if (
@@ -72,6 +72,8 @@ var zhurl = $.getdata(urlzh);
 var zhcookie = $.getdata(cookiezh);
 var items = [];
 var items2 = [];
+var urls = [];
+var urls2 = [];
 var result = [];
 
 !(async () => {
@@ -125,13 +127,27 @@ function gethotsearch() {
       headers: sicookie
     };
     $.get(wbRequest, (error, response, data) => {
+      if (error) {
+        throw new Error(error);
+      }
       var body = response.body;
       var obj = JSON.parse(body);
+      if (obj.hasOwnProperty("errmsg")) {
+        $.msg(
+          $.name,
+          "🚨获取热搜出现错误",
+          `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+        );
+        resolve();
+        return;
+      }
       var group = obj.cards[0]["card_group"];
       var num = group.length;
       for (var i = 0; i < num; i++) {
         var item = group[i].desc;
+        var url = group[i].scheme;
         items.push(item);
+        urls.push(url);
       }
       $.log("微博热搜结果👇\n" + items);
       resolve();
@@ -146,13 +162,28 @@ function gethotlist() {
       headers: zhcookie
     };
     $.get(zhRequest, (error, response, data) => {
+      if (error) {
+        throw new Error(error);
+      }
       var body = response.body;
       var obj = JSON.parse(body);
+      if (obj.hasOwnProperty("errmsg")) {
+        $.msg(
+          $.name,
+          "🚨获取热榜出现错误",
+          `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+        );
+        resolve();
+        return;
+      }
       var group = obj.data;
       var num = group.length;
       for (var i = 0; i < num; i++) {
         var item = group[i].target.title;
+        var oriurl = group[i].target.url;
+        var url = oriurl.replace("https://api.zhihu.com/", "zhihu://");
         items2.push(item);
+        urls2.push(url);
       }
       $.log("\n知乎热榜结果👇\n" + items2);
       resolve();
@@ -160,13 +191,17 @@ function gethotlist() {
   });
 }
 
-function findkeyword(output, key, array) {
+function findkeyword(output, key, array, array2) {
   for (var i = 0; i < array.length; i++) {
     if (array[i].indexOf(key) != -1) {
       if (i < 51) {
-        output.push(`微博--${array[i]}`);
+        output.push(
+          `🎉您订阅的关键词“${key}”有更新啦！来自微博\n具体内容：${array[i]}\n${array2[i]}`
+        );
       } else {
-        output.push(`知乎--${array[i]}`);
+        output.push(
+          `🎉您订阅的关键词“${key}”有更新啦！来自知乎\n具体内容：${array[i]}\n${array2[i]}`
+        );
       }
     }
   }
@@ -174,19 +209,19 @@ function findkeyword(output, key, array) {
 
 function output() {
   var all = items.concat(items2);
+  var allurl = urls.concat(urls2);
   for (var j = 0; j < keyword.length; j++) {
-    findkeyword(result, keyword[j], all);
+    findkeyword(result, keyword[j], all, allurl);
   }
   //$.log(result);
   $.log("\n关键词为👇\n" + keyword + "\n");
   if (result.length != 0) {
-    $.this_msg = ``;
     for (var m = 0; m < result.length; m++) {
-      $.this_msg += `\n${result[m]}`;
+      $.this_msg = ``;
+      $.this_msg += `${result[m]}`;
       //$.log(`${result[m]}`)
-      if (m == result.length - 1) {
-        $.msg("热门监控", `⚠️您订阅的关键词“${keyword}”有更新啦`, $.this_msg);
-      }
+
+      $.msg("热门监控", "", $.this_msg);
     }
   } else {
     $.log("热门监控", `😫您订阅的关键词“${keyword}”暂时没有更新`, "");
