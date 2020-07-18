@@ -106,7 +106,10 @@ var urls = [];
 var urls2 = [];
 var urls3 = [];
 var urls4 = [];
+var covers = [];
 var result = [];
+var mediaresult = [];
+var mediaurl = [];
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -122,12 +125,11 @@ var result = [];
     $.setdata("", cookiebd);
     $.setdata("", urlbl);
     $.setdata("", cookiebl);
-    $.log("停止");
     $.msg("热门监控", "", "Cookie已清除🆑");
     return;
   }
   if (keyword.length == 0) {
-    $.msg("热门监控", "", "请输入要监控的关键词");
+    $.msg("热门监控", "", "请输入要监控的关键词🔍");
     return;
   }
   if ($.weibo == true) {
@@ -171,7 +173,6 @@ var result = [];
     $.log("B站日榜未获取😫");
   }
   output();
-  $.done();
 })()
   .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
@@ -373,9 +374,10 @@ function getbllist() {
           for (var i = 0; i < num; i++) {
             var item = group[i].title;
             var url = group[i].uri;
-            //var cover = group[i].cover;
+            var cover = group[i].cover;
             items4.push(item);
             urls4.push(url);
+            covers.push(cover);
           }
           $.log("B站日榜获取成功✅\n" + items4);
           resolve();
@@ -404,10 +406,21 @@ function findkeywordurl(text, output, key, array, array2) {
   }
 }
 
+function findkeywordmedia(text, output, output2, key, array, array2, array3) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].indexOf(key) != -1) {
+      output.push(
+        `🎉来自“${text}”，您订阅的关键词"${key}"有更新啦！\n具体内容：${array[i]}\n${array2[i]}`
+      );
+      output2.push(array3[i]);
+    }
+  }
+}
+
 function findkeyword(text, output, key, array) {
   for (var i = 0; i < array.length; i++) {
     if (array[i].indexOf(key) != -1) {
-      output.push(`🎉来自“${text}”，具体内容：${array[i]}`);
+      output.push(`🎉来自“${text}”具体内容：${array[i]}`);
     }
   }
 }
@@ -424,7 +437,15 @@ function output() {
       findkeywordurl("百度", result, keyword[j], items3, urls3);
     }
     for (j = 0; j < keyword.length; j++) {
-      findkeywordurl("B站", result, keyword[j], items4, urls4);
+      findkeywordmedia(
+        "B站",
+        mediaresult,
+        mediaurl,
+        keyword[j],
+        items4,
+        urls4,
+        covers
+      );
     }
   } else {
     for (j = 0; j < keyword.length; j++) {
@@ -441,12 +462,17 @@ function output() {
     }
   }
   $.log("\n关键词为👇\n" + keyword + "\n");
-  if (result.length != 0) {
+  if (result.length != 0 || mediaresult != 0) {
     if ($.attachurl == true) {
       for (var m = 0; m < result.length; m++) {
         $.this_msg = ``;
         $.this_msg += `${result[m]}`;
         $.msg("热门监控", "", $.this_msg);
+      }
+      for (m = 0; m < mediaresult.length; m++) {
+        $.this_msg = ``;
+        $.this_msg += `${mediaresult[m]}`;
+        $.msg("热门监控", "", $.this_msg, { "media-url": mediaurl[m] });
       }
     } else {
       $.this_msg = ``;
@@ -534,85 +560,278 @@ function getCookie() {
 }
 
 //chavyleung
-function Env(s) {
-  (this.name = s),
-    (this.data = null),
-    (this.logs = []),
-    (this.isSurge = () => "undefined" != typeof $httpClient),
-    (this.isQuanX = () => "undefined" != typeof $task),
-    (this.isLoon = () => "undefined" != typeof $loon),
-    (this.isNode = () => "undefined" != typeof module && !!module.exports),
-    (this.log = (...s) => {
-      (this.logs = [...this.logs, ...s]),
-        s ? console.log(s.join("\n")) : console.log(this.logs.join("\n"));
-    }),
-    (this.msg = (s = this.name, t = "", i = "", opts = "") => {
-      this.isLoon() && $notification.post(s, t, i, opts),
-        this.isSurge() && !this.isLoon() && $notification.post(s, t, i),
-        this.isQuanX() &&
-          $notify(s, t, i, {
-            "open-url": opts
-          });
-      const e = [
-        "",
-        "==============\ud83d\udce3\u7cfb\u7edf\u901a\u77e5\ud83d\udce3=============="
-      ];
-      s && e.push(s), t && e.push(t), i && e.push(i), console.log(e.join("\n"));
-    }),
-    (this.getdata = s => {
-      if (this.isSurge()) return $persistentStore.read(s);
-      if (this.isQuanX()) return $prefs.valueForKey(s);
-      if (this.isNode()) {
-        const t = "box.dat";
-        return (
-          (this.fs = this.fs ? this.fs : require("fs")),
-          this.fs.existsSync(t)
-            ? ((this.data = JSON.parse(this.fs.readFileSync(t))), this.data[s])
-            : null
-        );
+function Env(t, s) {
+  return new (class {
+    constructor(t, s) {
+      (this.name = t),
+        (this.data = null),
+        (this.dataFile = "box.dat"),
+        (this.logs = []),
+        (this.logSeparator = "\n"),
+        (this.startTime = new Date().getTime()),
+        Object.assign(this, s),
+        this.log("", `\ud83d\udd14${this.name}, \u5f00\u59cb!`);
+    }
+    isNode() {
+      return "undefined" != typeof module && !!module.exports;
+    }
+    isQuanX() {
+      return "undefined" != typeof $task;
+    }
+    isSurge() {
+      return "undefined" != typeof $httpClient;
+    }
+    isLoon() {
+      return "undefined" != typeof $loon;
+    }
+    loaddata() {
+      if (!this.isNode()) return {};
+      {
+        (this.fs = this.fs ? this.fs : require("fs")),
+          (this.path = this.path ? this.path : require("path"));
+        const t = this.path.resolve(this.dataFile),
+          s = this.path.resolve(process.cwd(), this.dataFile),
+          e = this.fs.existsSync(t),
+          i = !e && this.fs.existsSync(s);
+        if (!e && !i) return {};
+        {
+          const i = e ? t : s;
+          try {
+            return JSON.parse(this.fs.readFileSync(i));
+          } catch (e) {
+            return {};
+          }
+        }
       }
-    }),
-    (this.setdata = (s, t) => {
-      if (this.isSurge()) return $persistentStore.write(s, t);
-      if (this.isQuanX()) return $prefs.setValueForKey(s, t);
+    }
+    writedata() {
       if (this.isNode()) {
-        const i = "box.dat";
-        return (
-          (this.fs = this.fs ? this.fs : require("fs")),
-          !!this.fs.existsSync(i) &&
-            ((this.data = JSON.parse(this.fs.readFileSync(i))),
-            (this.data[t] = s),
-            this.fs.writeFileSync(i, JSON.stringify(this.data)),
-            !0)
-        );
+        (this.fs = this.fs ? this.fs : require("fs")),
+          (this.path = this.path ? this.path : require("path"));
+        const t = this.path.resolve(this.dataFile),
+          s = this.path.resolve(process.cwd(), this.dataFile),
+          e = this.fs.existsSync(t),
+          i = !e && this.fs.existsSync(s),
+          o = JSON.stringify(this.data);
+        e
+          ? this.fs.writeFileSync(t, o)
+          : i
+          ? this.fs.writeFileSync(s, o)
+          : this.fs.writeFileSync(t, o);
       }
-    }),
-    (this.wait = (s, t = s) => i =>
-      setTimeout(() => i(), Math.floor(Math.random() * (t - s + 1) + s))),
-    (this.get = (s, t) => this.send(s, "GET", t)),
-    (this.post = (s, t) => this.send(s, "POST", t)),
-    (this.send = (s, t, i) => {
-      if (this.isSurge()) {
-        const e = "POST" == t ? $httpClient.post : $httpClient.get;
-        e(s, (s, t, e) => {
-          t && ((t.body = e), (t.statusCode = t.status)), i(s, t, e);
+    }
+    lodash_get(t, s, e) {
+      const i = s.replace(/\[(\d+)\]/g, ".$1").split(".");
+      let o = t;
+      for (const t of i) if (((o = Object(o)[t]), void 0 === o)) return e;
+      return o;
+    }
+    lodash_set(t, s, e) {
+      return Object(t) !== t
+        ? t
+        : (Array.isArray(s) || (s = s.toString().match(/[^.[\]]+/g) || []),
+          (s
+            .slice(0, -1)
+            .reduce(
+              (t, e, i) =>
+                Object(t[e]) === t[e]
+                  ? t[e]
+                  : (t[e] = Math.abs(s[i + 1]) >> 0 == +s[i + 1] ? [] : {}),
+              t
+            )[s[s.length - 1]] = e),
+          t);
+    }
+    getdata(t) {
+      let s = this.getval(t);
+      if (/^@/.test(t)) {
+        const [, e, i] = /^@(.*?)\.(.*?)$/.exec(t),
+          o = e ? this.getval(e) : "";
+        if (o)
+          try {
+            const t = JSON.parse(o);
+            s = t ? this.lodash_get(t, i, "") : s;
+          } catch (t) {
+            s = "";
+          }
+      }
+      return s;
+    }
+    setdata(t, s) {
+      let e = !1;
+      if (/^@/.test(s)) {
+        const [, i, o] = /^@(.*?)\.(.*?)$/.exec(s),
+          h = this.getval(i),
+          a = i ? ("null" === h ? null : h || "{}") : "{}";
+        try {
+          const s = JSON.parse(a);
+          this.lodash_set(s, o, t),
+            (e = this.setval(JSON.stringify(s), i)),
+            console.log(`${i}: ${JSON.stringify(s)}`);
+        } catch (e) {
+          const s = {};
+          this.lodash_set(s, o, t),
+            (e = this.setval(JSON.stringify(s), i)),
+            console.log(`${i}: ${JSON.stringify(s)}`);
+        }
+      } else e = $.setval(t, s);
+      return e;
+    }
+    getval(t) {
+      return this.isSurge() || this.isLoon()
+        ? $persistentStore.read(t)
+        : this.isQuanX()
+        ? $prefs.valueForKey(t)
+        : this.isNode()
+        ? ((this.data = this.loaddata()), this.data[t])
+        : (this.data && this.data[t]) || null;
+    }
+    setval(t, s) {
+      return this.isSurge() || this.isLoon()
+        ? $persistentStore.write(t, s)
+        : this.isQuanX()
+        ? $prefs.setValueForKey(t, s)
+        : this.isNode()
+        ? ((this.data = this.loaddata()),
+          (this.data[s] = t),
+          this.writedata(),
+          !0)
+        : (this.data && this.data[s]) || null;
+    }
+    initGotEnv(t) {
+      (this.got = this.got ? this.got : require("got")),
+        (this.cktough = this.cktough ? this.cktough : require("tough-cookie")),
+        (this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar()),
+        t &&
+          ((t.headers = t.headers ? t.headers : {}),
+          void 0 === t.headers.Cookie &&
+            void 0 === t.cookieJar &&
+            (t.cookieJar = this.ckjar));
+    }
+    get(t, s = () => {}) {
+      t.headers &&
+        (delete t.headers["Content-Type"], delete t.headers["Content-Length"]),
+        this.isSurge() || this.isLoon()
+          ? $httpClient.get(t, (t, e, i) => {
+              !t && e && ((e.body = i), (e.statusCode = e.status), s(t, e, i));
+            })
+          : this.isQuanX()
+          ? $task.fetch(t).then(
+              t => {
+                const { statusCode: e, statusCode: i, headers: o, body: h } = t;
+                s(null, { status: e, statusCode: i, headers: o, body: h }, h);
+              },
+              t => s(t)
+            )
+          : this.isNode() &&
+            (this.initGotEnv(t),
+            this.got(t)
+              .on("redirect", (t, s) => {
+                try {
+                  const e = t.headers["set-cookie"]
+                    .map(this.cktough.Cookie.parse)
+                    .toString();
+                  this.ckjar.setCookieSync(e, null), (s.cookieJar = this.ckjar);
+                } catch (t) {
+                  this.logErr(t);
+                }
+              })
+              .then(
+                t => {
+                  const {
+                    statusCode: e,
+                    statusCode: i,
+                    headers: o,
+                    body: h
+                  } = t;
+                  s(null, { status: e, statusCode: i, headers: o, body: h }, h);
+                },
+                t => s(t)
+              ));
+    }
+    post(t, s = () => {}) {
+      if (
+        (t.body &&
+          t.headers &&
+          !t.headers["Content-Type"] &&
+          (t.headers["Content-Type"] = "application/x-www-form-urlencoded"),
+        delete t.headers["Content-Length"],
+        this.isSurge() || this.isLoon())
+      )
+        $httpClient.post(t, (t, e, i) => {
+          !t && e && ((e.body = i), (e.statusCode = e.status), s(t, e, i));
         });
-      }
-      this.isQuanX() &&
-        ((s.method = t),
-        $task.fetch(s).then(
-          s => {
-            (s.status = s.statusCode), i(null, s, s.body);
+      else if (this.isQuanX())
+        (t.method = "POST"),
+          $task.fetch(t).then(
+            t => {
+              const { statusCode: e, statusCode: i, headers: o, body: h } = t;
+              s(null, { status: e, statusCode: i, headers: o, body: h }, h);
+            },
+            t => s(t)
+          );
+      else if (this.isNode()) {
+        this.initGotEnv(t);
+        const { url: e, ...i } = t;
+        this.got.post(e, i).then(
+          t => {
+            const { statusCode: e, statusCode: i, headers: o, body: h } = t;
+            s(null, { status: e, statusCode: i, headers: o, body: h }, h);
           },
-          s => i(s.error, s, s)
-        )),
-        this.isNode() &&
-          ((this.request = this.request ? this.request : require("request")),
-          (s.method = t),
-          (s.gzip = !0),
-          this.request(s, (s, t, e) => {
-            t && (t.status = t.statusCode), i(null, t, e);
-          }));
-    }),
-    (this.done = (s = {}) => (this.isNode() ? null : $done(s)));
+          t => s(t)
+        );
+      }
+    }
+    msg(s = t, e = "", i = "", o) {
+      const h = t =>
+        !t || (!this.isLoon() && this.isSurge())
+          ? t
+          : "string" == typeof t
+          ? this.isLoon()
+            ? t
+            : this.isQuanX()
+            ? { "open-url": t }
+            : void 0
+          : "object" == typeof t && (t["open-url"] || t["media-url"])
+          ? this.isLoon()
+            ? t["open-url"]
+            : this.isQuanX()
+            ? t
+            : void 0
+          : void 0;
+      this.isSurge() || this.isLoon()
+        ? $notification.post(s, e, i, h(o))
+        : this.isQuanX() && $notify(s, e, i, h(o)),
+        this.logs.push(
+          "",
+          "==============\ud83d\udce3\u7cfb\u7edf\u901a\u77e5\ud83d\udce3=============="
+        ),
+        this.logs.push(s),
+        e && this.logs.push(e),
+        i && this.logs.push(i);
+    }
+    log(...t) {
+      t.length > 0
+        ? (this.logs = [...this.logs, ...t])
+        : console.log(this.logs.join(this.logSeparator));
+    }
+    logErr(t, s) {
+      const e = !this.isSurge() && !this.isQuanX() && !this.isLoon();
+      e
+        ? $.log("", `\u2757\ufe0f${this.name}, \u9519\u8bef!`, t.stack)
+        : $.log("", `\u2757\ufe0f${this.name}, \u9519\u8bef!`, t.message);
+    }
+    wait(t) {
+      return new Promise(s => setTimeout(s, t));
+    }
+    done(t = null) {
+      const s = new Date().getTime(),
+        e = (s - this.startTime) / 1e3;
+      this.log(
+        "",
+        `\ud83d\udd14${this.name}, \u7ed3\u675f! \ud83d\udd5b ${e} \u79d2`
+      ),
+        this.log(),
+        (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t);
+    }
+  })(t, s);
 }
