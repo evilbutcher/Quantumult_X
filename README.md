@@ -1,3 +1,5 @@
+[![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=gideonsenku)](https://github.com/anuraghazra/github-readme-stats)
+
 # Quantumult X脚本和规则整理
 
 ## 脚本类
@@ -20,11 +22,12 @@
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch)
 ##### 功能特点
 1、监控微博热搜关键词。  
-2、监控知乎热榜关键词。 
+2、监控知乎热榜关键词。  
 3、监控百度风云榜关键词。  
-4、可以选择性监控榜单。  
-5、可以选择附带话题链接。  
-6、支持BoxJs。  
+4、监控B站日榜关键词。  
+5、可以选择性监控榜单。  
+6、可以选择附带话题链接。  
+7、支持BoxJs。  
 
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
