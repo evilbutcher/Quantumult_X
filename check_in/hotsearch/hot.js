@@ -2,9 +2,12 @@
 
 热门监控@evilbutcher，仓库地址：https://github.com/evilbutcher/Quantumult_X/tree/master
 
-1、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）获取Cookie即可。
-2、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
-3、可选择是否附带话题跳转链接。
+⚠️【使用方法】
+———————————————————————————————————————
+1、按照客户端配置好rewrite和mitm。
+2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。
+3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
+4、可选择是否附带话题跳转链接。
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
@@ -17,24 +20,26 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 
 【Surge】配置
 ———————————————————————————————————————
-  热门监控微博cookie获取 = type=http-request,pattern=https:\/\/api\.weibo\.cn\/2\/page ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
-  热门监控知乎cookie获取 = type=http-request,pattern=https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
-  热门监控百度cookie获取 = type=http-request,pattern=http:\/\/top\.baidu\.com\/mobile_v2\/buzz ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
-  热门监控 = type=cron,cronexp="30 0 8-22/2 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
+热门监控微博cookie获取 = type=http-request,pattern=https:\/\/api\.weibo\.cn\/2\/page ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+热门监控知乎cookie获取 = type=http-request,pattern=https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+热门监控百度cookie获取 = type=http-request,pattern=http:\/\/top\.baidu\.com\/mobile_v2\/buzz ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+热门监控B站cookie获取 = type=http-request,pattern=https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+热门监控 = type=cron,cronexp="30 0 8-22/2 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
 
-  [MITM]
-  hostname = api.weibo.cn, api.zhihu.com, top.baidu.com
+[MITM]
+hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
 
 【Loon】配置
 ——————————————————————————————————————
-  [script]
-  cron "30 0 8-22/2 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, timeout=600, tag=热门监控
-  http-request https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控微博cookie获取
-  http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
-  http-request http:\/\/top\.baidu\.com\/mobile_v2\/buzz script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控百度cookie获取
+[script]
+cron "30 0 8-22/2 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, timeout=600, tag=热门监控
+http-request https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控微博cookie获取
+http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
+http-request http:\/\/top\.baidu\.com\/mobile_v2\/buzz script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控百度cookie获取
+http-request https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控B站cookie获取
   
-  [MITM]
-  hostname = api.weibo.cn, api.zhihu.com, top.baidu.com
+[MITM]
+hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
 
 
 【Quantumult X】配置
@@ -43,12 +48,13 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
   https:\/\/api\.weibo\.cn\/2\/page url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
   https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
   http:\/\/top\.baidu\.com\/mobile_v2\/buzz url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+  https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
 
   [task_local]
   30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控
 
   [MITM]
-  hostname = api.weibo.cn, api.zhihu.com, top.baidu.com
+  hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
 */
 const $ = new Env("热门监控");
 
@@ -57,6 +63,7 @@ $.deletecookie = false; //👈清除Cookie选项
 $.weibo = true; //是否开启相应榜单监控
 $.zhihu = true; //是否开启相应榜单监控
 $.baidu = true; //是否开启相应榜单监控
+$.bilibili = true; //是否开启相应榜单监控
 $.attachurl = true; //是否附带跳转链接
 
 if (
@@ -72,6 +79,7 @@ $.deletecookie = JSON.parse(
 $.weibo = JSON.parse($.getdata("evil_wb") || $.weibo);
 $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
 $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
+$.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
 $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
 
 const url = "evil_hotsearchurl";
@@ -80,18 +88,24 @@ const urlzh = "evil_zhihuurl";
 const cookiezh = "evil_zhihucookie";
 const urlbd = "evil_baiduurl";
 const cookiebd = "evil_baiducookie";
+const urlbl = "evil_bilibiurl";
+const cookiebl = "evil_bilibilicookie";
 var siurl = $.getdata(url);
 var sicookie = $.getdata(cookie);
 var zhurl = $.getdata(urlzh);
 var zhcookie = $.getdata(cookiezh);
 var bdurl = $.getdata(urlbd);
 var bdcookie = $.getdata(cookiebd);
+var blurl = $.getdata(urlbl);
+var blcookie = $.getdata(cookiebl);
 var items = [];
 var items2 = [];
 var items3 = [];
+var items4 = [];
 var urls = [];
 var urls2 = [];
 var urls3 = [];
+var urls4 = [];
 var result = [];
 
 !(async () => {
@@ -106,6 +120,8 @@ var result = [];
     $.setdata("", cookiezh);
     $.setdata("", urlbd);
     $.setdata("", cookiebd);
+    $.setdata("", urlbl);
+    $.setdata("", cookiebl);
     $.log("停止");
     $.msg("热门监控", "", "Cookie已清除🆑");
     return;
@@ -143,6 +159,16 @@ var result = [];
     }
   } else {
     $.log("百度风云榜未获取😫");
+  }
+  if ($.bilibili == true) {
+    if (ifblcanrun() == true) {
+      $.log("B站Cookie完整🉑️");
+      await getbllist();
+    } else {
+      $.log("B站日榜Cookie未获取或不完整😫\n请获取Cookie后再试❌");
+    }
+  } else {
+    $.log("B站日榜未获取😫");
   }
   output();
   $.done();
@@ -193,6 +219,19 @@ function ifbdcanrun() {
   }
 }
 
+function ifblcanrun() {
+  if (
+    blurl != undefined &&
+    blcookie != undefined &&
+    blurl != "" &&
+    blcookie != ""
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function gethotsearch() {
   $.log("开始获取微博榜单...");
   return new Promise(resolve => {
@@ -217,18 +256,19 @@ function gethotsearch() {
             urls.push(url);
           }
           $.log("微博热搜获取成功✅\n" + items);
+          resolve();
         } else {
-          $.log("获取微博热搜出现错误❌\n" + response);
+          $.log("获取微博热搜出现错误❌以下详情：\n" + response);
         }
         resolve();
       });
     } catch (e) {
-      console.log(e);
+      $.log("获取微博热搜出现错误❌原因：\n" + e);
       resolve();
     }
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, 1000);
   });
 }
 
@@ -257,18 +297,19 @@ function gethotlist() {
             urls2.push(url);
           }
           $.log("知乎热榜获取成功✅\n" + items2);
+          resolve();
         } else {
-          $.log("获取知乎热榜出现错误❌\n" + response);
+          $.log("获取知乎热榜出现错误❌以下详情：\n" + response);
         }
         resolve();
       });
     } catch (e) {
-      console.log(e);
+      $.log("获取知乎热榜出现错误❌原因：\n" + e);
       resolve();
     }
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, 1000);
   });
 }
 
@@ -296,18 +337,60 @@ function getfylist() {
             urls3.push(url);
           }
           $.log("百度风云榜获取成功✅\n" + items3);
+          resolve();
         } else {
-          $.log("获取百度风云榜出现错误❌\n" + response);
+          $.log("获取百度风云榜出现错误❌以下详情：\n" + response);
         }
         resolve();
       });
     } catch (e) {
-      console.log(e);
+      $.log("获取百度风云榜出现错误❌原因：\n" + e);
       resolve();
     }
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, 1000);
+  });
+}
+
+function getbllist() {
+  $.log("开始获取B站日榜...");
+  return new Promise(resolve => {
+    try {
+      const blRequest = {
+        url: blurl,
+        headers: blcookie
+      };
+      $.get(blRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          var group = obj.data;
+          var num = group.length;
+          for (var i = 0; i < num; i++) {
+            var item = group[i].title;
+            var url = group[i].uri;
+            //var cover = group[i].cover;
+            items4.push(item);
+            urls4.push(url);
+          }
+          $.log("B站日榜获取成功✅\n" + items4);
+          resolve();
+        } else {
+          $.log("获取B站日榜出现错误❌以下详情:\n" + response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取B站日榜出现错误❌原因：\n" + e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
@@ -340,6 +423,9 @@ function output() {
     for (j = 0; j < keyword.length; j++) {
       findkeywordurl("百度", result, keyword[j], items3, urls3);
     }
+    for (j = 0; j < keyword.length; j++) {
+      findkeywordurl("B站", result, keyword[j], items4, urls4);
+    }
   } else {
     for (j = 0; j < keyword.length; j++) {
       findkeyword("微博", result, keyword[j], items);
@@ -349,6 +435,9 @@ function output() {
     }
     for (j = 0; j < keyword.length; j++) {
       findkeyword("百度", result, keyword[j], items3);
+    }
+    for (j = 0; j < keyword.length; j++) {
+      findkeyword("B站", result, keyword[j], items4);
     }
   }
   $.log("\n关键词为👇\n" + keyword + "\n");
@@ -373,10 +462,16 @@ function output() {
   } else if (
     ifwbcanrun() == false &&
     ifzhcanrun() == false &&
-    ifbdcanrun() == false
+    ifbdcanrun() == false &&
+    ifblcanrun() == false
   ) {
     $.msg("热门监控", "Cookie未获取或不完整😫", "请获取Cookie后再尝试哦❌");
-  } else if ($.weibo == false && $.zhihu == false && $.baidu == false) {
+  } else if (
+    $.weibo == false &&
+    $.zhihu == false &&
+    $.baidu == false &&
+    $.bilibili == false
+  ) {
     $.msg(
       "热门监控",
       "哎呀！您关闭了全部的榜单😫",
@@ -427,6 +522,15 @@ function getCookie() {
     $.setdata(bdcookie, cookiebd);
     $.msg("热门监控", "", "获取百度风云榜Cookie成功🎉");
   }
+  if ($request && $request.method != "OPTIONS" && $request.url.match(/rid=0/)) {
+    const blurl = $request.url;
+    $.log(blurl);
+    const blcookie = JSON.stringify($request.headers);
+    $.log(blcookie);
+    $.setdata(blurl, urlbl);
+    $.setdata(blcookie, cookiebl);
+    $.msg("热门监控", "", "获取B站日榜Cookie成功🎉");
+  }
 }
 
 //chavyleung
@@ -436,14 +540,19 @@ function Env(s) {
     (this.logs = []),
     (this.isSurge = () => "undefined" != typeof $httpClient),
     (this.isQuanX = () => "undefined" != typeof $task),
+    (this.isLoon = () => "undefined" != typeof $loon),
     (this.isNode = () => "undefined" != typeof module && !!module.exports),
     (this.log = (...s) => {
       (this.logs = [...this.logs, ...s]),
         s ? console.log(s.join("\n")) : console.log(this.logs.join("\n"));
     }),
-    (this.msg = (s = this.name, t = "", i = "") => {
-      this.isSurge() && $notification.post(s, t, i),
-        this.isQuanX() && $notify(s, t, i);
+    (this.msg = (s = this.name, t = "", i = "", opts = "") => {
+      this.isLoon() && $notification.post(s, t, i, opts),
+        this.isSurge() && !this.isLoon() && $notification.post(s, t, i),
+        this.isQuanX() &&
+          $notify(s, t, i, {
+            "open-url": opts
+          });
       const e = [
         "",
         "==============\ud83d\udce3\u7cfb\u7edf\u901a\u77e5\ud83d\udce3=============="
