@@ -5,7 +5,7 @@
 ⚠️【使用方法】
 ———————————————————————————————————————
 1、按照客户端配置好rewrite和mitm。
-2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。
+2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否附带话题跳转链接。
 
@@ -64,7 +64,10 @@ $.weibo = true; //是否开启相应榜单监控
 $.zhihu = true; //是否开启相应榜单监控
 $.baidu = true; //是否开启相应榜单监控
 $.bilibili = true; //是否开启相应榜单监控
-$.attachurl = true; //是否附带跳转链接
+$.attachurl = false; //是否附带跳转链接
+$.pushnew = false; //是否忽略关键词推送最新内容
+$.pushnumber = 3; //推送最新的内容数量
+$.rid = 0; //更改B站监控榜单（对应Cookie也要重新获取）
 
 if (
   $.getdata("evil_wb_keyword") != undefined &&
@@ -81,6 +84,17 @@ $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
 $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
 $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
 $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
+$.pushnew = JSON.parse($.getdata("evil_pushnew") || $.pushnew);
+$.pushnumber = $.getdata("evil_pushnumber") * 1 || $.pushnumber;
+$.rid = $.getdata("evil_blrid") * 1 || $.rid;
+
+$.log("获取微博热搜 " + $.weibo);
+$.log("获取知乎热榜 " + $.zhihu);
+$.log("获取百度风云榜 " + $.baidu);
+$.log("获取B站日榜 " + $.bilibili);
+$.log("附带URL " + $.attachurl);
+$.log("忽略关键词获取最热内容 " + $.pushnew);
+$.log("最热内容数量 " + $.pushnumber + "个\n");
 
 const url = "evil_hotsearchurl";
 const cookie = "evil_hotsearchcookie";
@@ -252,11 +266,47 @@ function gethotsearch() {
           var num = group.length;
           for (var i = 0; i < num; i++) {
             var item = group[i].desc;
-            var url = group[i].scheme;
+            var urllong = group[i].scheme;
+            var content = urllong.match(new RegExp(/q=.*?&isnewpage/));
+console.log(content)
+            var con = JSON.stringify(content);
+            var newcon = con.slice(2, -12);
+            var url = "sinaweibo://searchall?" + newcon;
             items.push(item);
             urls.push(url);
           }
           $.log("微博热搜获取成功✅\n" + items);
+          if ($.pushnew == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "微博",
+                  result,
+                  $.pushnumber,
+                  keyword[j],
+                  items,
+                  urls
+                );
+              }
+            } else {
+              for (j = 0; j < keyword.length; j++) {
+                findkeyword("微博", result, $.pushnumber, keyword[j], items);
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
+              findkeywordurl(
+                "微博",
+                result,
+                $.pushnumber,
+                keyword[j],
+                items,
+                urls
+              );
+            } else {
+              findkeyword("微博", result, $.pushnumber, keyword[j], items);
+            }
+          }
           resolve();
         } else {
           $.log("获取微博热搜出现错误❌以下详情：\n" + response);
@@ -298,6 +348,37 @@ function gethotlist() {
             urls2.push(url);
           }
           $.log("知乎热榜获取成功✅\n" + items2);
+          if ($.pushnew == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "知乎",
+                  result,
+                  $.pushnumber,
+                  keyword[j],
+                  items2,
+                  urls2
+                );
+              }
+            } else {
+              for (j = 0; j < keyword.length; j++) {
+                findkeyword("知乎", result, $.pushnumber, keyword[j], items2);
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
+              findkeywordurl(
+                "知乎",
+                result,
+                $.pushnumber,
+                keyword[j],
+                items2,
+                urls2
+              );
+            } else {
+              findkeyword("知乎", result, $.pushnumber, keyword[j], items2);
+            }
+          }
           resolve();
         } else {
           $.log("获取知乎热榜出现错误❌以下详情：\n" + response);
@@ -338,6 +419,37 @@ function getfylist() {
             urls3.push(url);
           }
           $.log("百度风云榜获取成功✅\n" + items3);
+          if ($.pushnew == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "百度",
+                  result,
+                  $.pushnumber,
+                  keyword[j],
+                  items3,
+                  urls3
+                );
+              }
+            } else {
+              for (j = 0; j < keyword.length; j++) {
+                findkeyword("百度", result, $.pushnumber, keyword[j], items3);
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
+              findkeywordurl(
+                "百度",
+                result,
+                $.pushnumber,
+                keyword[j],
+                items3,
+                urls3
+              );
+            } else {
+              findkeyword("百度", result, $.pushnumber, keyword[j], items3);
+            }
+          }
           resolve();
         } else {
           $.log("获取百度风云榜出现错误❌以下详情：\n" + response);
@@ -380,6 +492,41 @@ function getbllist() {
             covers.push(cover);
           }
           $.log("B站日榜获取成功✅\n" + items4);
+          if ($.pushnew == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordmedia(
+                  "B站",
+                  mediaresult,
+                  mediaurl,
+                  $.pushnumber,
+                  keyword[j],
+                  items4,
+                  urls4,
+                  covers
+                );
+              }
+            } else {
+              for (j = 0; j < keyword.length; j++) {
+                findkeyword("B站", result, $.pushnumber, keyword[j], items4);
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
+              findkeywordmedia(
+                "B站",
+                mediaresult,
+                mediaurl,
+                $.pushnumber,
+                keyword[j],
+                items4,
+                urls4,
+                covers
+              );
+            } else {
+              findkeyword("B站", result, $.pushnumber, keyword[j], items4);
+            }
+          }
           resolve();
         } else {
           $.log("获取B站日榜出现错误❌以下详情:\n" + response);
@@ -396,94 +543,161 @@ function getbllist() {
   });
 }
 
-function findkeywordurl(text, output, key, array, array2) {
-  for (var i = 0; i < array.length; i++) {
-    if (array[i].indexOf(key) != -1) {
-      output.push(
-        `🎉来自“${text}”，您订阅的关键词"${key}"有更新啦！\n具体内容：${array[i]}\n${array2[i]}`
-      );
+function findkeywordurl(text, output, num, key, array, array2) {
+  if ($.pushnew == false) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].indexOf(key) != -1) {
+        output.push(
+          `🎉来源“${text}”，您订阅的关键词"${key}"有更新啦！\n第${i + 1}名：${
+            array[i]
+          }\n${array2[i]}`
+        );
+      }
+    }
+  } else {
+    if ($.attachurl == false) {
+      for (i = 0; i < num; i++) {
+        if (i == 0) {
+          output.push(
+            `🎉来源“${text}”，为当前热门内容\n第${i + 1}名：${array[i]}\n${
+              array2[i]
+            }`
+          );
+        } else {
+          output.push(`第${i + 1}名：${array[i]}\n${array2[i]}`);
+        }
+      }
+    } else {
+      for (i = 0; i < num; i++) {
+        output.push(
+          `🎉来源“${text}”，为当前热门内容\n第${i + 1}名：${array[i]}\n${
+            array2[i]
+          }`
+        );
+      }
     }
   }
 }
 
-function findkeywordmedia(text, output, output2, key, array, array2, array3) {
-  for (var i = 0; i < array.length; i++) {
-    if (array[i].indexOf(key) != -1) {
+function findkeywordmedia(
+  text,
+  output,
+  output2,
+  num,
+  key,
+  array,
+  array2,
+  array3
+) {
+  if ($.pushnew == false) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].indexOf(key) != -1) {
+        output.push(
+          `🎉来源“${text}”，您订阅的关键词"${key}"有更新啦！\n第${i + 1}名：${
+            array[i]
+          }\n${array2[i]}`
+        );
+        output2.push(array3[i]);
+      }
+    }
+  } else {
+    for (i = 0; i < num; i++) {
       output.push(
-        `🎉来自“${text}”，您订阅的关键词"${key}"有更新啦！\n具体内容：${array[i]}\n${array2[i]}`
+        `🎉来源“${text}”，为当前热门内容\n第${i + 1}名：${array[i]}\n${
+          array2[i]
+        }`
       );
       output2.push(array3[i]);
     }
   }
 }
 
-function findkeyword(text, output, key, array) {
-  for (var i = 0; i < array.length; i++) {
-    if (array[i].indexOf(key) != -1) {
-      output.push(`🎉来自“${text}”具体内容：${array[i]}`);
+function findkeyword(text, output, num, key, array) {
+  if ($.pushnew == false) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].indexOf(key) != -1) {
+        output.push(
+          `🎉来自“${text}”，您订阅的关键词"${key}"有更新啦！\n第${i + 1}名：${
+            array[i]
+          }`
+        );
+      }
+    }
+  } else {
+    if ($.attachurl == false) {
+      for (i = 0; i < num; i++) {
+        if (i == 0) {
+          output.push(
+            `🎉来源“${text}”，为当前热门内容\n第${i + 1}名：${array[i]}`
+          );
+        } else {
+          output.push(`第${i + 1}名：${array[i]}`);
+        }
+      }
+    } else {
+      for (i = 0; i < num; i++) {
+        output.push(
+          `🎉来源“${text}”，为当前热门内容\n第${i + 1}名：${array[i]}`
+        );
+      }
     }
   }
 }
 
 function output() {
-  if ($.attachurl == true) {
-    for (var j = 0; j < keyword.length; j++) {
-      findkeywordurl("微博", result, keyword[j], items, urls);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeywordurl("知乎", result, keyword[j], items2, urls2);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeywordurl("百度", result, keyword[j], items3, urls3);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeywordmedia(
-        "B站",
-        mediaresult,
-        mediaurl,
-        keyword[j],
-        items4,
-        urls4,
-        covers
-      );
-    }
-  } else {
-    for (j = 0; j < keyword.length; j++) {
-      findkeyword("微博", result, keyword[j], items);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeyword("知乎", result, keyword[j], items2);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeyword("百度", result, keyword[j], items3);
-    }
-    for (j = 0; j < keyword.length; j++) {
-      findkeyword("B站", result, keyword[j], items4);
-    }
-  }
-  $.log("\n关键词为👇\n" + keyword + "\n");
   if (result.length != 0 || mediaresult != 0) {
-    if ($.attachurl == true) {
-      for (var m = 0; m < result.length; m++) {
+    if ($.pushnew == false) {
+      $.log("\n关键词为👇\n" + keyword + "\n");
+      if ($.attachurl == true) {
         $.this_msg = ``;
-        $.this_msg += `${result[m]}`;
+        for (var m = 0; m < result.length; m++) {
+          //$.this_msg = ``;
+          $.this_msg += `${result[m]}`;
+          //$.msg("热门监控", "", $.this_msg);
+        }
         $.msg("热门监控", "", $.this_msg);
-      }
-      for (m = 0; m < mediaresult.length; m++) {
+        for (m = 0; m < mediaresult.length; m++) {
+          $.this_msg = ``;
+          $.this_msg += `${mediaresult[m]}`;
+          $.msg("热门监控", "", $.this_msg, { "media-url": mediaurl[m] });
+        }
+      } else {
         $.this_msg = ``;
-        $.this_msg += `${mediaresult[m]}`;
-        $.msg("热门监控", "", $.this_msg, { "media-url": mediaurl[m] });
+        for (m = 0; m < result.length; m++) {
+          if (m == 0) {
+            $.this_msg += `${result[m]}`;
+          } else {
+            $.this_msg += `\n${result[m]}`;
+          }
+        }
+        $.msg("热门监控", `您订阅的关键词"${keyword}"更新啦！`, $.this_msg);
       }
     } else {
-      $.this_msg = ``;
-      for (m = 0; m < result.length; m++) {
-        if (m == 0) {
+      $.log("\n关键词匹配关掉了哟😉将推送最新的内容～");
+      if ($.attachurl == true) {
+        $.this_msg = ``;
+        for (var m = 0; m < result.length; m++) {
+          //$.this_msg = ``;
           $.this_msg += `${result[m]}`;
-        } else {
-          $.this_msg += `\n${result[m]}`;
+          //$.msg("热门监控", "", $.this_msg);
         }
+        $.msg("热门监控", "", $.this_msg);
+        for (m = 0; m < mediaresult.length; m++) {
+          $.this_msg = ``;
+          $.this_msg += `${mediaresult[m]}`;
+          $.msg("热门监控", "", $.this_msg, { "media-url": mediaurl[m] });
+        }
+      } else {
+        $.this_msg = ``;
+        for (m = 0; m < result.length; m++) {
+          if (m == 0) {
+            $.this_msg += `${result[m]}`;
+          } else {
+            $.this_msg += `\n${result[m]}`;
+          }
+        }
+        $.msg("热门监控", "", $.this_msg);
       }
-      $.msg("热门监控", `您订阅的关键词"${key}"有更新啦！`, $.this_msg);
     }
   } else if (
     ifwbcanrun() == false &&
@@ -548,14 +762,18 @@ function getCookie() {
     $.setdata(bdcookie, cookiebd);
     $.msg("热门监控", "", "获取百度风云榜Cookie成功🎉");
   }
-  if ($request && $request.method != "OPTIONS" && $request.url.match(/rid=0/)) {
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(`rid=${$.rid}`)
+  ) {
     const blurl = $request.url;
     $.log(blurl);
     const blcookie = JSON.stringify($request.headers);
     $.log(blcookie);
     $.setdata(blurl, urlbl);
     $.setdata(blcookie, cookiebl);
-    $.msg("热门监控", "", "获取B站日榜Cookie成功🎉");
+    $.msg("热门监控", "", "获取B站榜单Cookie成功🎉");
   }
 }
 
