@@ -30,7 +30,7 @@
     "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie","evil_baiduurl","evil_baiducookie","evil_bilibiurl","evil_bilibilicookie"],
     "settings": [
       { "id": "evil_wb_deletecookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"},
-      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（默认指定一个关键词避免消息爆炸式推送，请修改为自己的关键词）" },
+      { "id": "evil_wb_keyword", "name": "关键词", "val": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
       { "id": "evil_pushnew", "name": "忽略关键词推送最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
       { "id": "evil_wb", "name": "微博热搜", "val": true, "type": "boolean", "desc": "打开则会监控微博热搜"},
       { "id": "evil_wbnum", "name": "最新微博热搜数量", "val": 6, "type": "number", "desc": "自定匹配微博热搜内容数量"},
