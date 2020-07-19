@@ -42,7 +42,7 @@
       { "id": "evil_blnum", "name": "B站榜单数量", "val": 6, "type": "number", "desc": "自定B站榜单内容数量"},
       { "id": "evil_splitpush", "name": "分开推送", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
       { "id": "evil_pushnew", "name": "忽略关键词推送最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
-      { "id": "evil_pushnumber", "name": "自定最新内容数量", "val": 3, "type": "number", "desc": "最新内容数量"}
+      { "id": "evil_pushnumber", "name": "最新内容数量", "val": 3, "type": "number", "desc": "自定最新内容数量"}
       ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
