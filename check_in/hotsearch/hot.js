@@ -83,6 +83,7 @@ $.bilibili = true; //是否开启相应榜单监控
 $.blnum = 6; //自定B站榜单数量
 $.splitpush = false; //是否分开推送
 $.pushnew = false; //是否忽略关键词推送最新内容
+$.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 //⚠️本地自定参数修改位置⚠️
 
@@ -197,7 +198,7 @@ function deletecookie() {
     $.msg("热门监控", "", "Cookie已清除🆑");
     return false;
   }
-  return true
+  return true;
 }
 
 function getsetting() {
@@ -218,6 +219,7 @@ function getsetting() {
   $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
   $.splitpush = JSON.parse($.getdata("evil_splitpush") || $.splitpush);
   $.pushnew = JSON.parse($.getdata("evil_pushnew") || $.pushnew);
+  $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
   $.zhnum = $.getdata("evil_zhnum") * 1 || $.zhnum;
@@ -230,6 +232,7 @@ function getsetting() {
   $.log("获取B站榜单 " + $.bilibili);
   $.log("独立推送消息 " + $.splitpush);
   $.log("忽略关键词获取最热内容 " + $.pushnew);
+  $.log("附带跳转链接 " + $.attachurl);
   $.log("获取微博热搜数量 " + $.wbnum + "个");
   $.log("获取知乎热榜数量 " + $.zhnum + "个");
   $.log("获取百度风云榜数量 " + $.bdnum + "个");
@@ -317,7 +320,24 @@ function gethotsearch() {
           }
           $.log("微博热搜获取成功✅\n" + items);
           if ($.pushnew == false) {
-            for (var j = 0; j < keyword.length; j++) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "微博",
+                  resultwb,
+                  $.wbnum,
+                  keyword[j],
+                  items,
+                  urls
+                );
+              }
+            } else {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeyword("微博", resultwb, $.wbnum, keyword[j], items, urls);
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
               findkeywordurl(
                 "微博",
                 resultwb,
@@ -326,9 +346,9 @@ function gethotsearch() {
                 items,
                 urls
               );
+            } else {
+              findkeyword("微博", resultwb, $.wbnum, keyword[j], items, urls);
             }
-          } else {
-            findkeywordurl("微博", resultwb, $.wbnum, keyword[j], items, urls);
           }
           resolve();
         } else {
@@ -372,7 +392,22 @@ function gethotlist() {
           }
           $.log("知乎热榜获取成功✅\n" + items2);
           if ($.pushnew == false) {
-            for (var j = 0; j < keyword.length; j++) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "知乎",
+                  resultzh,
+                  $.zhnum,
+                  keyword[j],
+                  items2,
+                  urls2
+                );
+              }
+            } else {
+              findkeyword("知乎", resultzh, $.zhnum, keyword[j], items2, urls2);
+            }
+          } else {
+            if ($.attachurl == true) {
               findkeywordurl(
                 "知乎",
                 resultzh,
@@ -381,16 +416,9 @@ function gethotlist() {
                 items2,
                 urls2
               );
+            } else {
+              findkeyword("知乎", resultzh, $.zhnum, keyword[j], items2, urls2);
             }
-          } else {
-            findkeywordurl(
-              "知乎",
-              resultzh,
-              $.zhnum,
-              keyword[j],
-              items2,
-              urls2
-            );
           }
           resolve();
         } else {
@@ -433,7 +461,22 @@ function getfylist() {
           }
           $.log("百度风云榜获取成功✅\n" + items3);
           if ($.pushnew == false) {
-            for (var j = 0; j < keyword.length; j++) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordurl(
+                  "百度",
+                  resultbd,
+                  $.bdnum,
+                  keyword[j],
+                  items3,
+                  urls3
+                );
+              }
+            } else {
+              findkeyword("百度", resultbd, $.bdnum, keyword[j], items3, urls3);
+            }
+          } else {
+            if ($.attachurl == true) {
               findkeywordurl(
                 "百度",
                 resultbd,
@@ -442,16 +485,9 @@ function getfylist() {
                 items3,
                 urls3
               );
+            } else {
+              findkeyword("百度", resultbd, $.bdnum, keyword[j], items3, urls3);
             }
-          } else {
-            findkeywordurl(
-              "百度",
-              resultbd,
-              $.bdnum,
-              keyword[j],
-              items3,
-              urls3
-            );
           }
           resolve();
         } else {
@@ -496,7 +532,24 @@ function getbllist() {
           }
           $.log("B站日榜获取成功✅\n" + items4);
           if ($.pushnew == false) {
-            for (var j = 0; j < keyword.length; j++) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                findkeywordmedia(
+                  "B站",
+                  resultbl,
+                  mediaurl,
+                  $.blnum,
+                  keyword[j],
+                  items4,
+                  urls4,
+                  covers
+                );
+              }
+            } else {
+              findkeyword("B站", resultbl, $.blnum, keyword[j], items4, urls4);
+            }
+          } else {
+            if ($.attachurl == true) {
               findkeywordmedia(
                 "B站",
                 resultbl,
@@ -507,18 +560,9 @@ function getbllist() {
                 urls4,
                 covers
               );
+            } else {
+              findkeyword("B站", resultbl, $.blnum, keyword[j], items4, urls4);
             }
-          } else {
-            findkeywordmedia(
-              "B站",
-              resultbl,
-              mediaurl,
-              $.blnum,
-              keyword[j],
-              items4,
-              urls4,
-              covers
-            );
           }
           resolve();
         } else {
@@ -534,6 +578,42 @@ function getbllist() {
       resolve();
     }, 1000);
   });
+}
+
+function findkeyword(text, output, num, key, array, array2) {
+  if ($.pushnew == false) {
+    if ($.splitpush == false) {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i].indexOf(key) != -1) {
+          output.push(
+            `🎉“${text}”的关键词“${key}”更新\n第${i + 1}名：${array[i]}`
+          );
+        }
+      }
+    } else {
+      for (i = 0; i < array.length; i++) {
+        if (array[i].indexOf(key) != -1) {
+          output.push(
+            `🎉“${text}”的关键词“${key}”更新\n第${i + 1}名：${array[i]}`
+          );
+        }
+      }
+    }
+  } else {
+    if ($.splitpush == false) {
+      for (i = 0; i < num; i++) {
+        if (i == 0) {
+          output.push(`🎉“${text}”的热门排行\n第${i + 1}名：${array[i]}`);
+        } else {
+          output.push(`第${i + 1}名：${array[i]}`);
+        }
+      }
+    } else {
+      for (i = 0; i < num; i++) {
+        output.push(`🎉“${text}”的热门排行\n第${i + 1}名：${array[i]}`);
+      }
+    }
+  }
 }
 
 function findkeywordurl(text, output, num, key, array, array2) {
