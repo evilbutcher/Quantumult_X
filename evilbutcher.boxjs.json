@@ -39,7 +39,7 @@
       { "id": "evil_bd", "name": "百度风云榜", "val": false, "type": "boolean", "desc": "打开则会监控百度风云榜"},
       { "id": "evil_bdnum", "name": "最新百度风云榜数量", "val": 6, "type": "number", "desc": "自定匹配百度风云榜内容数量"},
       { "id": "evil_bl", "name": "B站日榜", "val": true, "type": "boolean", "desc": "打开则会监控B站日榜"},
-      { "id": "evil_blrid", "name": "榜单编号", "val": 0, "type": "number", "desc": "B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈"},
+      { "id": "evil_blrid", "name": "榜单编号（点击查看对应关系）", "val": 0, "type": "number", "desc": "B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈"},
       { "id": "evil_blnum", "name": "最新B站榜单数量", "val": 6, "type": "number", "desc": "自定匹配B站榜单内容数量"},
       { "id": "evil_splitpush", "name": "消息分开推送", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"}
       ],
