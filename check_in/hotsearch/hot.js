@@ -333,7 +333,7 @@ function gethotsearch() {
                 );
               }
             } else {
-              for (var j = 0; j < keyword.length; j++) {
+              for (j = 0; j < keyword.length; j++) {
                 findkeyword("微博", resultwb, $.wbnum, keyword[j], items, urls);
               }
             }
