@@ -2,6 +2,8 @@
 
 热门监控@evilbutcher，仓库地址：https://github.com/evilbutcher/Quantumult_X/tree/master
 
+感谢@南叔提供反馈和测试
+
 ⚠️【使用方法】
 ———————————————————————————————————————
 1、按照客户端配置好rewrite和mitm。
@@ -111,8 +113,8 @@ var mediaurl = [];
     getCookie();
     return;
   }
-  init();
-  if (havekeyword() == true) {
+  getsetting();
+  if (havekeyword() == true && deletecookie() == true) {
     if ($.weibo == true) {
       if (ifwbcanrun() == true) {
         $.log("微博Cookie完整🉑️");
@@ -154,6 +156,7 @@ var mediaurl = [];
       $.log("B站日榜未获取😫");
     }
     output();
+    final();
   }
 })()
   .catch(e => {
@@ -162,11 +165,6 @@ var mediaurl = [];
   .finally(() => {
     $.done();
   });
-
-function init() {
-  getsetting();
-  deletecookie();
-}
 
 function havekeyword() {
   if (keyword.length == 0) {
@@ -188,10 +186,13 @@ function deletecookie() {
     $.setdata("", urlbl);
     $.setdata("", cookiebl);
     $.msg("热门监控", "", "Cookie已清除🆑");
+    return false;
   }
+  return true
 }
 
 function getsetting() {
+  $.log("初始化，开始！");
   if (
     $.getdata("evil_wb_keyword") != undefined &&
     $.getdata("evil_wb_keyword") != ""
@@ -213,7 +214,7 @@ function getsetting() {
   $.zhnum = $.getdata("evil_zhnum") * 1 || $.zhnum;
   $.bdnum = $.getdata("evil_bdnum") * 1 || $.bdnum;
   $.blnum = $.getdata("evil_blnum") * 1 || $.blnum;
-  $.log("监控关键词 " + keyword)
+  $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
   $.log("获取知乎热榜 " + $.zhihu);
   $.log("获取百度风云榜 " + $.baidu);
@@ -690,14 +691,13 @@ function output() {
         if (resultbl.length != 0) mergepushnotify(resultbl);
       }
     }
-  } else if (
-    ifwbcanrun() == false &&
-    ifzhcanrun() == false &&
-    ifbdcanrun() == false &&
-    ifblcanrun() == false
-  ) {
-    $.msg("热门监控", "Cookie未获取或不完整😫", "请获取Cookie后再尝试哦❌");
-  } else if (
+  } else {
+    $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
+  }
+}
+
+function final() {
+  if (
     $.weibo == false &&
     $.zhihu == false &&
     $.baidu == false &&
@@ -709,7 +709,14 @@ function output() {
       "请打开一个榜单监控再尝试哦😊"
     );
   } else {
-    $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
+    if (
+      ifwbcanrun() == false &&
+      ifzhcanrun() == false &&
+      ifbdcanrun() == false &&
+      ifblcanrun() == false
+    ) {
+      $.msg("热门监控", "Cookie未获取或不完整😫", "请获取Cookie后再尝试哦❌");
+    }
   }
 }
 
