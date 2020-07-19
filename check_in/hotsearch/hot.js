@@ -12,6 +12,7 @@
 4、可选择是否合并同一榜单的全部通知。
 5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。
 6、B站榜单独立推送时可显示封面。
+7、可选择是否附带跳转链接。
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
@@ -454,8 +455,18 @@ function getfylist() {
           var group = obj.result.descs;
           var num = group.length;
           for (var i = 0; i < num; i++) {
-            var item = group[i].content.data[0].title;
-            var url = group[i].content.data[0].originlink;
+            var originitem = group[i].content;
+            if (originitem == undefined) {
+              continue;
+            }
+            var item = originitem.data[0].title;
+            if (item == undefined) {
+              continue;
+            }
+            var url = originitem.data[0].originlink;
+            if (url == undefined) {
+              continue;
+            }
             items3.push(item);
             urls3.push(url);
           }
