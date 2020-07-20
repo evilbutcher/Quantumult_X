@@ -589,7 +589,7 @@ function getbllist() {
         resolve();
       });
     } catch (e) {
-      $.log("获取B站日榜出现错误❌原因：\n" + e);
+      $.log("获取B站日榜出现错误❌原因：\n");
       $.log(e)
       resolve();
     }
