@@ -490,7 +490,7 @@ function checkin(id, name, isSign = false) {
             console.log(`【${idname}】执行签到：超话不存在⚠️`);
             if (debugcheckin) console.log(response);
           } else if (obj["errno"] == -100) {
-            //$.stopNum += 1;
+            $.stopNum += 1;
             $.message.push(`【${idname}】：签到失败，请重新签到获取Cookie⚠️`);
             console.log(
               `【${idname}】执行签到：签到失败，请重新签到获取Cookie⚠️\n${response}`
