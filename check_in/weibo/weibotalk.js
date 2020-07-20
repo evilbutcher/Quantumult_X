@@ -268,7 +268,7 @@ function getnumber() {
         if (obj.hasOwnProperty("errmsg")) {
           $.msg(
             $.name,
-            "🚨获取页数出现错误",
+            "🚨获取超话页数出现错误",
             `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
           );
           $.pagenumber = 0;
@@ -313,11 +313,15 @@ function geturl(i) {
       } else if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        if (obj.hasOwnProperty("errmsg")) {
+        if (
+          obj.hasOwnProperty("errmsg") ||
+          obj.cards[0] == null ||
+          obj.cards[0] == undefined
+        ) {
           $.msg(
             $.name,
-            "🚨获取超话ID出现错误",
-            `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            "🚨获取超话URL出现错误或接口错误",
+            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
           );
           resolve();
           return;
@@ -359,6 +363,19 @@ function getSignStatus(i) {
       } else if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
+        if (
+          obj.hasOwnProperty("errmsg") ||
+          obj.cards[0] == null ||
+          obj.cards[0] == undefined
+        ) {
+          $.msg(
+            $.name,
+            "🚨获取签到状态出现错误或接口错误",
+            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+          );
+          resolve();
+          return;
+        }
         var group = obj.cards[0]["card_group"];
         for (var j = 0; j < group.length; j++) {
           var name = group[j]["title_sub"];
@@ -412,6 +429,19 @@ function getid(page) {
       } else if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
+        if (
+          obj.hasOwnProperty("errmsg") ||
+          obj.cards[0] == null ||
+          obj.cards[0] == undefined
+        ) {
+          $.msg(
+            $.name,
+            "🚨获取超话ID出现错误或接口错误",
+            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+          );
+          resolve();
+          return;
+        }
         var group = obj.cards[0]["card_group"];
         var number = group.length;
         for (var i = 0; i < number; i++) {
@@ -467,6 +497,19 @@ function checkin(id, name, isSign = false) {
         } else if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.result == null ||
+            obj.result == undefined
+          ) {
+            $.msg(
+              $.name,
+              "🚨签到出现错误或接口错误",
+              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
           if (debugcheckin) console.log(obj);
           var result = obj.result;
           if (debugcheckin) console.log(result);
