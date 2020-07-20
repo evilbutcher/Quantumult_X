@@ -45,8 +45,7 @@
       { "id": "evil_blrid", "name": "榜单编号（点击查看对应关系）", "val": 0, "type": "number", "desc": "B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈"},
       { "id": "evil_blnum", "name": "忽略关键词时获取的B站榜单数量", "val": 6, "type": "number", "desc": "自定匹配B站榜单内容数量"},
       { "id": "evil_splitpush", "name": "消息分开推送", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
-      { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接"},
-      { "id": "evil_time", "name": "榜单获取时限", "val": 1.5, "type": "number", "desc": "榜单获取时限"}
+      { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接"}
       ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
