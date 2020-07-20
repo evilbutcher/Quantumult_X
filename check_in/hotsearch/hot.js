@@ -91,6 +91,7 @@ $.pushnewbd = false; //是否忽略关键词推送百度最新内容
 $.pushnewbl = false; //是否忽略关键词推送B站最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
+$.time = 1.5; //榜单获取时限，单位秒
 //⚠️本地自定参数修改位置⚠️
 
 const url = "evil_hotsearchurl";
@@ -234,6 +235,7 @@ function getsetting() {
   $.zhnum = $.getdata("evil_zhnum") * 1 || $.zhnum;
   $.bdnum = $.getdata("evil_bdnum") * 1 || $.bdnum;
   $.blnum = $.getdata("evil_blnum") * 1 || $.blnum;
+  $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
   $.log("忽略关键词获取微博最热内容 " + $.pushnewwb);
@@ -383,7 +385,7 @@ function gethotsearch() {
     }
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, $.time);
   });
 }
 
@@ -469,7 +471,7 @@ function gethotlist() {
     }
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, $.time);
   });
 }
 
@@ -564,7 +566,7 @@ function getfylist() {
     }
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, $.time);
   });
 }
 
@@ -655,7 +657,7 @@ function getbllist() {
     }
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, $.time);
   });
 }
 
