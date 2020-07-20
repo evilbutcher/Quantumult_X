@@ -353,12 +353,14 @@ function gethotsearch() {
           }
           resolve();
         } else {
-          $.log("获取微博热搜出现错误❌以下详情：\n" + response);
+          $.log("获取微博热搜出现错误❌以下详情：\n");
+          $.log(response)
         }
         resolve();
       });
     } catch (e) {
-      $.log("获取微博热搜出现错误❌原因：\n" + e);
+      $.log("获取微博热搜出现错误❌原因：\n");
+      $.log(e)
       resolve();
     }
     setTimeout(() => {
@@ -423,12 +425,14 @@ function gethotlist() {
           }
           resolve();
         } else {
-          $.log("获取知乎热榜出现错误❌以下详情：\n" + response);
+          $.log("获取知乎热榜出现错误❌以下详情：\n");
+          $.log(response)
         }
         resolve();
       });
     } catch (e) {
-      $.log("获取知乎热榜出现错误❌原因：\n" + e);
+      $.log("获取知乎热榜出现错误❌原因：\n");
+      $.log(e)
       resolve();
     }
     setTimeout(() => {
@@ -502,12 +506,14 @@ function getfylist() {
           }
           resolve();
         } else {
-          $.log("获取百度风云榜出现错误❌以下详情：\n" + response);
+          $.log("获取百度风云榜出现错误❌以下详情：\n");
+          $.log(response)
         }
         resolve();
       });
     } catch (e) {
-      $.log("获取百度风云榜出现错误❌原因：\n" + e);
+      $.log("获取百度风云榜出现错误❌原因：\n");
+      $.log(e)
       resolve();
     }
     setTimeout(() => {
@@ -577,12 +583,14 @@ function getbllist() {
           }
           resolve();
         } else {
-          $.log("获取B站日榜出现错误❌以下详情:\n" + response);
+          $.log("获取B站日榜出现错误❌以下详情:\n");
+          $.log(response)
         }
         resolve();
       });
     } catch (e) {
       $.log("获取B站日榜出现错误❌原因：\n" + e);
+      $.log(e)
       resolve();
     }
     setTimeout(() => {
