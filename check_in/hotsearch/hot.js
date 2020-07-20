@@ -13,6 +13,7 @@
 5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。
 6、B站榜单独立推送时可显示封面。
 7、可选择是否附带跳转链接。
+8、可自定每个榜单匹配关键词还是获取最新内容。
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
@@ -30,7 +31,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 
 #消息分开推送：关闭，同一榜单的内容将整合为一条通知，可直接下拉或在通知面板长按通知展开，点击链接跳转详情；开启，每条内容分开推送，推送将会分为多条通知。关键词匹配模式下可打开，获取最新内容时建议关闭。
 
-仅测试Quantumult X、Loon，理论上也支持Surge（没surge无法测试）。
+仅测试Quantumult X、Loon，理论上也支持Surge（没Surge无法测试）。
 
 【Surge】配置
 ------------------------------------------
@@ -71,6 +72,7 @@ hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
 */
 
 const $ = new Env("热门监控");
+
 //⚠️本地自定参数修改位置⚠️
 var keyword = ["中国", "万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
 $.deletecookie = false; //👈清除Cookie选项
