@@ -29,7 +29,8 @@
 6、可以选择性监控榜单。  
 7、可以分别设定每个榜单的最热内容数量。  
 8、可以选择是否附带话题链接。  
-9、支持BoxJs。  
+9、可以自定每个榜单是匹配关键词还是获取最新内容。  
+10、支持BoxJs。  
 
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
