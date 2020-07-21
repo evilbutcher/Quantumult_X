@@ -14,6 +14,7 @@
 6、B站榜单独立推送时可显示封面。
 7、可选择是否附带跳转链接。
 8、可自定每个榜单匹配关键词还是获取最新内容。
+9、可自定每个榜单推送分开还是合并。
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
@@ -41,9 +42,6 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 热门监控B站cookie获取 = type=http-request,pattern=https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
 热门监控 = type=cron,cronexp="30 0 8-22/2 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
 
-[MITM]
-hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
-
 【Loon】配置
 ------------------------------------------
 [script]
@@ -52,9 +50,6 @@ http-response https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubus
 http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
 http-request http:\/\/top\.baidu\.com\/mobile_v2\/buzz script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控百度cookie获取
 http-request https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控B站cookie获取
-  
-[MITM]
-hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
 
 【Quantumult X】配置
 ------------------------------------------
@@ -67,8 +62,9 @@ hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
   [task_local]
   30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控
 
-  [MITM]
+  [All App Mitm]
   hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
+若获取不到Cookie，请注意重写冲突，或者weibo域名是否排除
 */
 
 const $ = new Env("热门监控");
@@ -84,10 +80,13 @@ $.baidu = true; //是否开启相应榜单监控
 $.bdnum = 6; //自定百度风云榜数量
 $.bilibili = true; //是否开启相应榜单监控
 $.blnum = 6; //自定B站榜单数量
-$.splitpush = false; //是否分开推送
+$.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
+$.splitpushzh = false; //是否分开推送知乎榜单
 $.pushnewzh = false; //是否忽略关键词推送知乎最新内容
+$.splitpushbd = false; //是否分开推送百度榜单
 $.pushnewbd = false; //是否忽略关键词推送百度最新内容
+$.splitpushbl = false; //是否分开推送B站榜单
 $.pushnewbl = false; //是否忽略关键词推送B站最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
@@ -224,7 +223,10 @@ function getsetting() {
   $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
   $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
   $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
-  $.splitpush = JSON.parse($.getdata("evil_splitpush") || $.splitpush);
+  $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
+  $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
+  $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
+  $.splitpushbl = JSON.parse($.getdata("evil_splitpushbl") || $.splitpushbl);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
@@ -238,18 +240,21 @@ function getsetting() {
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
+  $.log("分开推送微博内容 " + $.splitpushwb);
   $.log("忽略关键词获取微博最热内容 " + $.pushnewwb);
   $.log("获取微博热搜数量 " + $.wbnum + "个");
   $.log("获取知乎热榜 " + $.zhihu);
+  $.log("分开推送知乎内容 " + $.splitpushzh);
   $.log("忽略关键词获取知乎最热内容 " + $.pushnewzh);
   $.log("获取知乎热榜数量 " + $.zhnum + "个");
   $.log("获取百度风云榜 " + $.baidu);
+  $.log("分开推送百度内容 " + $.splitpushbd);
   $.log("忽略关键词获取百度最热内容 " + $.pushnewbd);
   $.log("获取百度风云榜数量 " + $.bdnum + "个");
   $.log("获取B站榜单 " + $.bilibili);
+  $.log("分开推送B站内容 " + $.splitpushbl);
   $.log("忽略关键词获取B站最热内容 " + $.pushnewbl);
   $.log("获取B站日榜数量 " + $.blnum + "个");
-  $.log("独立推送消息 " + $.splitpush);
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -320,6 +325,19 @@ function gethotsearch() {
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.cards == undefined ||
+            obj.cards == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取微博榜单出现错误",
+              `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
           var group = obj.cards[0]["card_group"];
           var num = group.length;
           for (var i = 0; i < num; i++) {
@@ -337,6 +355,7 @@ function gethotsearch() {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
                 getkeywordcontenturl(
+                  $.splitpushwb,
                   "微博",
                   resultwb,
                   $.wbnum,
@@ -348,6 +367,7 @@ function gethotsearch() {
             } else {
               for (j = 0; j < keyword.length; j++) {
                 getkeywordcontent(
+                  $.splitpushwb,
                   "微博",
                   resultwb,
                   $.wbnum,
@@ -360,6 +380,7 @@ function gethotsearch() {
           } else {
             if ($.attachurl == true) {
               gethotcontenturl(
+                $.splitpushwb,
                 "微博",
                 resultwb,
                 $.wbnum,
@@ -368,7 +389,15 @@ function gethotsearch() {
                 urls
               );
             } else {
-              gethotcontent("微博", resultwb, $.wbnum, keyword[j], items, urls);
+              gethotcontent(
+                $.splitpushwb,
+                "微博",
+                resultwb,
+                $.wbnum,
+                keyword[j],
+                items,
+                urls
+              );
             }
           }
           resolve();
@@ -404,6 +433,19 @@ function gethotlist() {
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.data == undefined ||
+            obj.data == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取知乎榜单出现错误",
+              `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
           var group = obj.data;
           var num = group.length;
           for (var i = 0; i < num; i++) {
@@ -418,6 +460,7 @@ function gethotlist() {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
                 getkeywordcontenturl(
+                  $.splitpushzh,
                   "知乎",
                   resultzh,
                   $.zhnum,
@@ -428,6 +471,7 @@ function gethotlist() {
               }
             } else {
               getkeywordcontent(
+                $.splitpushzh,
                 "知乎",
                 resultzh,
                 $.zhnum,
@@ -439,6 +483,7 @@ function gethotlist() {
           } else {
             if ($.attachurl == true) {
               gethotcontenturl(
+                $.splitpushzh,
                 "知乎",
                 resultzh,
                 $.zhnum,
@@ -448,6 +493,7 @@ function gethotlist() {
               );
             } else {
               gethotcontent(
+                $.splitpushzh,
                 "知乎",
                 resultzh,
                 $.zhnum,
@@ -490,6 +536,19 @@ function getfylist() {
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.result.descs == undefined ||
+            obj.result.descs == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取百度榜单出现错误",
+              `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
           var group = obj.result.descs;
           var num = group.length;
           for (var i = 0; i < num; i++) {
@@ -513,6 +572,7 @@ function getfylist() {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
                 getkeywordcontenturl(
+                  $.splitpushbd,
                   "百度",
                   resultbd,
                   $.bdnum,
@@ -523,6 +583,7 @@ function getfylist() {
               }
             } else {
               getkeywordcontent(
+                $.splitpushbd,
                 "百度",
                 resultbd,
                 $.bdnum,
@@ -534,6 +595,7 @@ function getfylist() {
           } else {
             if ($.attachurl == true) {
               gethotcontenturl(
+                $.splitpushbd,
                 "百度",
                 resultbd,
                 $.bdnum,
@@ -543,6 +605,7 @@ function getfylist() {
               );
             } else {
               gethotcontent(
+                $.splitpushbd,
                 "百度",
                 resultbd,
                 $.bdnum,
@@ -585,6 +648,19 @@ function getbllist() {
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.data == undefined ||
+            obj.data == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取B站榜单出现错误",
+              `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
           var group = obj.data;
           var num = group.length;
           for (var i = 0; i < num; i++) {
@@ -600,6 +676,7 @@ function getbllist() {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
                 getkeywordcontentmedia(
+                  $.splitpushbl,
                   "B站",
                   resultbl,
                   mediaurl,
@@ -612,6 +689,7 @@ function getbllist() {
               }
             } else {
               getkeywordcontent(
+                $.splitpushbl,
                 "B站",
                 resultbl,
                 $.blnum,
@@ -623,6 +701,7 @@ function getbllist() {
           } else {
             if ($.attachurl == true) {
               gethotcontentmedia(
+                $.splitpushbl,
                 "B站",
                 resultbl,
                 mediaurl,
@@ -634,6 +713,7 @@ function getbllist() {
               );
             } else {
               gethotcontent(
+                $.splitpushbl,
                 "B站",
                 resultbl,
                 $.blnum,
@@ -661,8 +741,8 @@ function getbllist() {
   });
 }
 
-function getkeywordcontent(text, output, num, key, array, array2) {
-  if ($.splitpush == false) {
+function getkeywordcontent(splitpush, text, output, num, key, array, array2) {
+  if (splitpush == false) {
     for (var i = 0; i < array.length; i++) {
       if (array[i].indexOf(key) != -1) {
         output.push(
@@ -681,8 +761,8 @@ function getkeywordcontent(text, output, num, key, array, array2) {
   }
 }
 
-function gethotcontent(text, output, num, key, array, array2) {
-  if ($.splitpush == false) {
+function gethotcontent(splitpush, text, output, num, key, array, array2) {
+  if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
         output.push(`🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}`);
@@ -697,8 +777,16 @@ function gethotcontent(text, output, num, key, array, array2) {
   }
 }
 
-function getkeywordcontenturl(text, output, num, key, array, array2) {
-  if ($.splitpush == false) {
+function getkeywordcontenturl(
+  splitpush,
+  text,
+  output,
+  num,
+  key,
+  array,
+  array2
+) {
+  if (splitpush == false) {
     for (var i = 0; i < array.length; i++) {
       if (array[i].indexOf(key) != -1) {
         output.push(
@@ -721,8 +809,8 @@ function getkeywordcontenturl(text, output, num, key, array, array2) {
   }
 }
 
-function gethotcontenturl(text, output, num, key, array, array2) {
-  if ($.splitpush == false) {
+function gethotcontenturl(splitpush, text, output, num, key, array, array2) {
+  if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
         output.push(
@@ -742,6 +830,7 @@ function gethotcontenturl(text, output, num, key, array, array2) {
 }
 
 function getkeywordcontentmedia(
+  splitpush,
   text,
   output,
   output2,
@@ -751,7 +840,7 @@ function getkeywordcontentmedia(
   array2,
   array3
 ) {
-  if ($.splitpush == false) {
+  if (splitpush == false) {
     for (var i = 0; i < array.length; i++) {
       if (array[i].indexOf(key) != -1) {
         output.push(
@@ -777,6 +866,7 @@ function getkeywordcontentmedia(
 }
 
 function gethotcontentmedia(
+  splitpush,
   text,
   output,
   output2,
@@ -786,7 +876,7 @@ function gethotcontentmedia(
   array2,
   array3
 ) {
-  if ($.splitpush == false) {
+  if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
         output.push(
@@ -837,38 +927,40 @@ function splitpushnotifymedia(result, mediaurl) {
 }
 
 function output() {
-  if (
-    resultwb.length != 0 ||
-    resultzh.length != 0 ||
-    resultbd.length != 0 ||
-    resultbl.length != 0
-  ) {
-    if ($.pushnew == false) {
-      if ($.splitpush == true) {
-        if (resultwb.length != 0) splitpushnotify(resultwb);
-        if (resultzh.length != 0) splitpushnotify(resultzh);
-        if (resultbd.length != 0) splitpushnotify(resultbd);
-        if (resultbl.length != 0) splitpushnotifymedia(resultbl, mediaurl);
-      } else {
-        if (resultwb.length != 0) mergepushnotify(resultwb);
-        if (resultzh.length != 0) mergepushnotify(resultzh);
-        if (resultbd.length != 0) mergepushnotify(resultbd);
-        if (resultbl.length != 0) mergepushnotify(resultbl);
-      }
+  if (resultwb.length != 0) {
+    if ($.splitpushwb == true) {
+      splitpushnotify(resultwb);
     } else {
-      if ($.splitpush == true) {
-        if (resultwb.length != 0) splitpushnotify(resultwb);
-        if (resultzh.length != 0) splitpushnotify(resultzh);
-        if (resultbd.length != 0) splitpushnotify(resultbd);
-        if (resultbl.length != 0) splitpushnotifymedia(resultbl, mediaurl);
-      } else {
-        if (resultwb.length != 0) mergepushnotify(resultwb);
-        if (resultzh.length != 0) mergepushnotify(resultzh);
-        if (resultbd.length != 0) mergepushnotify(resultbd);
-        if (resultbl.length != 0) mergepushnotify(resultbl);
-      }
+      mergepushnotify(resultwb);
     }
-  } else {
+  }
+  if (resultzh.length != 0) {
+    if ($.splitpushzh == true) {
+      splitpushnotify(resultzh);
+    } else {
+      mergepushnotify(resultzh);
+    }
+  }
+  if (resultbd.length != 0) {
+    if ($.splitpushbd == true) {
+      splitpushnotify(resultbd);
+    } else {
+      mergepushnotify(resultbd);
+    }
+  }
+  if (resultbl.length != 0) {
+    if ($.splitpushbl == true) {
+      splitpushnotifymedia(resultbl, mediaurl);
+    } else {
+      mergepushnotify(resultbl);
+    }
+  }
+  if (
+    resultwb.length == 0 &&
+    resultzh.length == 0 &&
+    resultbd.length == 0 &&
+    resultbl.length == 0
+  ) {
     $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
 }
