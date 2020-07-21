@@ -587,7 +587,8 @@ function checkin(id, name, isSign = false) {
           } else {
             $.message.push(`【${idname}】：未知错误⚠️`);
             console.log(`【${idname}】执行签到：未知错误⚠️`);
-            console.log("请将以下内容发送给作者\n" + response);
+            console.log("请将以下内容发送给作者\n");
+            console.log(response);
           }
           resolve();
         } else {
