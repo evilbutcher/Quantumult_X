@@ -256,39 +256,53 @@ function getnumber() {
     header: listheaders
   };
   return new Promise(resolve => {
-    $.get(idrequest, (error, response, data) => {
-      if (error) {
-        throw new Error(error);
-      }
-      if (response.statusCode == 418) {
-        $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
-      } else if (response.statusCode == 200) {
-        var body = response.body;
-        var obj = JSON.parse(body);
-        if (obj.hasOwnProperty("errmsg")) {
-          $.msg(
-            $.name,
-            "🚨获取超话页数出现错误",
-            `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
-          );
-          $.pagenumber = 0;
-          resolve();
-          return;
+    try {
+      $.get(idrequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
         }
-        if (debugurl) console.log(obj);
-        allnumber = obj.cardlistInfo.total;
-        console.log(
-          "当前已关注超话" +
-            allnumber +
-            "个(数量存在延迟，仅参考，以签到执行为准)"
-        );
-        pagenumber = Math.ceil(allnumber / 20);
-        resolve();
-      } else {
-        $.log("请将以下内容发送给作者\n" + response);
-        resolve();
-      }
-    });
+        if (response.statusCode == 418) {
+          $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+        } else if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.cardlistInfo.total == undefined ||
+            obj.cardlistInfo.total == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取超话页数出现错误或接口返回数据错误",
+              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+            );
+            $.pagenumber = 0;
+            resolve();
+            return;
+          }
+          if (debugurl) console.log(obj);
+          allnumber = obj.cardlistInfo.total;
+          console.log(
+            "当前已关注超话" +
+              allnumber +
+              "个(数量存在延迟，仅参考，以签到执行为准)"
+          );
+          pagenumber = Math.ceil(allnumber / 20);
+          resolve();
+        } else {
+          $.log("请将以下内容发送给作者\n");
+          $.log(response);
+          resolve();
+        }
+      });
+    } catch (e) {
+      $.log("请将以下内容发给作者\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
@@ -304,45 +318,56 @@ function geturl(i) {
     header: listheaders
   };
   return new Promise(resolve => {
-    $.get(idrequest, (error, response, data) => {
-      if (error) {
-        throw new Error(error);
-      }
-      if (response.statusCode == 418) {
-        $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
-      } else if (response.statusCode == 200) {
-        var body = response.body;
-        var obj = JSON.parse(body);
-        if (
-          obj.hasOwnProperty("errmsg") ||
-          obj.cards[0] == null ||
-          obj.cards[0] == undefined
-        ) {
-          $.msg(
-            $.name,
-            "🚨获取超话URL出现错误或接口错误",
-            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
-          );
-          resolve();
-          return;
+    try {
+      $.get(idrequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
         }
-        var group = obj.cards[0]["card_group"];
-        var insertid = group[0].scheme.slice(33, 71);
-        if (debugurl) console.log(insertid);
-        var inserturl = sinceurl
-          .replace(
-            new RegExp("follow%22%3A%221022%3A.*?%22"),
-            "follow%22%3A%221022%3A" + insertid + "%22"
-          )
-          .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
-        $.sinceinserturl.push(inserturl);
-        if (debugurl) console.log($.sinceinserturl);
-        resolve();
-      } else {
-        $.log("请将以下内容发送给作者\n" + response);
-        resolve();
-      }
-    });
+        if (response.statusCode == 418) {
+          $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+        } else if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.cards[0] == undefined ||
+            obj.cards[0] == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取超话URL出现错误或接口返回数据错误",
+              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
+          var group = obj.cards[0]["card_group"];
+          if (group == undefined) return;
+          var insertid = group[0].scheme.slice(33, 71);
+          if (debugurl) console.log(insertid);
+          var inserturl = sinceurl
+            .replace(
+              new RegExp("follow%22%3A%221022%3A.*?%22"),
+              "follow%22%3A%221022%3A" + insertid + "%22"
+            )
+            .replace(new RegExp("page%22%3A.*?%7D"), "page%22%3A" + j + "%7D");
+          $.sinceinserturl.push(inserturl);
+          if (debugurl) console.log($.sinceinserturl);
+          resolve();
+        } else {
+          $.log("请将以下内容发送给作者\n");
+          $.log(response);
+          resolve();
+        }
+      });
+    } catch (e) {
+      $.log("请将以下内容发给作者\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
@@ -354,63 +379,73 @@ function getSignStatus(i) {
     header: sinceheaders
   };
   return new Promise(resolve => {
-    $.get(sincerequest, (error, response, data) => {
-      if (error) {
-        throw new Error(error);
-      }
-      if (response.statusCode == 418) {
-        $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
-      } else if (response.statusCode == 200) {
-        var body = response.body;
-        var obj = JSON.parse(body);
-        if (
-          obj.hasOwnProperty("errmsg") ||
-          obj.cards[0] == null ||
-          obj.cards[0] == undefined
-        ) {
-          $.msg(
-            $.name,
-            "🚨获取签到状态出现错误或接口错误",
-            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
-          );
+    try {
+      $.get(sincerequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 418) {
+          $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
+        } else if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.cards[0] == undefined ||
+            obj.cards[0] == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取签到状态出现错误或接口返回数据错误",
+              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
+          var group = obj.cards[0]["card_group"];
+          for (var j = 0; j < group.length; j++) {
+            var name = group[j]["title_sub"];
+            if (name == undefined) {
+              continue;
+            }
+            $.name_list.push(name);
+            var status = group[j].buttons[0].name;
+            if (status == "签到") {
+              console.log(`${name} 未签到`);
+              $.sign_status.push(false);
+            } else {
+              console.log(`${name} 已签到`);
+              $.sign_status.push(true);
+            }
+            var id = group[j].scheme.slice(33, 71);
+            $.id_list.push(id);
+          }
+          if (debugstatus) {
+            console.log($.name_list);
+            console.log($.sign_status);
+            console.log($.id_list);
+          }
           resolve();
-          return;
+        } else {
+          $.log("请将以下内容发送给作者\n");
+          $.log(response);
+          resolve();
         }
-        var group = obj.cards[0]["card_group"];
-        for (var j = 0; j < group.length; j++) {
-          var name = group[j]["title_sub"];
-          if (name == undefined) {
-            continue;
-          }
-          $.name_list.push(name);
-          var status = group[j].buttons[0].name;
-          if (status == "签到") {
-            console.log(`${name} 未签到`);
-            $.sign_status.push(false);
-          } else {
-            console.log(`${name} 已签到`);
-            $.sign_status.push(true);
-          }
-          var id = group[j].scheme.slice(33, 71);
-          $.id_list.push(id);
-        }
-        if (debugstatus) {
-          console.log($.name_list);
-          console.log($.sign_status);
-          console.log($.id_list);
-        }
-        resolve();
-      } else {
-        $.log("请将以下内容发送给作者\n" + response);
-        resolve();
-      }
-    });
+      });
+    } catch (e) {
+      $.log("请将以下内容发给作者\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
 //获取超话签到id
 function getid(page) {
-  $.log("正在获取超话id");
+  $.log(`正在获取第${page}页超话id`);
   var getlisturl = listurl.replace(
     new RegExp("&page=.*?&"),
     "&page=" + page + "&"
@@ -420,46 +455,56 @@ function getid(page) {
     header: listheaders
   };
   return new Promise(resolve => {
-    $.get(idrequest, (error, response, data) => {
-      if (error) {
-        throw new Error(error);
-      }
-      if (response.statusCode == 418) {
-        $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
-      } else if (response.statusCode == 200) {
-        var body = response.body;
-        var obj = JSON.parse(body);
-        if (
-          obj.hasOwnProperty("errmsg") ||
-          obj.cards[0] == null ||
-          obj.cards[0] == undefined
-        ) {
-          $.msg(
-            $.name,
-            "🚨获取超话ID出现错误或接口错误",
-            `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
-          );
-          resolve();
-          return;
+    try {
+      $.get(idrequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
         }
-        var group = obj.cards[0]["card_group"];
-        var number = group.length;
-        for (var i = 0; i < number; i++) {
-          var name = group[i]["title_sub"];
-          $.name_list.push(name);
-          var id = group[i].scheme.slice(33, 71);
-          $.id_list.push(id);
-          if (debugstatus) {
-            console.log(name);
-            console.log(id);
+        if (response.statusCode == 418) {
+          $.message.push(`太频繁啦，获取第${i}页超话及签到状态失败`);
+        } else if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj.cards[0] == undefined ||
+            obj.cards[0] == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取超话ID出现错误或接口返回数据错误",
+              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
           }
+          var group = obj.cards[0]["card_group"];
+          var number = group.length;
+          for (var i = 0; i < number; i++) {
+            var name = group[i]["title_sub"];
+            $.name_list.push(name);
+            var id = group[i].scheme.slice(33, 71);
+            $.id_list.push(id);
+            if (debugstatus) {
+              console.log(name);
+              console.log(id);
+            }
+          }
+          resolve();
+        } else {
+          $.log("请将以下内容发送给作者\n");
+          $.log(response);
+          resolve();
         }
-        resolve();
-      } else {
-        $.log("请将以下内容发送给作者\n" + response);
-        resolve();
-      }
-    });
+      });
+    } catch (e) {
+      $.log("请将以下内容发给作者\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
@@ -504,7 +549,7 @@ function checkin(id, name, isSign = false) {
           ) {
             $.msg(
               $.name,
-              "🚨签到出现错误或接口错误",
+              "🚨签到出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
             );
             resolve();
@@ -546,14 +591,19 @@ function checkin(id, name, isSign = false) {
           }
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n" + response);
+          $.log("请将以下内容发送给作者\n");
+          $.log(response);
           resolve();
         }
       });
     } catch (e) {
-      console.log(e);
+      $.log("请将以下内容发给作者\n");
+      $.log(e);
       resolve();
     }
+    setTimeout(() => {
+      resolve();
+    }, 1000);
   });
 }
 
