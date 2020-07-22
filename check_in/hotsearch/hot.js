@@ -7,7 +7,7 @@
 ⚠️【使用方法】
 ------------------------------------------
 1、按照客户端配置好rewrite和mitm。
-2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）、豆瓣榜单（https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1）
+2、打开微博热搜（App客户端）、知乎热榜（App客户端）、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）、豆瓣榜单（https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1）
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
 5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。
@@ -114,16 +114,16 @@ var zhcookie = $.getdata(cookiezh);
 var bdcookie = $.getdata(cookiebd);
 var blcookie = $.getdata(cookiebl);
 var dbcookie = $.getdata(cookiedb);
-var items = [];
-var items2 = [];
-var items3 = [];
-var items4 = [];
-var items5 = [];
-var urls = [];
-var urls2 = [];
-var urls3 = [];
-var urls4 = [];
-var urls5 = [];
+var itemswb = [];
+var itemszh = [];
+var itemsbd = [];
+var itemsbl = [];
+var itemsdb = [];
+var urlswb = [];
+var urlszh = [];
+var urlsbd = [];
+var urlsbl = [];
+var urlsdb = [];
 var covers4 = [];
 var covers5 = [];
 var resultwb = [];
@@ -131,8 +131,13 @@ var resultzh = [];
 var resultbd = [];
 var resultbl = [];
 var resultdb = [];
-var mediaurl4 = [];
-var mediaurl5 = [];
+var openurlwb = [];
+var openurlzh = [];
+var openurlbd = [];
+var openurlbl = [];
+var openurldb = [];
+var mediaurlbl = [];
+var mediaurldb = [];
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -379,10 +384,10 @@ function gethotsearch() {
             var con = JSON.stringify(content);
             var newcon = con.slice(2, -12);
             var url = "sinaweibo://searchall?" + newcon;
-            items.push(item);
-            urls.push(url);
+            itemswb.push(item);
+            urlswb.push(url);
           }
-          $.log("微博热搜获取成功✅\n" + items);
+          $.log("微博热搜获取成功✅\n" + itemswb);
           if ($.pushnewwb == false) {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
@@ -390,10 +395,10 @@ function gethotsearch() {
                   $.splitpushwb,
                   "微博",
                   resultwb,
-                  $.wbnum,
+                  openurlwb,
                   keyword[j],
-                  items,
-                  urls
+                  itemswb,
+                  urlswb
                 );
               }
             } else {
@@ -402,10 +407,10 @@ function gethotsearch() {
                   $.splitpushwb,
                   "微博",
                   resultwb,
-                  $.wbnum,
+                  openurlwb,
                   keyword[j],
-                  items,
-                  urls
+                  itemswb,
+                  urlswb
                 );
               }
             }
@@ -415,20 +420,20 @@ function gethotsearch() {
                 $.splitpushwb,
                 "微博",
                 resultwb,
+                openurlwb,
                 $.wbnum,
-                keyword[j],
-                items,
-                urls
+                itemswb,
+                urlswb
               );
             } else {
               gethotcontent(
                 $.splitpushwb,
                 "微博",
                 resultwb,
+                openurlwb,
                 $.wbnum,
-                keyword[j],
-                items,
-                urls
+                itemswb,
+                urlswb
               );
             }
           }
@@ -484,10 +489,10 @@ function gethotlist() {
             var item = group[i].target.title;
             var oriurl = group[i].target.url;
             var url = oriurl.replace("https://api.zhihu.com/", "zhihu://");
-            items2.push(item);
-            urls2.push(url);
+            itemszh.push(item);
+            urlszh.push(url);
           }
-          $.log("知乎热榜获取成功✅\n" + items2);
+          $.log("知乎热榜获取成功✅\n" + itemszh);
           if ($.pushnewzh == false) {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
@@ -495,22 +500,24 @@ function gethotlist() {
                   $.splitpushzh,
                   "知乎",
                   resultzh,
-                  $.zhnum,
+                  openurlzh,
                   keyword[j],
-                  items2,
-                  urls2
+                  itemszh,
+                  urlszh
                 );
               }
             } else {
-              getkeywordcontent(
-                $.splitpushzh,
-                "知乎",
-                resultzh,
-                $.zhnum,
-                keyword[j],
-                items2,
-                urls2
-              );
+              for (j = 0; j < keyword.length; j++) {
+                getkeywordcontent(
+                  $.splitpushzh,
+                  "知乎",
+                  resultzh,
+                  openurlzh,
+                  keyword[j],
+                  itemszh,
+                  urlszh
+                );
+              }
             }
           } else {
             if ($.attachurl == true) {
@@ -518,20 +525,20 @@ function gethotlist() {
                 $.splitpushzh,
                 "知乎",
                 resultzh,
+                openurlzh,
                 $.zhnum,
-                keyword[j],
-                items2,
-                urls2
+                itemszh,
+                urlszh
               );
             } else {
               gethotcontent(
                 $.splitpushzh,
                 "知乎",
                 resultzh,
+                openurlzh,
                 $.zhnum,
-                keyword[j],
-                items2,
-                urls2
+                itemszh,
+                urlszh
               );
             }
           }
@@ -596,10 +603,10 @@ function getfylist() {
             if (url == undefined) {
               continue;
             }
-            items3.push(item);
-            urls3.push(url);
+            itemsbd.push(item);
+            urlsbd.push(url);
           }
-          $.log("百度风云榜获取成功✅\n" + items3);
+          $.log("百度风云榜获取成功✅\n" + itemsbd);
           if ($.pushnewbd == false) {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
@@ -607,22 +614,24 @@ function getfylist() {
                   $.splitpushbd,
                   "百度",
                   resultbd,
-                  $.bdnum,
+                  openurlbd,
                   keyword[j],
-                  items3,
-                  urls3
+                  itemsbd,
+                  urlsbd
                 );
               }
             } else {
-              getkeywordcontent(
-                $.splitpushbd,
-                "百度",
-                resultbd,
-                $.bdnum,
-                keyword[j],
-                items3,
-                urls3
-              );
+              for (j = 0; j < keyword.length; j++) {
+                getkeywordcontent(
+                  $.splitpushbd,
+                  "百度",
+                  resultbd,
+                  openurlbd,
+                  keyword[j],
+                  itemsbd,
+                  urlsbd
+                );
+              }
             }
           } else {
             if ($.attachurl == true) {
@@ -630,20 +639,20 @@ function getfylist() {
                 $.splitpushbd,
                 "百度",
                 resultbd,
+                openurlbd,
                 $.bdnum,
-                keyword[j],
-                items3,
-                urls3
+                itemsbd,
+                urlsbd
               );
             } else {
               gethotcontent(
                 $.splitpushbd,
                 "百度",
                 resultbd,
+                openurlbd,
                 $.bdnum,
-                keyword[j],
-                items3,
-                urls3
+                itemsbd,
+                urlsbd
               );
             }
           }
@@ -699,11 +708,11 @@ function getbllist() {
             var item = group[i].title;
             var url = group[i].uri;
             var cover = group[i].cover;
-            items4.push(item);
-            urls4.push(url);
+            itemsbl.push(item);
+            urlsbl.push(url);
             covers4.push(cover);
           }
-          $.log("B站日榜获取成功✅\n" + items4);
+          $.log("B站日榜获取成功✅\n" + itemsbl);
           if ($.pushnewbl == false) {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
@@ -711,24 +720,26 @@ function getbllist() {
                   $.splitpushbl,
                   "B站",
                   resultbl,
-                  mediaurl4,
-                  $.blnum,
+                  openurlbl,
+                  mediaurlbl,
                   keyword[j],
-                  items4,
-                  urls4,
+                  itemsbl,
+                  urlsbl,
                   covers4
                 );
               }
             } else {
-              getkeywordcontent(
-                $.splitpushbl,
-                "B站",
-                resultbl,
-                $.blnum,
-                keyword[j],
-                items4,
-                urls4
-              );
+              for (j = 0; j < keyword.length; j++) {
+                getkeywordcontent(
+                  $.splitpushbl,
+                  "B站",
+                  resultbl,
+                  openurlbl,
+                  keyword[j],
+                  itemsbl,
+                  urlsbl
+                );
+              }
             }
           } else {
             if ($.attachurl == true) {
@@ -736,11 +747,11 @@ function getbllist() {
                 $.splitpushbl,
                 "B站",
                 resultbl,
-                mediaurl4,
+                openurlbl,
+                mediaurlbl,
                 $.blnum,
-                keyword[j],
-                items4,
-                urls4,
+                itemsbl,
+                urlsbl,
                 covers4
               );
             } else {
@@ -748,10 +759,10 @@ function getbllist() {
                 $.splitpushbl,
                 "B站",
                 resultbl,
+                openurlbl,
                 $.blnum,
-                keyword[j],
-                items4,
-                urls4
+                itemsbl,
+                urlsbl
               );
             }
           }
@@ -818,11 +829,11 @@ function getdblist() {
               title + "\n" + "评分：" + star + "星🌟" + "\n" + subtitle;
             var url = group[i].url;
             var cover = group[i].cover.url;
-            items5.push(item);
-            urls5.push(url);
+            itemsdb.push(item);
+            urlsdb.push(url);
             covers5.push(cover);
           }
-          $.log("豆瓣榜单获取成功✅\n" + items5);
+          $.log("豆瓣榜单获取成功✅\n" + itemsdb);
           if ($.pushnewdb == false) {
             if ($.attachurl == true) {
               for (var j = 0; j < keyword.length; j++) {
@@ -830,24 +841,26 @@ function getdblist() {
                   $.splitpushdb,
                   "豆瓣",
                   resultdb,
-                  mediaurl5,
-                  $.dbnum,
+                  openurldb,
+                  mediaurldb,
                   keyword[j],
-                  items5,
-                  urls5,
+                  itemsdb,
+                  urlsdb,
                   covers5
                 );
               }
             } else {
-              getkeywordcontent(
-                $.splitpushdb,
-                "豆瓣",
-                resultdb,
-                $.dbnum,
-                keyword[j],
-                items5,
-                urls5
-              );
+              for (j = 0; j < keyword.length; j++) {
+                getkeywordcontent(
+                  $.splitpushdb,
+                  "豆瓣",
+                  resultdb,
+                  openurldb,
+                  keyword[j],
+                  itemsdb,
+                  urlsdb
+                );
+              }
             }
           } else {
             if ($.attachurl == true) {
@@ -855,11 +868,11 @@ function getdblist() {
                 $.splitpushdb,
                 "豆瓣",
                 resultdb,
-                mediaurl5,
+                openurldb,
+                mediaurldb,
                 $.dbnum,
-                keyword[j],
-                items5,
-                urls5,
+                itemsdb,
+                urlsdb,
                 covers5
               );
             } else {
@@ -867,10 +880,10 @@ function getdblist() {
                 $.splitpushdb,
                 "豆瓣",
                 resultdb,
+                openurldb,
                 $.dbnum,
-                keyword[j],
-                items5,
-                urls5
+                itemsdb,
+                urlsdb
               );
             }
           }
@@ -892,38 +905,30 @@ function getdblist() {
   });
 }
 
-function getkeywordcontent(splitpush, text, output, num, key, array, array2) {
-  if (splitpush == false) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}`
-        );
-      }
-    }
-  } else {
-    for (i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}`
-        );
-      }
+function getkeywordcontent(splitpush, text, result, openurl, key, items, urls) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].indexOf(key) != -1) {
+      result.push(`🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`);
+      openurl.push(urls[i]);
     }
   }
 }
 
-function gethotcontent(splitpush, text, output, num, key, array, array2) {
+function gethotcontent(splitpush, text, result, openurl, num, items, urls) {
   if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
-        output.push(`🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}`);
+        result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+        openurl.push(urls[i]);
       } else {
-        output.push(`第${i + 1}名：${array[i]}`);
+        result.push(`第${i + 1}名：${items[i]}`);
+        openurl.push(urls[i]);
       }
     }
   } else {
     for (i = 0; i < num; i++) {
-      output.push(`🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}`);
+      result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+      openurl.push(urls[i]);
     }
   }
 }
@@ -931,51 +936,53 @@ function gethotcontent(splitpush, text, output, num, key, array, array2) {
 function getkeywordcontenturl(
   splitpush,
   text,
-  output,
-  num,
+  result,
+  openurl,
   key,
-  array,
-  array2
+  items,
+  urls
 ) {
   if (splitpush == false) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}\n${
-            array2[i]
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].indexOf(key) != -1) {
+        result.push(
+          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+            urls[i]
           }`
         );
       }
     }
   } else {
-    for (i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}\n${
-            array2[i]
+    for (i = 0; i < items.length; i++) {
+      if (items[i].indexOf(key) != -1) {
+        result.push(
+          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+            urls[i]
           }`
         );
+        openurl.push(urls[i]);
       }
     }
   }
 }
 
-function gethotcontenturl(splitpush, text, output, num, key, array, array2) {
+function gethotcontenturl(splitpush, text, result, openurl, num, items, urls) {
   if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
-        output.push(
-          `🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}\n${array2[i]}`
+        result.push(
+          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
         );
       } else {
-        output.push(`第${i + 1}名：${array[i]}\n${array2[i]}`);
+        result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
       }
     }
   } else {
     for (i = 0; i < num; i++) {
-      output.push(
-        `🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}\n${array2[i]}`
+      result.push(
+        `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
       );
+      openurl.push(urls[i]);
     }
   }
 }
@@ -983,34 +990,34 @@ function gethotcontenturl(splitpush, text, output, num, key, array, array2) {
 function getkeywordcontentmedia(
   splitpush,
   text,
-  output,
-  output2,
-  num,
+  result,
+  openurl,
+  mediaurl,
   key,
-  array,
-  array2,
-  array3
+  items,
+  urls,
+  covers
 ) {
   if (splitpush == false) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}\n${
-            array2[i]
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].indexOf(key) != -1) {
+        result.push(
+          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+            urls[i]
           }`
         );
-        output2.push(array3[i]);
       }
     }
   } else {
-    for (i = 0; i < array.length; i++) {
-      if (array[i].indexOf(key) != -1) {
-        output.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${array[i]}\n${
-            array2[i]
+    for (i = 0; i < items.length; i++) {
+      if (items[i].indexOf(key) != -1) {
+        result.push(
+          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+            urls[i]
           }`
         );
-        output2.push(array3[i]);
+        openurl.push(urls[i]);
+        mediaurl.push(covers[i]);
       }
     }
   }
@@ -1019,32 +1026,31 @@ function getkeywordcontentmedia(
 function gethotcontentmedia(
   splitpush,
   text,
-  output,
-  output2,
+  result,
+  openurl,
+  mediaurl,
   num,
-  key,
-  array,
-  array2,
-  array3
+  items,
+  urls,
+  covers
 ) {
   if (splitpush == false) {
     for (var i = 0; i < num; i++) {
       if (i == 0) {
-        output.push(
-          `🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}\n${array2[i]}`
+        result.push(
+          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
         );
-        output2.push(array3[i]);
       } else {
-        output.push(`第${i + 1}名：${array[i]}\n${array2[i]}`);
-        output2.push(array3[i]);
+        result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
       }
     }
   } else {
     for (i = 0; i < num; i++) {
-      output.push(
-        `🎉"${text}"的热门排行\n第${i + 1}名：${array[i]}\n${array2[i]}`
+      result.push(
+        `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
       );
-      output2.push(array3[i]);
+      openurl.push(urls[i]);
+      mediaurl.push(covers[i]);
     }
   }
 }
@@ -1061,54 +1067,57 @@ function mergepushnotify(result) {
   $.msg("热门监控", "", $.this_msg);
 }
 
-function splitpushnotify(result) {
+function splitpushnotify(result, openurl) {
   for (var m = 0; m < result.length; m++) {
     $.this_msg = ``;
     $.this_msg += `${result[m]}`;
-    $.msg("热门监控", "", $.this_msg);
+    $.msg("热门监控", "", $.this_msg, { "open-url": openurl[m] });
   }
 }
 
-function splitpushnotifymedia(result, mediaurl) {
+function splitpushnotifymedia(result, openurl, mediaurl) {
   for (var m = 0; m < result.length; m++) {
     $.this_msg = ``;
     $.this_msg += `${result[m]}`;
-    $.msg("热门监控", "", $.this_msg, { "media-url": mediaurl[m] });
+    $.msg("热门监控", "", $.this_msg, {
+      "open-url": openurl[m],
+      "media-url": mediaurl[m]
+    });
   }
 }
 
 function output() {
   if (resultwb.length != 0) {
     if ($.splitpushwb == true) {
-      splitpushnotify(resultwb);
+      splitpushnotify(resultwb, openurlwb);
     } else {
       mergepushnotify(resultwb);
     }
   }
   if (resultzh.length != 0) {
     if ($.splitpushzh == true) {
-      splitpushnotify(resultzh);
+      splitpushnotify(resultzh, openurlzh);
     } else {
       mergepushnotify(resultzh);
     }
   }
   if (resultbd.length != 0) {
     if ($.splitpushbd == true) {
-      splitpushnotify(resultbd);
+      splitpushnotify(resultbd, openurlbd);
     } else {
       mergepushnotify(resultbd);
     }
   }
   if (resultbl.length != 0) {
     if ($.splitpushbl == true) {
-      splitpushnotifymedia(resultbl, mediaurl4);
+      splitpushnotifymedia(resultbl, openurlbl, mediaurlbl);
     } else {
       mergepushnotify(resultbl);
     }
   }
   if (resultdb.length != 0) {
     if ($.splitpushdb == true) {
-      splitpushnotifymedia(resultdb, mediaurl5);
+      splitpushnotifymedia(resultdb, openurldb, mediaurldb);
     } else {
       mergepushnotify(resultdb);
     }
