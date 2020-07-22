@@ -7,7 +7,7 @@
 ⚠️【使用方法】
 ------------------------------------------
 1、按照客户端配置好rewrite和mitm。
-2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）
+2、打开微博热搜、知乎热榜、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）、豆瓣榜单（https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1）
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
 5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。
@@ -40,6 +40,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 热门监控知乎cookie获取 = type=http-request,pattern=https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
 热门监控百度cookie获取 = type=http-request,pattern=http:\/\/top\.baidu\.com\/mobile_v2\/buzz ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
 热门监控B站cookie获取 = type=http-request,pattern=https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
+热门监控豆瓣cookie获取 = type=http-request,pattern=https:\/\/m\.douban\.com\/rexxar\/api\/v2\/subject_collection\/movie_real_time_hotest\/items ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false
 热门监控 = type=cron,cronexp="30 0 8-22/2 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,wake-system=true,timeout=600
 
 【Loon】配置
@@ -50,27 +51,29 @@ http-response https:\/\/api\.weibo\.cn\/2\/page script-path=https://raw.githubus
 http-request https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控知乎cookie获取
 http-request http:\/\/top\.baidu\.com\/mobile_v2\/buzz script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控百度cookie获取
 http-request https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控B站cookie获取
+http-request https:\/\/m\.douban\.com\/rexxar\/api\/v2\/subject_collection\/movie_real_time_hotest\/items script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js,requires-body=false, tag=热门监控豆瓣cookie获取
 
 【Quantumult X】配置
 ------------------------------------------
-  [rewrite_local]
-  https:\/\/api\.weibo\.cn\/2\/page url script-response-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
-  https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
-  http:\/\/top\.baidu\.com\/mobile_v2\/buzz url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
-  https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+[rewrite_local]
+https:\/\/api\.weibo\.cn\/2\/page url script-response-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+http:\/\/top\.baidu\.com\/mobile_v2\/buzz url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+https:\/\/m\.douban\.com\/rexxar\/api\/v2\/subject_collection\/movie_real_time_hotest\/items url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
 
-  [task_local]
-  30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控
+[task_local]
+30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控
 
-  [All App Mitm]
-  hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com
+[All App Mitm]
+hostname = api.weibo.cn, api.zhihu.com, top.baidu.com, app.bilibili.com, m.douban.com
 若获取不到Cookie，请注意重写冲突，或者weibo域名是否排除
 */
 
 const $ = new Env("热门监控");
 
 //⚠️本地自定参数修改位置⚠️
-var keyword = ["中国", "万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
+var keyword = [""]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
 $.deletecookie = false; //👈清除Cookie选项
 $.weibo = true; //是否开启相应榜单监控
 $.wbnum = 6; //自定微博热搜数量
@@ -80,6 +83,8 @@ $.baidu = true; //是否开启相应榜单监控
 $.bdnum = 6; //自定百度风云榜数量
 $.bilibili = true; //是否开启相应榜单监控
 $.blnum = 6; //自定B站榜单数量
+$.douban = true; //是否开启相应榜单监控
+$.dbnum = 6; //自定豆瓣榜单数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -88,41 +93,46 @@ $.splitpushbd = false; //是否分开推送百度榜单
 $.pushnewbd = false; //是否忽略关键词推送百度最新内容
 $.splitpushbl = false; //是否分开推送B站榜单
 $.pushnewbl = false; //是否忽略关键词推送B站最新内容
+$.splitpushdb = false; //是否分开推送豆瓣榜单
+$.pushnewdb = false; //是否忽略关键词推送豆瓣最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
-$.time = 1.5; //榜单获取时限，单位秒
+$.time = 2; //榜单获取时限，单位秒
 //⚠️本地自定参数修改位置⚠️
 
 const url = "evil_hotsearchurl";
 const cookie = "evil_hotsearchcookie";
 const urlzh = "evil_zhihuurl";
 const cookiezh = "evil_zhihucookie";
-const urlbd = "evil_baiduurl";
 const cookiebd = "evil_baiducookie";
-const urlbl = "evil_bilibiurl";
 const cookiebl = "evil_bilibilicookie";
+const cookiedb = "evil_doubancookie";
 var siurl = $.getdata(url);
 var sicookie = $.getdata(cookie);
 var zhurl = $.getdata(urlzh);
 var zhcookie = $.getdata(cookiezh);
-var bdurl = $.getdata(urlbd);
 var bdcookie = $.getdata(cookiebd);
-var blurl = $.getdata(urlbl);
 var blcookie = $.getdata(cookiebl);
+var dbcookie = $.getdata(cookiedb);
 var items = [];
 var items2 = [];
 var items3 = [];
 var items4 = [];
+var items5 = [];
 var urls = [];
 var urls2 = [];
 var urls3 = [];
 var urls4 = [];
-var covers = [];
+var urls5 = [];
+var covers4 = [];
+var covers5 = [];
 var resultwb = [];
 var resultzh = [];
 var resultbd = [];
 var resultbl = [];
-var mediaurl = [];
+var resultdb = [];
+var mediaurl4 = [];
+var mediaurl5 = [];
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -171,8 +181,19 @@ var mediaurl = [];
     } else {
       $.log("B站日榜未获取😫");
     }
+    if ($.douban == true) {
+      if (ifdbcanrun() == true) {
+        $.log("豆瓣Cookie完整🉑️");
+        await getdblist();
+      } else {
+        $.log("豆瓣榜单Cookie未获取或不完整😫\n请获取Cookie后再试❌");
+      }
+    } else {
+      $.log("豆瓣榜单未获取😫");
+    }
     output();
     final();
+    deluselessck();
   }
 })()
   .catch(e => {
@@ -184,10 +205,16 @@ var mediaurl = [];
 
 function havekeyword() {
   if (keyword.length == 0) {
-    $.msg("热门监控", "", "请输入要监控的关键词🔍");
+    $.msg("热门监控", "请输入要监控的关键词🔍", "请在BoxJs或本地中进行设置。");
     return false;
   } else {
-    return true;
+    for (var i = 0; i < keyword.length; i++) {
+      if (keyword[i] != 0) {
+        return true;
+      }
+    }
+    $.msg("热门监控", "请输入要监控的关键词🔍", "请在BoxJs或本地中进行设置。");
+    return false;
   }
 }
 
@@ -197,10 +224,9 @@ function deletecookie() {
     $.setdata("", cookie);
     $.setdata("", urlzh);
     $.setdata("", cookiezh);
-    $.setdata("", urlbd);
     $.setdata("", cookiebd);
-    $.setdata("", urlbl);
     $.setdata("", cookiebl);
+    $.setdata("", cookiedb);
     $.msg("热门监控", "", "Cookie已清除🆑");
     return false;
   }
@@ -223,20 +249,24 @@ function getsetting() {
   $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
   $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
   $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
+  $.douban = JSON.parse($.getdata("evil_db") || $.douban);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
   $.splitpushbl = JSON.parse($.getdata("evil_splitpushbl") || $.splitpushbl);
+  $.splitpushdb = JSON.parse($.getdata("evil_splitpushdb") || $.splitpushdb);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
   $.pushnewbl = JSON.parse($.getdata("evil_pushnewbl") || $.pushnewbl);
+  $.pushnewdb = JSON.parse($.getdata("evil_pushnewdb") || $.pushnewdb);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
   $.zhnum = $.getdata("evil_zhnum") * 1 || $.zhnum;
   $.bdnum = $.getdata("evil_bdnum") * 1 || $.bdnum;
   $.blnum = $.getdata("evil_blnum") * 1 || $.blnum;
+  $.dbnum = $.getdata("evil_dbnum") * 1 || $.dbnum;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
@@ -255,6 +285,10 @@ function getsetting() {
   $.log("分开推送B站内容 " + $.splitpushbl);
   $.log("忽略关键词获取B站最热内容 " + $.pushnewbl);
   $.log("获取B站日榜数量 " + $.blnum + "个");
+  $.log("获取豆瓣榜单 " + $.douban);
+  $.log("分开推送豆瓣内容 " + $.splitpushdb);
+  $.log("忽略关键词获取豆瓣最热内容 " + $.pushnewdb);
+  $.log("获取豆瓣榜单数量 " + $.dbnum + "个");
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -285,12 +319,7 @@ function ifzhcanrun() {
 }
 
 function ifbdcanrun() {
-  if (
-    bdurl != undefined &&
-    bdcookie != undefined &&
-    bdurl != "" &&
-    bdcookie != ""
-  ) {
+  if (bdcookie != undefined && bdcookie != "") {
     return true;
   } else {
     return false;
@@ -298,12 +327,15 @@ function ifbdcanrun() {
 }
 
 function ifblcanrun() {
-  if (
-    blurl != undefined &&
-    blcookie != undefined &&
-    blurl != "" &&
-    blcookie != ""
-  ) {
+  if (blcookie != undefined && blcookie != "") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function ifdbcanrun() {
+  if (dbcookie != undefined && dbcookie != "") {
     return true;
   } else {
     return false;
@@ -526,7 +558,7 @@ function getfylist() {
   return new Promise(resolve => {
     try {
       const bdRequest = {
-        url: bdurl,
+        url: "http://top.baidu.com/mobile_v2/buzz?b=1&c=515",
         headers: bdcookie
       };
       $.get(bdRequest, (error, response, data) => {
@@ -669,7 +701,7 @@ function getbllist() {
             var cover = group[i].cover;
             items4.push(item);
             urls4.push(url);
-            covers.push(cover);
+            covers4.push(cover);
           }
           $.log("B站日榜获取成功✅\n" + items4);
           if ($.pushnewbl == false) {
@@ -679,12 +711,12 @@ function getbllist() {
                   $.splitpushbl,
                   "B站",
                   resultbl,
-                  mediaurl,
+                  mediaurl4,
                   $.blnum,
                   keyword[j],
                   items4,
                   urls4,
-                  covers
+                  covers4
                 );
               }
             } else {
@@ -704,12 +736,12 @@ function getbllist() {
                 $.splitpushbl,
                 "B站",
                 resultbl,
-                mediaurl,
+                mediaurl4,
                 $.blnum,
                 keyword[j],
                 items4,
                 urls4,
-                covers
+                covers4
               );
             } else {
               gethotcontent(
@@ -732,6 +764,125 @@ function getbllist() {
       });
     } catch (e) {
       $.log("获取B站日榜出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
+function getdblist() {
+  $.log("开始获取豆瓣榜单...");
+  return new Promise(resolve => {
+    try {
+      var dbheader = {
+        Cookie: dbcookie,
+        Referer: `https://m.douban.com/pwa/cache_worker`
+      };
+      const dbRequest = {
+        url:
+          "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1",
+        headers: dbheader
+      };
+      $.get(dbRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          if (
+            obj.hasOwnProperty("errmsg") ||
+            obj["subject_collection_items"] == undefined ||
+            obj["subject_collection_items"] == null
+          ) {
+            $.msg(
+              $.name,
+              "🚨获取豆瓣榜单出现错误",
+              `⚠️原因：${obj.errmsg}\n可尝试重新获取Cookie。`
+            );
+            resolve();
+            return;
+          }
+          var group = obj["subject_collection_items"];
+          var num = group.length;
+          for (var i = 0; i < num; i++) {
+            var title = group[i].title;
+            var subtitle = group[i]["card_subtitle"];
+            var rating = group[i].rating;
+            if (rating == null) continue;
+            var star = rating["star_count"];
+            var item =
+              title + "\n" + "评分：" + star + "星🌟" + "\n" + subtitle;
+            var url = group[i].url;
+            var cover = group[i].cover.url;
+            items5.push(item);
+            urls5.push(url);
+            covers5.push(cover);
+          }
+          $.log("豆瓣榜单获取成功✅\n" + items5);
+          if ($.pushnewdb == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                getkeywordcontentmedia(
+                  $.splitpushdb,
+                  "豆瓣",
+                  resultdb,
+                  mediaurl5,
+                  $.dbnum,
+                  keyword[j],
+                  items5,
+                  urls5,
+                  covers5
+                );
+              }
+            } else {
+              getkeywordcontent(
+                $.splitpushdb,
+                "豆瓣",
+                resultdb,
+                $.dbnum,
+                keyword[j],
+                items5,
+                urls5
+              );
+            }
+          } else {
+            if ($.attachurl == true) {
+              gethotcontentmedia(
+                $.splitpushdb,
+                "豆瓣",
+                resultdb,
+                mediaurl5,
+                $.dbnum,
+                keyword[j],
+                items5,
+                urls5,
+                covers5
+              );
+            } else {
+              gethotcontent(
+                $.splitpushdb,
+                "豆瓣",
+                resultdb,
+                $.dbnum,
+                keyword[j],
+                items5,
+                urls5
+              );
+            }
+          }
+          resolve();
+        } else {
+          $.log("获取豆瓣榜单出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取豆瓣榜单出现错误❌原因：\n");
       $.log(e);
       resolve();
     }
@@ -950,16 +1101,24 @@ function output() {
   }
   if (resultbl.length != 0) {
     if ($.splitpushbl == true) {
-      splitpushnotifymedia(resultbl, mediaurl);
+      splitpushnotifymedia(resultbl, mediaurl4);
     } else {
       mergepushnotify(resultbl);
+    }
+  }
+  if (resultdb.length != 0) {
+    if ($.splitpushdb == true) {
+      splitpushnotifymedia(resultdb, mediaurl5);
+    } else {
+      mergepushnotify(resultdb);
     }
   }
   if (
     resultwb.length == 0 &&
     resultzh.length == 0 &&
     resultbd.length == 0 &&
-    resultbl.length == 0
+    resultbl.length == 0 &&
+    resultdb.length == 0
   ) {
     $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
@@ -970,7 +1129,8 @@ function final() {
     $.weibo == false &&
     $.zhihu == false &&
     $.baidu == false &&
-    $.bilibili == false
+    $.bilibili == false &&
+    $.douban == false
   ) {
     $.msg(
       "热门监控",
@@ -982,11 +1142,19 @@ function final() {
       ifwbcanrun() == false &&
       ifzhcanrun() == false &&
       ifbdcanrun() == false &&
-      ifblcanrun() == false
+      ifblcanrun() == false &&
+      ifdbcanrun() == false
     ) {
       $.msg("热门监控", "Cookie未获取或不完整😫", "请获取Cookie后再尝试哦❌");
     }
   }
+}
+
+function deluselessck() {
+  $.setdata("", "evil_baiduurl");
+  $.setdata("", "evil_doubanurl");
+  $.setdata("", "evil_bilibiurl");
+  $.log("\n已清除无用Cookie✅");
 }
 
 function getCookie() {
@@ -1021,11 +1189,8 @@ function getCookie() {
     $request.method != "OPTIONS" &&
     $request.url.match(/b\=1\&c\=515/)
   ) {
-    const bdurl = $request.url;
-    $.log(bdurl);
     const bdcookie = JSON.stringify($request.headers);
     $.log(bdcookie);
-    $.setdata(bdurl, urlbd);
     $.setdata(bdcookie, cookiebd);
     $.msg("热门监控", "", "获取百度风云榜Cookie成功🎉");
   }
@@ -1034,13 +1199,20 @@ function getCookie() {
     $request.method != "OPTIONS" &&
     $request.url.match(`rid=${$.rid}`)
   ) {
-    const blurl = $request.url;
-    $.log(blurl);
     const blcookie = JSON.stringify($request.headers);
     $.log(blcookie);
-    $.setdata(blurl, urlbl);
     $.setdata(blcookie, cookiebl);
     $.msg("热门监控", "", "获取B站榜单Cookie成功🎉");
+  }
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/movie\_real\_time\_hotest/)
+  ) {
+    const dbcookie = $request.headers["Cookie"];
+    $.log(dbcookie);
+    $.setdata(dbcookie, cookiedb);
+    $.msg("热门监控", "", "获取豆瓣榜单Cookie成功🎉");
   }
 }
 
