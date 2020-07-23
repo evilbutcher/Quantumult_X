@@ -56,10 +56,15 @@ http-request https:\/\/m\.douban\.com\/rexxar\/api\/v2\/subject_collection\/movi
 【Quantumult X】配置
 ------------------------------------------
 [rewrite_local]
+#微博热搜
 https:\/\/api\.weibo\.cn\/2\/page url script-response-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+#知乎热榜
 https:\/\/api\.zhihu\.com\/topstory\/hot-lists\/total url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+#百度风云榜
 http:\/\/top\.baidu\.com\/mobile_v2\/buzz url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+#B站日榜
 https:\/\/app\.bilibili\.com\/x\/v2\/rank\/region url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+#豆瓣电影
 https:\/\/m\.douban\.com\/rexxar\/api\/v2\/subject_collection\/movie_real_time_hotest\/items url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
 
 [task_local]
@@ -410,53 +415,27 @@ function gethotsearch() {
           }
           $.log("微博热搜获取成功✅\n" + itemswb);
           if ($.pushnewwb == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontenturl(
-                  $.splitpushwb,
-                  "微博",
-                  resultwb,
-                  openurlwb,
-                  keyword[j],
-                  itemswb,
-                  urlswb
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushwb,
-                  "微博",
-                  resultwb,
-                  openurlwb,
-                  keyword[j],
-                  itemswb,
-                  urlswb
-                );
-              }
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushwb,
+                "微博",
+                resultwb,
+                openurlwb,
+                keyword[j],
+                itemswb,
+                urlswb
+              );
             }
           } else {
-            if ($.attachurl == true) {
-              gethotcontenturl(
-                $.splitpushwb,
-                "微博",
-                resultwb,
-                openurlwb,
-                $.wbnum,
-                itemswb,
-                urlswb
-              );
-            } else {
-              gethotcontent(
-                $.splitpushwb,
-                "微博",
-                resultwb,
-                openurlwb,
-                $.wbnum,
-                itemswb,
-                urlswb
-              );
-            }
+            gethotcontenturl(
+              $.splitpushwb,
+              "微博",
+              resultwb,
+              openurlwb,
+              $.wbnum,
+              itemswb,
+              urlswb
+            );
           }
           resolve();
         } else {
@@ -515,53 +494,27 @@ function gethotlist() {
           }
           $.log("知乎热榜获取成功✅\n" + itemszh);
           if ($.pushnewzh == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontenturl(
-                  $.splitpushzh,
-                  "知乎",
-                  resultzh,
-                  openurlzh,
-                  keyword[j],
-                  itemszh,
-                  urlszh
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushzh,
-                  "知乎",
-                  resultzh,
-                  openurlzh,
-                  keyword[j],
-                  itemszh,
-                  urlszh
-                );
-              }
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushzh,
+                "知乎",
+                resultzh,
+                openurlzh,
+                keyword[j],
+                itemszh,
+                urlszh
+              );
             }
           } else {
-            if ($.attachurl == true) {
-              gethotcontenturl(
-                $.splitpushzh,
-                "知乎",
-                resultzh,
-                openurlzh,
-                $.zhnum,
-                itemszh,
-                urlszh
-              );
-            } else {
-              gethotcontent(
-                $.splitpushzh,
-                "知乎",
-                resultzh,
-                openurlzh,
-                $.zhnum,
-                itemszh,
-                urlszh
-              );
-            }
+            gethotcontenturl(
+              $.splitpushzh,
+              "知乎",
+              resultzh,
+              openurlzh,
+              $.zhnum,
+              itemszh,
+              urlszh
+            );
           }
           resolve();
         } else {
@@ -629,53 +582,27 @@ function getfylist() {
           }
           $.log("百度风云榜获取成功✅\n" + itemsbd);
           if ($.pushnewbd == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontenturl(
-                  $.splitpushbd,
-                  "百度",
-                  resultbd,
-                  openurlbd,
-                  keyword[j],
-                  itemsbd,
-                  urlsbd
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushbd,
-                  "百度",
-                  resultbd,
-                  openurlbd,
-                  keyword[j],
-                  itemsbd,
-                  urlsbd
-                );
-              }
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushbd,
+                "百度",
+                resultbd,
+                openurlbd,
+                keyword[j],
+                itemsbd,
+                urlsbd
+              );
             }
           } else {
-            if ($.attachurl == true) {
-              gethotcontenturl(
-                $.splitpushbd,
-                "百度",
-                resultbd,
-                openurlbd,
-                $.bdnum,
-                itemsbd,
-                urlsbd
-              );
-            } else {
-              gethotcontent(
-                $.splitpushbd,
-                "百度",
-                resultbd,
-                openurlbd,
-                $.bdnum,
-                itemsbd,
-                urlsbd
-              );
-            }
+            gethotcontenturl(
+              $.splitpushbd,
+              "百度",
+              resultbd,
+              openurlbd,
+              $.bdnum,
+              itemsbd,
+              urlsbd
+            );
           }
           resolve();
         } else {
@@ -735,57 +662,31 @@ function getbllist() {
           }
           $.log("B站日榜获取成功✅\n" + itemsbl);
           if ($.pushnewbl == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontentmedia(
-                  $.splitpushbl,
-                  "B站",
-                  resultbl,
-                  openurlbl,
-                  mediaurlbl,
-                  keyword[j],
-                  itemsbl,
-                  urlsbl,
-                  coversbl
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushbl,
-                  "B站",
-                  resultbl,
-                  openurlbl,
-                  keyword[j],
-                  itemsbl,
-                  urlsbl
-                );
-              }
-            }
-          } else {
-            if ($.attachurl == true) {
-              gethotcontentmedia(
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontentmedia(
                 $.splitpushbl,
                 "B站",
                 resultbl,
                 openurlbl,
                 mediaurlbl,
-                $.blnum,
+                keyword[j],
                 itemsbl,
                 urlsbl,
                 coversbl
               );
-            } else {
-              gethotcontent(
-                $.splitpushbl,
-                "B站",
-                resultbl,
-                openurlbl,
-                $.blnum,
-                itemsbl,
-                urlsbl
-              );
             }
+          } else {
+            gethotcontentmedia(
+              $.splitpushbl,
+              "B站",
+              resultbl,
+              openurlbl,
+              mediaurlbl,
+              $.blnum,
+              itemsbl,
+              urlsbl,
+              coversbl
+            );
           }
           resolve();
         } else {
@@ -856,57 +757,31 @@ function getdblist() {
           }
           $.log("豆瓣榜单获取成功✅\n" + itemsdb);
           if ($.pushnewdb == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontentmedia(
-                  $.splitpushdb,
-                  "豆瓣",
-                  resultdb,
-                  openurldb,
-                  mediaurldb,
-                  keyword[j],
-                  itemsdb,
-                  urlsdb,
-                  coversdb
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushdb,
-                  "豆瓣",
-                  resultdb,
-                  openurldb,
-                  keyword[j],
-                  itemsdb,
-                  urlsdb
-                );
-              }
-            }
-          } else {
-            if ($.attachurl == true) {
-              gethotcontentmedia(
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontentmedia(
                 $.splitpushdb,
                 "豆瓣",
                 resultdb,
                 openurldb,
                 mediaurldb,
-                $.dbnum,
+                keyword[j],
                 itemsdb,
                 urlsdb,
                 coversdb
               );
-            } else {
-              gethotcontent(
-                $.splitpushdb,
-                "豆瓣",
-                resultdb,
-                openurldb,
-                $.dbnum,
-                itemsdb,
-                urlsdb
-              );
             }
+          } else {
+            gethotcontentmedia(
+              $.splitpushdb,
+              "豆瓣",
+              resultdb,
+              openurldb,
+              mediaurldb,
+              $.dbnum,
+              itemsdb,
+              urlsdb,
+              coversdb
+            );
           }
           resolve();
         } else {
@@ -942,53 +817,27 @@ function getdylist() {
           parsehtml(body, itemsdy, urlsdy);
           $.log("抖音榜单获取成功✅\n" + itemsdy);
           if ($.pushnewdy == false) {
-            if ($.attachurl == true) {
-              for (var j = 0; j < keyword.length; j++) {
-                getkeywordcontenturl(
-                  $.splitpushdy,
-                  "抖音",
-                  resultdy,
-                  openurldy,
-                  keyword[j],
-                  itemsdy,
-                  urlsdy
-                );
-              }
-            } else {
-              for (j = 0; j < keyword.length; j++) {
-                getkeywordcontent(
-                  $.splitpushdy,
-                  "抖音",
-                  resultdy,
-                  openurldy,
-                  keyword[j],
-                  itemsdy,
-                  urlsdy
-                );
-              }
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushdy,
+                "抖音",
+                resultdy,
+                openurldy,
+                keyword[j],
+                itemsdy,
+                urlsdy
+              );
             }
           } else {
-            if ($.attachurl == true) {
-              gethotcontenturl(
-                $.splitpushdy,
-                "抖音",
-                resultdy,
-                openurldy,
-                $.dynum,
-                itemsdy,
-                urlsdy
-              );
-            } else {
-              gethotcontent(
-                $.splitpushdy,
-                "抖音",
-                resultdy,
-                openurldy,
-                $.dynum,
-                itemsdy,
-                urlsdy
-              );
-            }
+            gethotcontenturl(
+              $.splitpushdy,
+              "抖音",
+              resultdy,
+              openurldy,
+              $.dynum,
+              itemsdy,
+              urlsdy
+            );
           }
           resolve();
         } else {
@@ -1010,7 +859,6 @@ function getdylist() {
 
 function parsehtml(str, items, urls) {
   var text = JSON.stringify(str);
-  //console.log(text)
   var name = /itemid\=\\\"\d\d\d\d\d\d\d\d\\\"\>.*?\<\/a\>\<\/td\>/g;
   var link = /al\\\"\>\<a href\=\\\".*?\\\"/g;
   var preitem = text.match(name);
@@ -1020,15 +868,6 @@ function parsehtml(str, items, urls) {
     var posturl = preurl[i].slice(15, -2);
     items.push(postitem);
     urls.push(posturl);
-  }
-}
-
-function getkeywordcontent(splitpush, text, result, openurl, key, items, urls) {
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].indexOf(key) != -1) {
-      result.push(`🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`);
-      openurl.push(urls[i]);
-    }
   }
 }
 
@@ -1063,21 +902,33 @@ function getkeywordcontenturl(
   if (splitpush == false) {
     for (var i = 0; i < items.length; i++) {
       if (items[i].indexOf(key) != -1) {
-        result.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
-            urls[i]
-          }`
-        );
+        if ($.attachurl == true) {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+              urls[i]
+            }`
+          );
+        } else {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
+          );
+        }
       }
     }
   } else {
     for (i = 0; i < items.length; i++) {
       if (items[i].indexOf(key) != -1) {
-        result.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
-            urls[i]
-          }`
-        );
+        if ($.attachurl == true) {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+              urls[i]
+            }`
+          );
+        } else {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
+          );
+        }
         openurl.push(urls[i]);
       }
     }
@@ -1087,19 +938,31 @@ function getkeywordcontenturl(
 function gethotcontenturl(splitpush, text, result, openurl, num, items, urls) {
   if (splitpush == false) {
     for (var i = 0; i < num; i++) {
-      if (i == 0) {
-        result.push(
-          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
-        );
+      if ($.attachurl == true) {
+        if (i == 0) {
+          result.push(
+            `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
+          );
+        } else {
+          result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
+        }
       } else {
-        result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
+        if (i == 0) {
+          result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+        } else {
+          result.push(`第${i + 1}名：${items[i]}`);
+        }
       }
     }
   } else {
     for (i = 0; i < num; i++) {
-      result.push(
-        `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
-      );
+      if ($.attachurl == true) {
+        result.push(
+          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
+        );
+      } else {
+        result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+      }
       openurl.push(urls[i]);
     }
   }
@@ -1119,21 +982,33 @@ function getkeywordcontentmedia(
   if (splitpush == false) {
     for (var i = 0; i < items.length; i++) {
       if (items[i].indexOf(key) != -1) {
-        result.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
-            urls[i]
-          }`
-        );
+        if ($.attachurl == true) {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+              urls[i]
+            }`
+          );
+        } else {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
+          );
+        }
       }
     }
   } else {
     for (i = 0; i < items.length; i++) {
       if (items[i].indexOf(key) != -1) {
-        result.push(
-          `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
-            urls[i]
-          }`
-        );
+        if ($.attachurl == true) {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
+              urls[i]
+            }`
+          );
+        } else {
+          result.push(
+            `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
+          );
+        }
         openurl.push(urls[i]);
         mediaurl.push(covers[i]);
       }
@@ -1154,19 +1029,31 @@ function gethotcontentmedia(
 ) {
   if (splitpush == false) {
     for (var i = 0; i < num; i++) {
-      if (i == 0) {
-        result.push(
-          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
-        );
+      if ($.attachurl == true) {
+        if (i == 0) {
+          result.push(
+            `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
+          );
+        } else {
+          result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
+        }
       } else {
-        result.push(`第${i + 1}名：${items[i]}\n${urls[i]}`);
+        if (i == 0) {
+          result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+        } else {
+          result.push(`第${i + 1}名：${items[i]}`);
+        }
       }
     }
   } else {
     for (i = 0; i < num; i++) {
-      result.push(
-        `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
-      );
+      if ($.attachurl == true) {
+        result.push(
+          `🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}\n${urls[i]}`
+        );
+      } else {
+        result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
+      }
       openurl.push(urls[i]);
       mediaurl.push(covers[i]);
     }
