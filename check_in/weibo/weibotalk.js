@@ -262,7 +262,7 @@ function getnumber() {
           throw new Error(error);
         }
         if (response.statusCode == 418) {
-          $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+          console.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
         } else if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -290,14 +290,14 @@ function getnumber() {
           pagenumber = Math.ceil(allnumber / 20);
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n");
-          $.log(response);
+          console.log("请将以下内容发送给作者\n");
+          console.log(response);
           resolve();
         }
       });
     } catch (e) {
-      $.log("请将以下内容发给作者\n");
-      $.log(e);
+      console.log("请将以下内容发给作者\n");
+      console.log(e);
       resolve();
     }
     setTimeout(() => {
@@ -324,7 +324,7 @@ function geturl(i) {
           throw new Error(error);
         }
         if (response.statusCode == 418) {
-          $.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
+          console.log(`太频繁啦，获取超话信息失败，请稍后再试。`);
         } else if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -355,14 +355,14 @@ function geturl(i) {
           if (debugurl) console.log($.sinceinserturl);
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n");
-          $.log(response);
+          console.log("请将以下内容发送给作者\n");
+          console.log(response);
           resolve();
         }
       });
     } catch (e) {
-      $.log("请将以下内容发给作者\n");
-      $.log(e);
+      console.log("请将以下内容发给作者\n");
+      console.log(e);
       resolve();
     }
     setTimeout(() => {
@@ -427,14 +427,14 @@ function getSignStatus(i) {
           }
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n");
-          $.log(response);
+          console.log("请将以下内容发送给作者\n");
+          console.log(response);
           resolve();
         }
       });
     } catch (e) {
-      $.log("请将以下内容发给作者\n");
-      $.log(e);
+      console.log("请将以下内容发给作者\n");
+      console.log(e);
       resolve();
     }
     setTimeout(() => {
@@ -492,14 +492,14 @@ function getid(page) {
           }
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n");
-          $.log(response);
+          console.log("请将以下内容发送给作者\n");
+          console.log(response);
           resolve();
         }
       });
     } catch (e) {
-      $.log("请将以下内容发给作者\n");
-      $.log(e);
+      console.log("请将以下内容发给作者\n");
+      console.log(e);
       resolve();
     }
     setTimeout(() => {
@@ -592,14 +592,14 @@ function checkin(id, name, isSign = false) {
           }
           resolve();
         } else {
-          $.log("请将以下内容发送给作者\n");
-          $.log(response);
+          console.log("请将以下内容发送给作者\n");
+          console.log(response);
           resolve();
         }
       });
     } catch (e) {
-      $.log("请将以下内容发给作者\n");
-      $.log(e);
+      console.log("请将以下内容发给作者\n");
+      console.log(e);
       resolve();
     }
     setTimeout(() => {
