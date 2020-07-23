@@ -3,7 +3,7 @@
   "name": "evilbutcher 应用订阅",
   "author": "@evilbutcher",
   "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
-  "repo": "https://github.com/evilbutcher/Quantumult_X",
+  "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master",
   "apps": [{
     "id": "weibotalk",
     "name": "微博超话（单账号版）",
