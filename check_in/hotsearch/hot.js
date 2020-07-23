@@ -7,7 +7,7 @@
 ⚠️【使用方法】
 ------------------------------------------
 1、按照客户端配置好rewrite和mitm。
-2、打开微博热搜（App客户端）、知乎热榜（App客户端）、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）、豆瓣榜单（https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1）
+2、打开微博热搜（App客户端）、知乎热榜（App客户端）、百度风云榜（http://top.baidu.com/m/#buzz/1/515）、B站日榜（https://app.bilibili.com/x/v2/rank/region?rid=0）获取Cookie即可。（B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈）、豆瓣榜单（https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1）、抖音榜单不需获取Cookie
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
 5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。
@@ -85,6 +85,8 @@ $.bilibili = true; //是否开启相应榜单监控
 $.blnum = 6; //自定B站榜单数量
 $.douban = true; //是否开启相应榜单监控
 $.dbnum = 6; //自定豆瓣榜单数量
+$.douyin = true; //是否开启相应榜单监控
+$.dynum = 6; //自定抖音榜单数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -95,6 +97,8 @@ $.splitpushbl = false; //是否分开推送B站榜单
 $.pushnewbl = false; //是否忽略关键词推送B站最新内容
 $.splitpushdb = false; //是否分开推送豆瓣榜单
 $.pushnewdb = false; //是否忽略关键词推送豆瓣最新内容
+$.splitpushdy = false; //是否分开推送抖音榜单
+$.pushnewdy = false; //是否忽略关键词推送抖音最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 $.time = 2; //榜单获取时限，单位秒
@@ -119,23 +123,27 @@ var itemszh = [];
 var itemsbd = [];
 var itemsbl = [];
 var itemsdb = [];
+var itemsdy = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
 var urlsbl = [];
 var urlsdb = [];
-var covers4 = [];
-var covers5 = [];
+var urlsdy = [];
+var coversbl = [];
+var coversdb = [];
 var resultwb = [];
 var resultzh = [];
 var resultbd = [];
 var resultbl = [];
 var resultdb = [];
+var resultdy = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
 var openurlbl = [];
 var openurldb = [];
+var openurldy = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 
@@ -193,6 +201,11 @@ var mediaurldb = [];
       } else {
         $.log("豆瓣榜单Cookie未获取或不完整😫\n请获取Cookie后再试❌");
       }
+    } else {
+      $.log("豆瓣榜单未获取😫");
+    }
+    if ($.douyin == true) {
+      await getdylist();
     } else {
       $.log("豆瓣榜单未获取😫");
     }
@@ -255,16 +268,19 @@ function getsetting() {
   $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
   $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
   $.douban = JSON.parse($.getdata("evil_db") || $.douban);
+  $.douyin = JSON.parse($.getdata("evil_dy") || $.douyin);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
   $.splitpushbl = JSON.parse($.getdata("evil_splitpushbl") || $.splitpushbl);
   $.splitpushdb = JSON.parse($.getdata("evil_splitpushdb") || $.splitpushdb);
+  $.splitpushdy = JSON.parse($.getdata("evil_splitpushdy") || $.splitpushdy);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
   $.pushnewbl = JSON.parse($.getdata("evil_pushnewbl") || $.pushnewbl);
   $.pushnewdb = JSON.parse($.getdata("evil_pushnewdb") || $.pushnewdb);
+  $.pushnewdy = JSON.parse($.getdata("evil_pushnewdy") || $.pushnewdy);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
@@ -272,6 +288,7 @@ function getsetting() {
   $.bdnum = $.getdata("evil_bdnum") * 1 || $.bdnum;
   $.blnum = $.getdata("evil_blnum") * 1 || $.blnum;
   $.dbnum = $.getdata("evil_dbnum") * 1 || $.dbnum;
+  $.dynum = $.getdata("evil_dynum") * 1 || $.dynum;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
@@ -294,6 +311,10 @@ function getsetting() {
   $.log("分开推送豆瓣内容 " + $.splitpushdb);
   $.log("忽略关键词获取豆瓣最热内容 " + $.pushnewdb);
   $.log("获取豆瓣榜单数量 " + $.dbnum + "个");
+  $.log("获取抖音榜单 " + $.douyin);
+  $.log("分开推送抖音内容 " + $.splitpushdy);
+  $.log("忽略关键词获取抖音最热内容 " + $.pushnewdy);
+  $.log("获取抖音榜单数量 " + $.dynum + "个");
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -710,7 +731,7 @@ function getbllist() {
             var cover = group[i].cover;
             itemsbl.push(item);
             urlsbl.push(url);
-            covers4.push(cover);
+            coversbl.push(cover);
           }
           $.log("B站日榜获取成功✅\n" + itemsbl);
           if ($.pushnewbl == false) {
@@ -725,7 +746,7 @@ function getbllist() {
                   keyword[j],
                   itemsbl,
                   urlsbl,
-                  covers4
+                  coversbl
                 );
               }
             } else {
@@ -752,7 +773,7 @@ function getbllist() {
                 $.blnum,
                 itemsbl,
                 urlsbl,
-                covers4
+                coversbl
               );
             } else {
               gethotcontent(
@@ -831,7 +852,7 @@ function getdblist() {
             var cover = group[i].cover.url;
             itemsdb.push(item);
             urlsdb.push(url);
-            covers5.push(cover);
+            coversdb.push(cover);
           }
           $.log("豆瓣榜单获取成功✅\n" + itemsdb);
           if ($.pushnewdb == false) {
@@ -846,7 +867,7 @@ function getdblist() {
                   keyword[j],
                   itemsdb,
                   urlsdb,
-                  covers5
+                  coversdb
                 );
               }
             } else {
@@ -873,7 +894,7 @@ function getdblist() {
                 $.dbnum,
                 itemsdb,
                 urlsdb,
-                covers5
+                coversdb
               );
             } else {
               gethotcontent(
@@ -903,6 +924,103 @@ function getdblist() {
       resolve();
     }, $.time);
   });
+}
+
+function getdylist() {
+  $.log("开始获取抖音榜单...");
+  return new Promise(resolve => {
+    try {
+      const dyRequest = {
+        url: "https://tophub.today/n/DpQvNABoNE"
+      };
+      $.get(dyRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          parsehtml(body, itemsdy, urlsdy);
+          $.log("抖音榜单获取成功✅\n" + itemsdy);
+          if ($.pushnewdy == false) {
+            if ($.attachurl == true) {
+              for (var j = 0; j < keyword.length; j++) {
+                getkeywordcontenturl(
+                  $.splitpushdy,
+                  "抖音",
+                  resultdy,
+                  openurldy,
+                  keyword[j],
+                  itemsdy,
+                  urlsdy
+                );
+              }
+            } else {
+              for (j = 0; j < keyword.length; j++) {
+                getkeywordcontent(
+                  $.splitpushdy,
+                  "抖音",
+                  resultdy,
+                  openurldy,
+                  keyword[j],
+                  itemsdy,
+                  urlsdy
+                );
+              }
+            }
+          } else {
+            if ($.attachurl == true) {
+              gethotcontenturl(
+                $.splitpushdy,
+                "抖音",
+                resultdy,
+                openurldy,
+                $.dynum,
+                itemsdy,
+                urlsdy
+              );
+            } else {
+              gethotcontent(
+                $.splitpushdy,
+                "抖音",
+                resultdy,
+                openurldy,
+                $.dynum,
+                itemsdy,
+                urlsdy
+              );
+            }
+          }
+          resolve();
+        } else {
+          $.log("获取抖音榜单出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取抖音榜单出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
+function parsehtml(str, items, urls) {
+  var text = JSON.stringify(str);
+  //console.log(text)
+  var name = /itemid\=\\\"\d\d\d\d\d\d\d\d\\\"\>.*?\<\/a\>\<\/td\>/g;
+  var link = /al\\\"\>\<a href\=\\\".*?\\\"/g;
+  var preitem = text.match(name);
+  var preurl = text.match(link);
+  for (var i = 0; i < 21; i++) {
+    var postitem = preitem[i].slice(20, -9);
+    var posturl = preurl[i].slice(15, -2);
+    items.push(postitem);
+    urls.push(posturl);
+  }
 }
 
 function getkeywordcontent(splitpush, text, result, openurl, key, items, urls) {
@@ -1122,12 +1240,20 @@ function output() {
       mergepushnotify(resultdb);
     }
   }
+  if (resultdy.length != 0) {
+    if ($.splitpushdy == true) {
+      splitpushnotify(resultdy, openurldy);
+    } else {
+      mergepushnotify(resultdy);
+    }
+  }
   if (
     resultwb.length == 0 &&
     resultzh.length == 0 &&
     resultbd.length == 0 &&
     resultbl.length == 0 &&
-    resultdb.length == 0
+    resultdb.length == 0 &&
+    resultdy.length == 0
   ) {
     $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
@@ -1139,7 +1265,8 @@ function final() {
     $.zhihu == false &&
     $.baidu == false &&
     $.bilibili == false &&
-    $.douban == false
+    $.douban == false &&
+    $.douyin == false
   ) {
     $.msg(
       "热门监控",
