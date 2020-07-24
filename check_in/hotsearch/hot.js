@@ -67,6 +67,8 @@ $.douban = true; //是否开启相应榜单监控
 $.dbnum = 6; //自定豆瓣榜单数量
 $.douyin = true; //是否开启相应榜单监控
 $.dynum = 6; //自定抖音榜单数量
+$.k36 = true; //是否开启相应榜单监控
+$.k36num = 6; //自定36氪榜单数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -79,6 +81,8 @@ $.splitpushdb = false; //是否分开推送豆瓣榜单
 $.pushnewdb = false; //是否忽略关键词推送豆瓣最新内容
 $.splitpushdy = false; //是否分开推送抖音榜单
 $.pushnewdy = false; //是否忽略关键词推送抖音最新内容
+$.splitpushk36 = false; //是否分开推送36氪榜单
+$.pushnewk36 = false; //是否忽略关键词推送36氪最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 $.time = 2; //榜单获取时限，单位秒
@@ -90,12 +94,14 @@ var itemsbd = [];
 var itemsbl = [];
 var itemsdb = [];
 var itemsdy = [];
+var itemsk36 = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
 var urlsbl = [];
 var urlsdb = [];
 var urlsdy = [];
+var urlsk36 = [];
 var coversbl = [];
 var coversdb = [];
 var resultwb = [];
@@ -104,12 +110,14 @@ var resultbd = [];
 var resultbl = [];
 var resultdb = [];
 var resultdy = [];
+var resultk36 = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
 var openurlbl = [];
 var openurldb = [];
 var openurldy = [];
+var openurlk36 = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 
@@ -150,6 +158,11 @@ var mediaurldb = [];
     } else {
       $.log("抖音榜单未获取😫");
     }
+    if ($.k36 == true) {
+      await getk36list();
+    } else {
+      $.log("36氪榜单未获取😫");
+    }
     output();
     final();
     deluselessck();
@@ -172,7 +185,11 @@ function havekeyword() {
         return true;
       }
     }
-    $.msg("热门监控", "请输入要监控的关键词🔍", "请在BoxJs或本地中进行设置。");
+    $.msg(
+      "热门监控",
+      "请输入要监控的关键词🔍",
+      "存在为空的关键词，请在BoxJs或本地重新设置。"
+    );
     return false;
   }
 }
@@ -186,27 +203,27 @@ function getsetting() {
     var key = $.getdata("evil_wb_keyword");
     keyword = key.split("，");
   }
-  $.deletecookie = JSON.parse(
-    $.getdata("evil_wb_deletecookie") || $.deletecookie
-  );
   $.weibo = JSON.parse($.getdata("evil_wb") || $.weibo);
   $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
   $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
   $.bilibili = JSON.parse($.getdata("evil_bl") || $.bilibili);
   $.douban = JSON.parse($.getdata("evil_db") || $.douban);
   $.douyin = JSON.parse($.getdata("evil_dy") || $.douyin);
+  $.k36 = JSON.parse($.getdata("evil_k36") || $.k36);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
   $.splitpushbl = JSON.parse($.getdata("evil_splitpushbl") || $.splitpushbl);
   $.splitpushdb = JSON.parse($.getdata("evil_splitpushdb") || $.splitpushdb);
   $.splitpushdy = JSON.parse($.getdata("evil_splitpushdy") || $.splitpushdy);
+  $.splitpushk36 = JSON.parse($.getdata("evil_splitpushk36") || $.splitpushk36);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
   $.pushnewbl = JSON.parse($.getdata("evil_pushnewbl") || $.pushnewbl);
   $.pushnewdb = JSON.parse($.getdata("evil_pushnewdb") || $.pushnewdb);
   $.pushnewdy = JSON.parse($.getdata("evil_pushnewdy") || $.pushnewdy);
+  $.pushnewk36 = JSON.parse($.getdata("evil_pushnewk36") || $.pushnewk36);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
@@ -215,6 +232,7 @@ function getsetting() {
   $.blnum = $.getdata("evil_blnum") * 1 || $.blnum;
   $.dbnum = $.getdata("evil_dbnum") * 1 || $.dbnum;
   $.dynum = $.getdata("evil_dynum") * 1 || $.dynum;
+  $.k36num = $.getdata("evil_k36num") * 1 || $.k36num;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
@@ -241,6 +259,10 @@ function getsetting() {
   $.log("分开推送抖音内容 " + $.splitpushdy);
   $.log("忽略关键词获取抖音最热内容 " + $.pushnewdy);
   $.log("获取抖音榜单数量 " + $.dynum + "个");
+  $.log("获取36氪榜单 " + $.k36);
+  $.log("分开推送36氪内容 " + $.splitpushk36);
+  $.log("忽略关键词获取36氪最热内容 " + $.pushnewk36);
+  $.log("获取36氪榜单数量 " + $.k36num + "个");
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -249,7 +271,8 @@ function gethotsearch() {
   return new Promise(resolve => {
     try {
       const wbRequest = {
-        url: "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot"
+        url:
+          "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot"
       };
       $.get(wbRequest, (error, response, data) => {
         if (error) {
@@ -276,10 +299,11 @@ function gethotsearch() {
           for (var i = 0; i < num; i++) {
             var item = group[i].desc;
             var urllong = group[i].scheme;
-            var content = urllong.match(new RegExp(/q=.*?&isnewpage/));
+            var content = urllong.match(new RegExp(/q%3D.*?&isnewpage/));
             var con = JSON.stringify(content);
             var newcon = con.slice(2, -12);
-            var url = "sinaweibo://searchall?" + newcon;
+            var postcon = newcon.replace("q%3D", "q=%23");
+            var url = "sinaweibo://searchall?" + postcon + "%23";
             itemswb.push(item);
             urlswb.push(url);
           }
@@ -724,36 +748,76 @@ function getdylist() {
   });
 }
 
+function getk36list() {
+  $.log("开始获取36氪榜单...");
+  return new Promise(resolve => {
+    try {
+      const k36Request = {
+        url: "https://tophub.today/n/Q1Vd5Ko85R"
+      };
+      $.get(k36Request, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          parsehtml(body, itemsk36, urlsk36);
+          $.log("36氪榜单获取成功✅\n" + itemsk36);
+          if ($.pushnewk36 == false) {
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushk36,
+                "36氪",
+                resultk36,
+                openurlk36,
+                keyword[j],
+                itemsk36,
+                urlsk36
+              );
+            }
+          } else {
+            gethotcontenturl(
+              $.splitpushk36,
+              "36氪",
+              resultk36,
+              openurlk36,
+              $.k36num,
+              itemsk36,
+              urlsk36
+            );
+          }
+          resolve();
+        } else {
+          $.log("获取36氪榜单出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取36氪榜单出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
 function parsehtml(str, items, urls) {
   var text = JSON.stringify(str);
   var name = /itemid\=\\\"\d\d\d\d\d\d\d\d\\\"\>.*?\<\/a\>\<\/td\>/g;
   var link = /al\\\"\>\<a href\=\\\".*?\\\"/g;
   var preitem = text.match(name);
   var preurl = text.match(link);
-  for (var i = 0; i < 21; i++) {
+  for (var i = 0; i < 20; i++) {
     var postitem = preitem[i].slice(20, -9);
     var posturl = preurl[i].slice(15, -2);
+    if (postitem.indexOf("<i class") != -1) {
+      continue;
+    }
     items.push(postitem);
     urls.push(posturl);
-  }
-}
-
-function gethotcontent(splitpush, text, result, openurl, num, items, urls) {
-  if (splitpush == false) {
-    for (var i = 0; i < num; i++) {
-      if (i == 0) {
-        result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
-        openurl.push(urls[i]);
-      } else {
-        result.push(`第${i + 1}名：${items[i]}`);
-        openurl.push(urls[i]);
-      }
-    }
-  } else {
-    for (i = 0; i < num; i++) {
-      result.push(`🎉"${text}"的热门排行\n第${i + 1}名：${items[i]}`);
-      openurl.push(urls[i]);
-    }
   }
 }
 
@@ -1001,13 +1065,21 @@ function output() {
       mergepushnotify(resultdy);
     }
   }
+  if (resultk36.length != 0) {
+    if ($.splitpushk36 == true) {
+      splitpushnotify(resultk36, openurlk36);
+    } else {
+      mergepushnotify(resultk36);
+    }
+  }
   if (
     resultwb.length == 0 &&
     resultzh.length == 0 &&
     resultbd.length == 0 &&
     resultbl.length == 0 &&
     resultdb.length == 0 &&
-    resultdy.length == 0
+    resultdy.length == 0 &&
+    resultk36.length == 0
   ) {
     $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
@@ -1020,7 +1092,8 @@ function final() {
     $.baidu == false &&
     $.bilibili == false &&
     $.douban == false &&
-    $.douyin == false
+    $.douyin == false &&
+    $.k36 == false
   ) {
     $.msg(
       "热门监控",
