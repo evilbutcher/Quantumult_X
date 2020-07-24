@@ -20,7 +20,7 @@
   },{
     "id": "hot",
     "name": "热门监控",
-    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie","evil_baiducookie","evil_bilibilicookie","evil_doubancookie"],
+    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie","evil_baiducookie","evil_bilibilicookie"],
     "settings": [
       { "id": "evil_wb_deletecookie", "name": "清空全部Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"},
       { "id": "evil_wb_keyword", "name": "全部关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
