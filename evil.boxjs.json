@@ -48,6 +48,10 @@
       { "id": "evil_splitpushdy", "name": "分开推送抖音内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
       { "id": "evil_pushnewdy", "name": "忽略关键词推送抖音最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
       { "id": "evil_dynum", "name": "忽略关键词时获取的抖音榜单数量", "val": 6, "type": "number", "desc": "自定匹配抖音榜单内容数量"},
+      { "id": "evil_k36", "name": "36氪榜单", "val": false, "type": "boolean", "desc": "打开则会监控36氪榜单"},
+      { "id": "evil_splitpushk36", "name": "分开推送36氪内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
+      { "id": "evil_pushnewk36", "name": "忽略关键词推送36氪最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
+      { "id": "evil_k36num", "name": "忽略关键词时获取的36氪榜单数量", "val": 6, "type": "number", "desc": "自定匹配36氪榜单内容数量"},
       { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接"},
       { "id": "evil_time", "name": "榜单获取时限（s）", "val":2, "type": "number", "desc": "榜单获取时限"}
       ],
