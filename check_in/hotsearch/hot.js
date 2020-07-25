@@ -303,8 +303,8 @@ function gethotsearch() {
             var content = urllong.match(new RegExp(/q%3D.*?&isnewpage/));
             var con = JSON.stringify(content);
             var newcon = con.slice(2, -12);
-            var postcon = newcon.replace("q%3D", "q=%23");
-            var url = "sinaweibo://searchall?" + postcon + "%23";
+            var postcon = newcon.replace("q%3D", "q=");
+            var url = "sinaweibo://searchall?" + postcon;
             itemswb.push(item);
             urlswb.push(url);
           }
