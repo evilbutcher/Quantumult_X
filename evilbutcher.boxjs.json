@@ -3,7 +3,7 @@
   "name": "evilbutcher 应用订阅",
   "author": "@evilbutcher",
   "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
-  "repo": "https://github.com/evilbutcher/Quantumult_X",
+  "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master",
   "apps": [{
     "id": "weibotalk",
     "name": "微博超话（单账号版）",
@@ -20,9 +20,8 @@
   },{
     "id": "hot",
     "name": "热门监控",
-    "keys": ["evil_hotsearchurl","evil_hotsearchcookie","evil_zhihuurl","evil_zhihucookie","evil_baiducookie","evil_bilibilicookie","evil_doubancookie"],
+    "keys": [],
     "settings": [
-      { "id": "evil_wb_deletecookie", "name": "清空全部Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭"},
       { "id": "evil_wb_keyword", "name": "全部关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
       { "id": "evil_wb", "name": "微博热搜", "val": true, "type": "boolean", "desc": "打开则会监控微博热搜"},
       { "id": "evil_splitpushwb", "name": "分开推送微博内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
@@ -49,6 +48,10 @@
       { "id": "evil_splitpushdy", "name": "分开推送抖音内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
       { "id": "evil_pushnewdy", "name": "忽略关键词推送抖音最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
       { "id": "evil_dynum", "name": "忽略关键词时获取的抖音榜单数量", "val": 6, "type": "number", "desc": "自定匹配抖音榜单内容数量"},
+      { "id": "evil_k36", "name": "36氪榜单", "val": false, "type": "boolean", "desc": "打开则会监控36氪榜单"},
+      { "id": "evil_splitpushk36", "name": "分开推送36氪内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
+      { "id": "evil_pushnewk36", "name": "忽略关键词推送36氪最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
+      { "id": "evil_k36num", "name": "忽略关键词时获取的36氪榜单数量", "val": 6, "type": "number", "desc": "自定匹配36氪榜单内容数量"},
       { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接"},
       { "id": "evil_time", "name": "榜单获取时限（s）", "val":2, "type": "number", "desc": "榜单获取时限"}
       ],
