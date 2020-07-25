@@ -16,7 +16,8 @@
     ],
     "author": "@toulanboy, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo",
-    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"]
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png", "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js"
   },{
     "id": "hot",
     "name": "热门监控",
@@ -57,13 +58,15 @@
       ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch",
-    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/hot.png", "https://raw.githubusercontent.com/Orz-3/task/master/hot.png"]
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/hot.png", "https://raw.githubusercontent.com/Orz-3/task/master/hot.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js"
   },{
     "id": "glados",
     "name": "GLaDOS签到",
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
-    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/airport.png", "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png"]
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/airport.png", "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
   }]
 }
