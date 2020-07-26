@@ -53,6 +53,10 @@
       { "id": "evil_splitpushk36", "name": "分开推送36氪内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
       { "id": "evil_pushnewk36", "name": "忽略关键词推送36氪最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
       { "id": "evil_k36num", "name": "忽略关键词时获取的36氪榜单数量", "val": 6, "type": "number", "desc": "自定匹配36氪榜单内容数量"},
+      { "id": "evil_amazon", "name": "Kindle图书榜单", "val": false, "type": "boolean", "desc": "打开则会监控Kindle图书榜单"},
+      { "id": "evil_splitpushamz", "name": "分开推送Kindle图书内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
+      { "id": "evil_pushnewamz", "name": "忽略关键词推送Kindle图书最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
+      { "id": "evil_amznum", "name": "忽略关键词时获取的Kindle图书榜单数量", "val": 6, "type": "number", "desc": "自定匹配Kindle图书榜单内容数量"},
       { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接"},
       { "id": "evil_time", "name": "榜单获取时限（s）", "val":2, "type": "number", "desc": "榜单获取时限"}
       ],
