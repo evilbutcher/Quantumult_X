@@ -834,7 +834,11 @@ function getamazonlist() {
   return new Promise(resolve => {
     try {
       const amazonRequest = {
-        url: "https://www.amazon.cn/gp/bestsellers/digital-text"
+        url: "https://www.amazon.cn/gp/bestsellers/digital-text",
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1"
+        }
       };
       $.get(amazonRequest, (error, response, data) => {
         if (error) {
