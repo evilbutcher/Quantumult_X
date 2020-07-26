@@ -8,7 +8,7 @@
 
 ⚠️【使用方法】请仔细阅读⚠️
 ------------------------------------------
-1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单。
+1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书。
 2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
@@ -17,6 +17,7 @@
 7、可选择是否附带跳转链接。
 8、可自定每个榜单匹配关键词还是获取最新内容。
 9、可自定每个榜单推送分开还是合并。
+10、支持BoxJs直接运行脚本。
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
@@ -70,6 +71,8 @@ $.douyin = true; //是否开启相应榜单监控
 $.dynum = 6; //自定抖音榜单数量
 $.k36 = true; //是否开启相应榜单监控
 $.k36num = 6; //自定36氪榜单数量
+$.amazon = true; //是否开启相应榜单监控
+$.amznum = 6; //自定Kindle图书榜单数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -84,6 +87,8 @@ $.splitpushdy = false; //是否分开推送抖音榜单
 $.pushnewdy = false; //是否忽略关键词推送抖音最新内容
 $.splitpushk36 = false; //是否分开推送36氪榜单
 $.pushnewk36 = false; //是否忽略关键词推送36氪最新内容
+$.splitpushamz = false; //是否分开推送Kindle图书榜单
+$.pushnewamz = false; //是否忽略关键词推送Kindle图书最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 $.time = 2; //榜单获取时限，单位秒
@@ -96,6 +101,7 @@ var itemsbl = [];
 var itemsdb = [];
 var itemsdy = [];
 var itemsk36 = [];
+var itemsamz = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
@@ -103,8 +109,10 @@ var urlsbl = [];
 var urlsdb = [];
 var urlsdy = [];
 var urlsk36 = [];
+var urlsamz = [];
 var coversbl = [];
 var coversdb = [];
+var coversamz = [];
 var resultwb = [];
 var resultzh = [];
 var resultbd = [];
@@ -112,6 +120,7 @@ var resultbl = [];
 var resultdb = [];
 var resultdy = [];
 var resultk36 = [];
+var resultamz = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
@@ -119,8 +128,10 @@ var openurlbl = [];
 var openurldb = [];
 var openurldy = [];
 var openurlk36 = [];
+var openurlamz = [];
 var mediaurlbl = [];
 var mediaurldb = [];
+var mediaurlamz = [];
 
 !(async () => {
   /*if (typeof $request != "undefined") {
@@ -163,6 +174,11 @@ var mediaurldb = [];
       await getk36list();
     } else {
       $.log("36氪榜单未获取😫");
+    }
+    if ($.amazon == true) {
+      await getamazonlist();
+    } else {
+      $.log("Kindle图书榜单未获取😫");
     }
     output();
     final();
@@ -211,6 +227,7 @@ function getsetting() {
   $.douban = JSON.parse($.getdata("evil_db") || $.douban);
   $.douyin = JSON.parse($.getdata("evil_dy") || $.douyin);
   $.k36 = JSON.parse($.getdata("evil_k36") || $.k36);
+  $.amazon = JSON.parse($.getdata("evil_amazon") || $.amazon);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
@@ -218,6 +235,7 @@ function getsetting() {
   $.splitpushdb = JSON.parse($.getdata("evil_splitpushdb") || $.splitpushdb);
   $.splitpushdy = JSON.parse($.getdata("evil_splitpushdy") || $.splitpushdy);
   $.splitpushk36 = JSON.parse($.getdata("evil_splitpushk36") || $.splitpushk36);
+  $.splitpushamz = JSON.parse($.getdata("evil_splitpushamz") || $.splitpushamz);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
@@ -225,6 +243,7 @@ function getsetting() {
   $.pushnewdb = JSON.parse($.getdata("evil_pushnewdb") || $.pushnewdb);
   $.pushnewdy = JSON.parse($.getdata("evil_pushnewdy") || $.pushnewdy);
   $.pushnewk36 = JSON.parse($.getdata("evil_pushnewk36") || $.pushnewk36);
+  $.pushnewamz = JSON.parse($.getdata("evil_pushnewamz") || $.pushnewamz);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
@@ -234,6 +253,7 @@ function getsetting() {
   $.dbnum = $.getdata("evil_dbnum") * 1 || $.dbnum;
   $.dynum = $.getdata("evil_dynum") * 1 || $.dynum;
   $.k36num = $.getdata("evil_k36num") * 1 || $.k36num;
+  $.amznum = $.getdata("evil_amznum") * 1 || $.amznum;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("获取微博热搜 " + $.weibo);
@@ -264,6 +284,10 @@ function getsetting() {
   $.log("分开推送36氪内容 " + $.splitpushk36);
   $.log("忽略关键词获取36氪最热内容 " + $.pushnewk36);
   $.log("获取36氪榜单数量 " + $.k36num + "个");
+  $.log("获取Kindle图书榜单 " + $.amazon);
+  $.log("分开推送Kindle图书内容 " + $.splitpushamz);
+  $.log("忽略关键词获取Kindle图书最热内容 " + $.pushnewamz);
+  $.log("获取Kindle图书榜单数量 " + $.amznum + "个");
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -805,6 +829,66 @@ function getk36list() {
   });
 }
 
+function getamazonlist() {
+  $.log("开始获取Kindle图书榜单...");
+  return new Promise(resolve => {
+    try {
+      const amazonRequest = {
+        url: "https://www.amazon.cn/gp/bestsellers/digital-text"
+      };
+      $.get(amazonRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          parsehtmlkindle(body, itemsamz, urlsamz, coversamz);
+          $.log("Kindle图书榜单获取成功✅\n" + itemsamz);
+          if ($.pushnewamz == false) {
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontentmedia(
+                $.splitpushamz,
+                "Kindle书单",
+                resultamz,
+                openurlamz,
+                mediaurlamz,
+                keyword[j],
+                itemsamz,
+                urlsamz,
+                coversamz
+              );
+            }
+          } else {
+            gethotcontentmedia(
+              $.splitpushamz,
+              "Kindle书单",
+              resultamz,
+              openurlamz,
+              mediaurlamz,
+              $.amznum,
+              itemsamz,
+              urlsamz,
+              coversamz
+            );
+          }
+          resolve();
+        } else {
+          $.log("获取Kindle图书榜单出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取Kindle图书榜单出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
 function parsehtml(str, items, urls) {
   var text = JSON.stringify(str);
   var name = /itemid\=\\\"\d\d\d\d\d\d\d\d\\\"\>.*?\<\/a\>\<\/td\>/g;
@@ -819,6 +903,37 @@ function parsehtml(str, items, urls) {
     }
     items.push(postitem);
     urls.push(posturl);
+  }
+}
+
+function parsehtmlkindle(str, items, urls, covers) {
+  var text = JSON.stringify(str);
+  var name = /\<img alt\=\\\".*?\\\"/g;
+  var link = /href\=\\\"\/dp.*?\\\"/g;
+  var img = /\" src\=\\\"https.*?SR110\,110\_\.jpg/g;
+  var price1 = /a-size-large\\\"\>.*?\</g;
+  var price2 = /p13n-sc-hero-cents\\\"\>.*?\</g;
+  var preitem = text.match(name);
+  var preurl = text.match(link);
+  var preimg = text.match(img);
+  var preprice1 = text.match(price1);
+  var preprice2 = text.match(price2);
+  for (var i = 0; i < 20; i++) {
+    var postitem = preitem[i].slice(11, -2);
+    var posturl = preurl[i].slice(7, -2);
+    var addurl = "https://www.amazon.cn" + posturl;
+    var imgurl = preimg[i].slice(8);
+    var posturl = imgurl.replace(
+      "UL110_SR110,110_.jpg",
+      "UL330_SR330,330_.jpg"
+    );
+    var postprice1 = preprice1[i].slice(15, -1);
+    var postprice2 = preprice2[i].slice(21, -1);
+    var content =
+      postitem + "\n" + "价格：" + postprice1 + "." + postprice2 + "¥";
+    items.push(content);
+    urls.push(addurl);
+    covers.push(posturl);
   }
 }
 
@@ -1073,6 +1188,13 @@ function output() {
       mergepushnotify(resultk36);
     }
   }
+  if (resultamz.length != 0) {
+    if ($.splitpushamz == true) {
+      splitpushnotifymedia(resultamz, openurlamz, mediaurlamz);
+    } else {
+      mergepushnotify(resultamz);
+    }
+  }
   if (
     resultwb.length == 0 &&
     resultzh.length == 0 &&
@@ -1080,7 +1202,8 @@ function output() {
     resultbl.length == 0 &&
     resultdb.length == 0 &&
     resultdy.length == 0 &&
-    resultk36.length == 0
+    resultk36.length == 0 &&
+    resultamz.length == 0
   ) {
     $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
@@ -1094,7 +1217,8 @@ function final() {
     $.bilibili == false &&
     $.douban == false &&
     $.douyin == false &&
-    $.k36 == false
+    $.k36 == false &&
+    $.amazon == false
   ) {
     $.msg(
       "热门监控",
