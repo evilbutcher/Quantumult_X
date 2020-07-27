@@ -24,6 +24,7 @@
     "keys": [],
     "settings": [
       { "id": "evil_wb_keyword", "name": "全部关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
+      { "id": "evil_rss", "name": "RSS订阅", "val": "", "type": "textarea", "desc": "请输入RSS订阅链接，以中文逗号分隔" },
       { "id": "evil_wb", "name": "微博热搜", "val": true, "type": "boolean", "desc": "打开则会监控微博热搜"},
       { "id": "evil_splitpushwb", "name": "分开推送微博内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
       { "id": "evil_pushnewwb", "name": "忽略关键词推送微博最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容"},
