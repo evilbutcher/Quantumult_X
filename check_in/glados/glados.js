@@ -43,8 +43,7 @@ function signin() {
   return new Promise(resolve => {
     const signinRequest = {
       url: "https://glados.rocks/api/user/checkin",
-      headers: { Cookie: sicookie },
-      body: {}
+      headers: { Cookie: sicookie }
     };
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
