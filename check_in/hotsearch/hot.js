@@ -8,7 +8,7 @@
 
 ⚠️【使用方法】请仔细阅读⚠️
 ------------------------------------------
-1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书。
+1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅
 2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
@@ -56,7 +56,9 @@ cron "30 0 8-22/2 * * *" script-path=https://raw.githubusercontent.com/evilbutch
 const $ = new Env("热门监控");
 
 //⚠️本地自定参数修改位置⚠️
-var keyword = ["万茜"]; //👈本地脚本关键词在这里设置。 ⚠️用英文逗号、英文双引号⚠️
+var keyword = ["万茜"]; //👈本地脚本关键词在这里设置。
+var rsslink = ["https://rsshub.app/bilibili/user/video/2267573"]; //👈本地rss订阅设置
+//⚠️👆以上用英文逗号、英文双引号⚠️
 $.weibo = true; //是否开启相应榜单监控
 $.wbnum = 6; //自定微博热搜数量
 $.zhihu = true; //是否开启相应榜单监控
@@ -73,6 +75,8 @@ $.k36 = true; //是否开启相应榜单监控
 $.k36num = 6; //自定36氪榜单数量
 $.amazon = true; //是否开启相应榜单监控
 $.amznum = 6; //自定Kindle图书榜单数量
+$.rss = true; //是否开启相应榜单监控
+$.rssnum = 6; //自定rss订阅推送数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -89,6 +93,8 @@ $.splitpushk36 = false; //是否分开推送36氪榜单
 $.pushnewk36 = false; //是否忽略关键词推送36氪最新内容
 $.splitpushamz = false; //是否分开推送Kindle图书榜单
 $.pushnewamz = false; //是否忽略关键词推送Kindle图书最新内容
+$.splitpushrss = false; //是否分开推送rss内容
+$.pushnewrss = false; //是否忽略关键词推送rss最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 $.time = 2; //榜单获取时限，单位秒
@@ -102,6 +108,7 @@ var itemsdb = [];
 var itemsdy = [];
 var itemsk36 = [];
 var itemsamz = [];
+var itemsrss = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
@@ -110,9 +117,11 @@ var urlsdb = [];
 var urlsdy = [];
 var urlsk36 = [];
 var urlsamz = [];
+var urlsrss = [];
 var coversbl = [];
 var coversdb = [];
 var coversamz = [];
+var coversrss = [];
 var resultwb = [];
 var resultzh = [];
 var resultbd = [];
@@ -121,6 +130,7 @@ var resultdb = [];
 var resultdy = [];
 var resultk36 = [];
 var resultamz = [];
+var resultrss = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
@@ -129,9 +139,12 @@ var openurldb = [];
 var openurldy = [];
 var openurlk36 = [];
 var openurlamz = [];
+var openurlrss = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 var mediaurlamz = [];
+var mediaurlrss = [];
+var titlerss = [];
 
 !(async () => {
   /*if (typeof $request != "undefined") {
@@ -142,45 +155,133 @@ var mediaurlamz = [];
   if (havekeyword() == true) {
     if ($.weibo == true) {
       await gethotsearch();
+      if (resultwb.length != 0) {
+        if ($.splitpushwb == true) {
+          splitpushnotify(resultwb, openurlwb);
+        } else {
+          mergepushnotify(resultwb);
+        }
+      }
     } else {
       $.log("微博热搜未获取😫");
     }
     if ($.zhihu == true) {
       await gethotlist();
+      if (resultzh.length != 0) {
+        if ($.splitpushzh == true) {
+          splitpushnotify(resultzh, openurlzh);
+        } else {
+          mergepushnotify(resultzh);
+        }
+      }
     } else {
       $.log("知乎热榜未获取😫");
     }
     if ($.baidu == true) {
       await getfylist();
+      if (resultbd.length != 0) {
+        if ($.splitpushbd == true) {
+          splitpushnotify(resultbd, openurlbd);
+        } else {
+          mergepushnotify(resultbd);
+        }
+      }
     } else {
       $.log("百度风云榜未获取😫");
     }
     if ($.bilibili == true) {
       await getbllist();
+      if (resultbl.length != 0) {
+        if ($.splitpushbl == true) {
+          splitpushnotifymedia(resultbl, openurlbl, mediaurlbl);
+        } else {
+          mergepushnotify(resultbl);
+        }
+      }
     } else {
       $.log("B站日榜未获取😫");
     }
     if ($.douban == true) {
       await getdblist();
+      if (resultdb.length != 0) {
+        if ($.splitpushdb == true) {
+          splitpushnotifymedia(resultdb, openurldb, mediaurldb);
+        } else {
+          mergepushnotify(resultdb);
+        }
+      }
     } else {
       $.log("豆瓣榜单未获取😫");
     }
     if ($.douyin == true) {
       await getdylist();
+      if (resultdy.length != 0) {
+        if ($.splitpushdy == true) {
+          splitpushnotify(resultdy, openurldy);
+        } else {
+          mergepushnotify(resultdy);
+        }
+      }
     } else {
       $.log("抖音榜单未获取😫");
     }
     if ($.k36 == true) {
       await getk36list();
+      if (resultk36.length != 0) {
+        if ($.splitpushk36 == true) {
+          splitpushnotify(resultk36, openurlk36);
+        } else {
+          mergepushnotify(resultk36);
+        }
+      }
     } else {
       $.log("36氪榜单未获取😫");
     }
     if ($.amazon == true) {
       await getamazonlist();
+      if (resultamz.length != 0) {
+        if ($.splitpushamz == true) {
+          splitpushnotifymedia(resultamz, openurlamz, mediaurlamz);
+        } else {
+          mergepushnotify(resultamz);
+        }
+      }
     } else {
       $.log("Kindle图书榜单未获取😫");
     }
-    output();
+    if ($.rss == true) {
+      if (haversslink()) {
+        for (var i = 0; i < rsslink.length; i++) {
+          resultrss[i] = [];
+          openurlrss[i] = [];
+          mediaurlrss[i] = [];
+          titlerss[i] = [];
+          itemsrss[i] = [];
+          urlsrss[i] = [];
+          coversrss[i] = [];
+          await getrsslist(
+            rsslink[i],
+            resultrss[i],
+            openurlrss[i],
+            mediaurlrss[i],
+            titlerss[i],
+            itemsrss[i],
+            urlsrss[i],
+            coversrss[i]
+          );
+          if (resultrss[i].length != 0) {
+            if ($.splitpushrss == true) {
+              splitpushnotifymedia(resultrss[i], openurlrss[i], mediaurlrss[i]);
+            } else {
+              mergepushnotify(resultrss[i]);
+            }
+          }
+        }
+      }
+    } else {
+      $.log("rss订阅未获取😫");
+    }
+    last();
     final();
     deluselessck();
   }
@@ -211,6 +312,25 @@ function havekeyword() {
   }
 }
 
+function haversslink() {
+  if (rsslink.length == 0) {
+    $.msg("热门监控", "请输入要监控的rss链接🔍", "请在BoxJs中进行设置。");
+    return false;
+  } else {
+    for (var i = 0; i < rsslink.length; i++) {
+      if (keyword[i] != 0) {
+        return true;
+      }
+    }
+    $.msg(
+      "热门监控",
+      "请输入要监控的rss链接🔍",
+      "存在为空的rss链接，请在BoxJs重新设置。"
+    );
+    return false;
+  }
+}
+
 function getsetting() {
   $.log("初始化，开始！");
   if (
@@ -220,6 +340,13 @@ function getsetting() {
     var key = $.getdata("evil_wb_keyword");
     keyword = key.split("，");
   }
+  if (
+    $.getdata("evil_rsslink") != undefined &&
+    $.getdata("evil_rsslink") != ""
+  ) {
+    var rssurl = $.getdata("evil_rsslink");
+    rsslink = rssurl.split("，");
+  }
   $.weibo = JSON.parse($.getdata("evil_wb") || $.weibo);
   $.zhihu = JSON.parse($.getdata("evil_zh") || $.zhihu);
   $.baidu = JSON.parse($.getdata("evil_bd") || $.baidu);
@@ -228,6 +355,7 @@ function getsetting() {
   $.douyin = JSON.parse($.getdata("evil_dy") || $.douyin);
   $.k36 = JSON.parse($.getdata("evil_k36") || $.k36);
   $.amazon = JSON.parse($.getdata("evil_amazon") || $.amazon);
+  $.rss = JSON.parse($.getdata("evil_rss") || $.rss);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
@@ -236,6 +364,7 @@ function getsetting() {
   $.splitpushdy = JSON.parse($.getdata("evil_splitpushdy") || $.splitpushdy);
   $.splitpushk36 = JSON.parse($.getdata("evil_splitpushk36") || $.splitpushk36);
   $.splitpushamz = JSON.parse($.getdata("evil_splitpushamz") || $.splitpushamz);
+  $.splitpushrss = JSON.parse($.getdata("evil_splitpushrss") || $.splitpushrss);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
@@ -244,6 +373,7 @@ function getsetting() {
   $.pushnewdy = JSON.parse($.getdata("evil_pushnewdy") || $.pushnewdy);
   $.pushnewk36 = JSON.parse($.getdata("evil_pushnewk36") || $.pushnewk36);
   $.pushnewamz = JSON.parse($.getdata("evil_pushnewamz") || $.pushnewamz);
+  $.pushnewrss = JSON.parse($.getdata("evil_pushnewrss") || $.pushnewrss);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
@@ -254,8 +384,14 @@ function getsetting() {
   $.dynum = $.getdata("evil_dynum") * 1 || $.dynum;
   $.k36num = $.getdata("evil_k36num") * 1 || $.k36num;
   $.amznum = $.getdata("evil_amznum") * 1 || $.amznum;
+  $.rssnum = $.getdata("evil_rssnum") * 1 || $.rssnum;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
+  $.log("监控rss链接 " + rsslink);
+  $.log("获取rss订阅 " + $.rss);
+  $.log("分开推送rss内容 " + $.splitpushrss);
+  $.log("忽略关键词获取rss最新内容 " + $.pushnewrss);
+  $.log("获取rss数量 " + $.rssnum + "个");
   $.log("获取微博热搜 " + $.weibo);
   $.log("分开推送微博内容 " + $.splitpushwb);
   $.log("忽略关键词获取微博最热内容 " + $.pushnewwb);
@@ -893,6 +1029,125 @@ function getamazonlist() {
   });
 }
 
+function getrsslist(
+  rsslink,
+  resultrss,
+  openurlrss,
+  mediaurlrss,
+  titlerss,
+  itemsrss,
+  urlsrss,
+  coversrss
+) {
+  $.log("开始获取RSS内容...");
+  return new Promise(resolve => {
+    try {
+      const rssRequest = {
+        url: rsslink
+      };
+      $.get(rssRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          parsehtmlrss(body, titlerss, itemsrss, urlsrss, coversrss);
+          $.log("RSS内容获取成功✅\n" + itemsrss);
+          if ($.pushnewrss == false) {
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontentmedia(
+                $.splitpushrss,
+                titlerss,
+                resultrss,
+                openurlrss,
+                mediaurlrss,
+                keyword[j],
+                itemsrss,
+                urlsrss,
+                coversrss
+              );
+            }
+          } else {
+            gethotcontentmedia(
+              $.splitpushrss,
+              titlerss,
+              resultrss,
+              openurlrss,
+              mediaurlrss,
+              $.rssnum,
+              itemsrss,
+              urlsrss,
+              coversrss
+            );
+          }
+          resolve();
+        } else {
+          $.log("获取RSS内容出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取RSS内容出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
+function parsehtmlrss(str, title, items, urls, covers) {
+  var text = JSON.stringify(str);
+  var alltitle = /channel\>\\n.*?\<title\>\<\!\[CDATA\[.*?]/;
+  var thetitle = /CDATA\[.*?]/;
+  var pretitle = text.match(alltitle);
+  var posttitle = JSON.stringify(pretitle[0]).match(thetitle);
+  title.splice(0);
+  title.push(JSON.stringify(posttitle[0]).slice(7, -2));
+  var content = /item\>.*?\<\/item/g;
+  var detail = text.match(content);
+  for (var i = 0; i < 15; i++) {
+    var subtitle = /CDATA\[.*?]/;
+    var allwords = /description\>\<\!\[CDATA\[.*?]/;
+    var allurls = /link\>http.*?\</;
+    var allcovers = /img src=\\\".*?\\/;
+    var presubtitle = detail[i].match(subtitle);
+    if (presubtitle != null) {
+      var postsubtitle = presubtitle[0].slice(6, -1);
+      var prewords = detail[i].match(allwords);
+
+      var postwords = prewords[0].slice(21, -1);
+      var okwords = postwords.replace(new RegExp(/\\n/, "gm"), "");
+      var finalwords = postwords.replace(new RegExp(/\<.*?\>/, "gm"), "");
+      if (finalwords.length != 0) {
+        var item = postsubtitle + "\n🔍详情  " + finalwords;
+        items.push(item);
+      } else {
+        finalwords = "暂无";
+        var item = postsubtitle + "\n🔍详情  " + finalwords;
+        items.push(item);
+      }
+      var preurls = detail[i].match(allurls);
+
+      var posturls = preurls[0].slice(5, -1);
+      urls.push(posturls);
+      var precovers = detail[i].match(allcovers);
+      if (precovers != null) {
+        var postcovers = precovers[0].slice(10, -1);
+        covers.push(postcovers);
+      } else {
+        covers.push(
+          "https://raw.githubusercontent.com/Orz-3/task/master/hot.png"
+        );
+      }
+    } else {
+      continue;
+    }
+  }
+}
+
 function parsehtml(str, items, urls) {
   var text = JSON.stringify(str);
   var name = /itemid\=\\\"\d\d\d\d\d\d\d\d\\\"\>.*?\<\/a\>\<\/td\>/g;
@@ -927,17 +1182,14 @@ function parsehtmlkindle(str, items, urls, covers) {
     var posturl = preurl[i].slice(7, -2);
     var addurl = "https://www.amazon.cn" + posturl;
     var imgurl = preimg[i].slice(8);
-    var posturl = imgurl.replace(
-      "UL110_SR110,110_.jpg",
-      "UL330_SR330,330_.jpg"
-    );
+    var okurl = imgurl.replace("UL110_SR110,110_.jpg", "UL330_SR330,330_.jpg");
     var postprice1 = preprice1[i].slice(15, -1);
     var postprice2 = preprice2[i].slice(21, -1);
     var content =
-      postitem + "\n" + "价格：" + postprice1 + "." + postprice2 + "¥";
+      postitem + "\n" + "💰价格  " + postprice1 + "." + postprice2 + "¥";
     items.push(content);
     urls.push(addurl);
-    covers.push(posturl);
+    covers.push(okurl);
   }
 }
 
@@ -1142,63 +1394,16 @@ function splitpushnotifymedia(result, openurl, mediaurl) {
   }
 }
 
-function output() {
-  if (resultwb.length != 0) {
-    if ($.splitpushwb == true) {
-      splitpushnotify(resultwb, openurlwb);
-    } else {
-      mergepushnotify(resultwb);
+function checkrssresult() {
+  for (var i = 0; i < rsslink.length; i++) {
+    if (resultrss[i].length != 0) {
+      return true;
     }
   }
-  if (resultzh.length != 0) {
-    if ($.splitpushzh == true) {
-      splitpushnotify(resultzh, openurlzh);
-    } else {
-      mergepushnotify(resultzh);
-    }
-  }
-  if (resultbd.length != 0) {
-    if ($.splitpushbd == true) {
-      splitpushnotify(resultbd, openurlbd);
-    } else {
-      mergepushnotify(resultbd);
-    }
-  }
-  if (resultbl.length != 0) {
-    if ($.splitpushbl == true) {
-      splitpushnotifymedia(resultbl, openurlbl, mediaurlbl);
-    } else {
-      mergepushnotify(resultbl);
-    }
-  }
-  if (resultdb.length != 0) {
-    if ($.splitpushdb == true) {
-      splitpushnotifymedia(resultdb, openurldb, mediaurldb);
-    } else {
-      mergepushnotify(resultdb);
-    }
-  }
-  if (resultdy.length != 0) {
-    if ($.splitpushdy == true) {
-      splitpushnotify(resultdy, openurldy);
-    } else {
-      mergepushnotify(resultdy);
-    }
-  }
-  if (resultk36.length != 0) {
-    if ($.splitpushk36 == true) {
-      splitpushnotify(resultk36, openurlk36);
-    } else {
-      mergepushnotify(resultk36);
-    }
-  }
-  if (resultamz.length != 0) {
-    if ($.splitpushamz == true) {
-      splitpushnotifymedia(resultamz, openurlamz, mediaurlamz);
-    } else {
-      mergepushnotify(resultamz);
-    }
-  }
+  return false
+}
+
+function last() {
   if (
     resultwb.length == 0 &&
     resultzh.length == 0 &&
@@ -1207,9 +1412,10 @@ function output() {
     resultdb.length == 0 &&
     resultdy.length == 0 &&
     resultk36.length == 0 &&
-    resultamz.length == 0
+    resultamz.length == 0 &&
+    checkrssresult() == false
   ) {
-    $.log(`😫您订阅的关键词"${keyword}"暂时没有更新`);
+    $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
 }
 
@@ -1222,7 +1428,8 @@ function final() {
     $.douban == false &&
     $.douyin == false &&
     $.k36 == false &&
-    $.amazon == false
+    $.amazon == false &&
+    $.rss == false
   ) {
     $.msg(
       "热门监控",
