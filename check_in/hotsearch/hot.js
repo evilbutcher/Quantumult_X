@@ -1396,11 +1396,13 @@ function splitpushnotifymedia(result, openurl, mediaurl) {
 
 function checkrssresult() {
   for (var i = 0; i < rsslink.length; i++) {
-    if (resultrss[i].length != 0) {
-      return true;
+    if (resultrss[i] != undefined) {
+      if (resultrss[i].length != 0) {
+        return true;
+      }
     }
   }
-  return false
+  return false;
 }
 
 function last() {
