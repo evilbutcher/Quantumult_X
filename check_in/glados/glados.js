@@ -1,6 +1,7 @@
 /*
 
 登陆链接：https://glados.rocks/，登陆即可获取Cookie。
+欢迎体验，邀请码：3JRG4-KSGZJ-8QPXF-8PPOO
 
 [rewrite_local]
 https:\/\/glados\.rocks\/api\/user\/status url script-request-header https://github.com/evilbutcher/Quantumult_X/raw/master/check_in/glados/glados.js
