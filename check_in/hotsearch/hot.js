@@ -1120,13 +1120,12 @@ function parsehtmlrss(str, title, items, urls, covers) {
 
       var postwords = prewords[0].slice(21, -1);
       var okwords = postwords.replace(new RegExp(/\\n/, "gm"), "");
-      var finalwords = postwords.replace(new RegExp(/\<.*?\>/, "gm"), "");
+      var finalwords = okwords.replace(new RegExp(/\<.*?\>/, "gm"), "");
       if (finalwords.length != 0) {
-        var item = postsubtitle + "\n🔍详情  " + finalwords;
+        var item = finalsubtitle + "\n🔍详情  " + finalwords;
         items.push(item);
       } else {
-        finalwords = "暂无";
-        var item = postsubtitle + "\n🔍详情  " + finalwords;
+        var item = finalsubtitle + "\n🔍详情  暂无";
         items.push(item);
       }
       var preurls = detail[i].match(allurls);
