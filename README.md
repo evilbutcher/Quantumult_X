@@ -2,6 +2,8 @@
 
 # Quantumult X脚本和规则整理
 
+绝大多数代码都用到了@chavyleung的Env.js，感谢！
+
 ## 脚本类
 ### [BoxJs](https://github.com/evilbutcher/Quantumult_X/blob/master/evilbutcher.boxjs.json)
 订阅地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
@@ -17,7 +19,8 @@
 #### 功能特点
 1、自动签到。  
 2、查看流量信息。  
-3、支持BoxJs。 
+3、支持BoxJs。  
+4、checkin_env.js修改自@Neurogram-R，增加了多平台支持。
  
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch)
 #### 功能特点
