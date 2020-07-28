@@ -82,10 +82,10 @@
     "name": "机场签到",
     "keys": [],
     "settings": [
-      { "id": "evil_checkintitle", "name": "标题", "val": "", "placeholder": "隔壁西站", "type": "textarea", "desc": "请依次填入标题" },
-      { "id": "evil_checkinlogin", "name": "网址", "val": "", "placeholder": "https://example.com/auth/login", "type": "textarea", "desc": "请依次填入网址" },
-      { "id": "evil_checkinemail", "name": "邮箱", "val": "", "placeholder": "example@v2bz.com", "type": "textarea", "desc": "请依次填入邮箱" },
-      { "id": "evil_checkinpwd", "name": "密码", "val": "", "placeholder": "password", "type": "textarea", "desc": "请依次填入密码" }
+      { "id": "evil_checkintitle", "name": "标题", "val": "", "placeholder": "隔壁西站", "type": "textarea", "desc": "请依次填入标题，以中文逗号分隔" },
+      { "id": "evil_checkinlogin", "name": "网址", "val": "", "placeholder": "https://example.com/auth/login", "type": "textarea", "desc": "请依次填入网址，以中文逗号分隔" },
+      { "id": "evil_checkinemail", "name": "邮箱", "val": "", "placeholder": "example@v2bz.com", "type": "textarea", "desc": "请依次填入邮箱，以中文逗号分隔" },
+      { "id": "evil_checkinpwd", "name": "密码", "val": "", "placeholder": "password", "type": "textarea", "desc": "请依次填入密码，以中文逗号分隔" }
     ],
     "author": "@Neurogram, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
