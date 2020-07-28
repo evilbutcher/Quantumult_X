@@ -20,7 +20,7 @@ Modified by evilbutcher
 
 自行写cron，例如“0 1 0 * * *”
 
-脚本地址：https://github.com/evilbutcher/Quantumult_X/raw/master/check_in/glados/checkin_env.js
+脚本地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
 
 BoxJs订阅：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
