@@ -80,7 +80,7 @@
       { "id": "evil_checkinpwd", "name": "密码", "val": "", "placeholder": "password", "type": "textarea", "desc": "请依次填入密码，以中文逗号分隔" }
     ],
     "author": "@Neurogram, @evilbutcher",
-    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados/checkin_env.js",
     "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados_animation.gif"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js"
   },{
@@ -92,7 +92,7 @@
       { "id": "evil_checkincookie", "name": "Cookie", "val": "", "type": "textarea", "desc": "自动获取，请不要修改，有能力可自行抓包填入" }
     ],
     "author": "@Neurogram, @evilbutcher",
-    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados/checkincookie_env.js",
     "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados_animation.gif"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js"
   },{
