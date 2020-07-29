@@ -43,7 +43,7 @@ https:\/\/cccat\.io url script-request-header https://raw.githubusercontent.com/
 获取Cookie = type=http-request, pattern=https:\/\/cccat\.io, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
 （其中https:\/\/cccat\.io需要替换为你自己的机场链接）
 
-机场签到Cookie版 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://github.com/evilbutcher/Quantumult_X/raw/master/check_in/glados/glados.js
+机场签到Cookie版 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
 
 【Loon】
 ----------------
