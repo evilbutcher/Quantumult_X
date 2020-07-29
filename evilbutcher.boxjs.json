@@ -70,14 +70,6 @@
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/hot.png", "https://raw.githubusercontent.com/58xinian/icon/master/hot.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js"
   },{
-    "id": "glados",
-    "name": "GLaDOS签到",
-    "keys": ["evil_gladoscookie"],
-    "author": "@evilbutcher",
-    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
-    "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados.png"],
-    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
-  },{
     "id": "checkin",
     "name": "机场签到",
     "keys": [],
@@ -91,5 +83,25 @@
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
     "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados_animation.gif"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js"
+  },{
+    "id": "checkincookie",
+    "name": "机场签到Cookie版",
+    "keys": ["evil_checkinurl", "evil_checkincookie"],
+    "settings": [
+      { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" },
+      { "id": "evil_checkincookie", "name": "Cookie", "val": "", "type": "textarea", "desc": "自动获取，请不要修改，有能力可自行抓包填入" }
+    ],
+    "author": "@Neurogram, @evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
+    "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados_animation.gif"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js"
+  },{
+    "id": "glados",
+    "name": "GLaDOS签到",
+    "keys": ["evil_gladoscookie"],
+    "author": "@evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
+    "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
   }]
 }
