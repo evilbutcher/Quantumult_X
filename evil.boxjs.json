@@ -121,6 +121,7 @@
   },{
     "id": "glados",
     "name": "GLaDOS签到",
+    "desc": "签到较为特殊，故独立写了一个。\n注册地址：https://github.com/glados-network/GLaDOS\n邀请码：3JRG4-KSGZJ-8QPXF-8PPOO",
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
