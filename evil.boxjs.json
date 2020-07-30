@@ -7,9 +7,9 @@
   "apps": [{
     "id": "weibotalk",
     "name": "微博超话（单账号版）",
-    "desc_html": [
+    "descs_html": [
         "Cookie获取指南",
-        "<iframe type=\"text/html\" src=\"https://youtu.be/SKR0stikm-8\" frameborder=\"0\"></iframe>"],
+        "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>"],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
       { "id": "wb_delete_cookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭" },
