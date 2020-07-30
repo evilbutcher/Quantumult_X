@@ -92,7 +92,7 @@
     "name": "机场签到",
     "descs_html": [
         "<font class=\"green--text\">多个</font> 机场使用样例👇 ",
-        "<img width=\"100%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
+        "<img width=\"40%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
         "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
     ],
     "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
