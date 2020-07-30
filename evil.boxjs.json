@@ -109,26 +109,14 @@
   },{
     "id": "checkincookie",
     "name": "机场签到Cookie版",
-    "descs": [
+    "descs_html": [
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
         "①需要将你的将机场域名加入mitm，例如cccat的域名为cccat.io，则hostname = cccat.io",
         "②添加属于你自己的配置（重写/脚本），例如cccat👇",
-        "【Quantumult X】",
-        "[rewrite_local]",
-        "https:\/\/cccat\.io url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js",
-        "（其中https:\/\/cccat\.io需要替换为你自己的机场链接）",
-        "[task_local]",
-        "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js",
-        "【Surge】",
-        "[Script]",
-        "获取Cookie = type=http-request, pattern=https:\/\/cccat\.io, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js",
-        "（其中https:\/\/cccat\.io需要替换为你自己的机场链接）",
-        "机场签到Cookie版 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js",
-        "【Loon】",
-        "[Script]",
-        "http-request https:\/\/cccat\.io tag=获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js",
-        "（其中https:\/\/cccat\.io需要替换为你自己的机场链接）",
-        "cron "5 0 * * *" tag=机场签到Cookie版, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js"
+        "<img width=\"100%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie.jpeg\"></img>",
+        "③BoxJs中，填入机场登陆链接。",
+        "④配置好后，手动签到一次，提示Cookie获取成功，如无第二个机场即可禁用Cookie获取。",
+        "⑤此时返回BoxJs中查看，Cookie和URL都有数据，即可保存会话。如有需要再重复1-4，获取第二个机场的Cookie（记得更改url为第二个机场对应的登陆链接）。"
     ],
     "keys": ["evil_checkinurl", "evil_checkincookie"],
     "settings": [
