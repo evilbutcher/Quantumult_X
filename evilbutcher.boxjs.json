@@ -92,7 +92,7 @@
     "name": "机场签到",
     "descs_html": [
         "<font class=\"green--text\">多个</font> 机场使用样例👇 ",
-        "<img width=\"100%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
+        "<img width=\"50%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
         "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
     ],
     "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
@@ -113,7 +113,7 @@
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
         "①需要将你的将机场域名加入mitm，例如cccat的域名为cccat.io，则hostname = cccat.io",
         "②添加属于你自己的配置（重写/脚本），例如cccat👇",
-        "<img width=\"100%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie.jpeg\"></img>",
+        "<img width=\"70%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie.jpeg\"></img>",
         "③BoxJs中，填入机场登陆链接。",
         "④配置好后，手动签到一次，提示Cookie获取成功，如无第二个机场即可禁用Cookie获取。",
         "⑤此时返回BoxJs中查看，Cookie和URL都有数据，即可保存会话。如有需要再重复1-4，获取第二个机场的Cookie（记得更改url为第二个机场对应的登陆链接）。"
