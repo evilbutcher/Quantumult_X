@@ -9,7 +9,7 @@
     "name": "微博超话（单账号版）",
     "desc_html": [
         "Cookie获取指南",
-        "<iframe type=\"text/html\" scr=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/%E8%8E%B7%E5%8F%96Cookie%E6%8C%87%E5%8D%97.MOV\" frameborder=\"0\"></iframe>"]
+        "<iframe type=\"text/html\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/%E8%8E%B7%E5%8F%96Cookie%E6%8C%87%E5%8D%97.MOV\" frameborder=\"0\"></iframe>"],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
       { "id": "wb_delete_cookie", "name": "清空Cookie", "val": false, "type": "boolean", "desc": "打开则会清空Cookie，清除完毕后关闭" },
