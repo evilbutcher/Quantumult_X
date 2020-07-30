@@ -23,7 +23,7 @@
     "name": "热门监控",
     "keys": [],
     "settings": [
-      { "id": "evil_wb_keyword", "name": "全部关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
+      { "id": "evil_wb_keyword", "name": "监控关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入监控关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
       { "id": "evil_rsslink", "name": "RSS订阅", "val": "", "type": "textarea", "desc": "请输入RSS订阅链接，以中文逗号分隔" },
       { "id": "evil_rss", "name": "rss订阅", "val": false, "type": "boolean", "desc": "打开则会监控rss订阅"},
       { "id": "evil_splitpushrss", "name": "分开推送rss内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新"},
@@ -101,7 +101,7 @@
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
-    "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados.png"],
+    "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados1_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados1.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
   }]
 }
