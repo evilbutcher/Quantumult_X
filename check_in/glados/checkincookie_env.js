@@ -104,7 +104,7 @@ function checkin(url, cookie) {
   var checkinurl = url.replace(/(auth|user)\/login(.php)*/g, "") + checkinPath;
   console.log("签到url：" + checkinurl + "\n签到cookie：" + cookie);
   var checkinreqest = {
-    url: "https://cccat.io/user/_checkin.php",
+    url: checkinurl,
     headers: { Cookie: cookie }
   };
   $.post(checkinreqest, (error, response, data) => {
