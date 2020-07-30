@@ -10,7 +10,7 @@
     "descs_html": [
         "Cookie获取指南",
         "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>",
-        "Cookie获取分为三步，请仔细查看视频中弹出的三个通知。如果下面检查签到开关打开时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
+        "Cookie获取分为三步，请仔细查看视频中弹出的三个通知。如果下面应用设置第四个，检查签到开关打开时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
       ],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
@@ -26,7 +26,8 @@
   },{
     "id": "hot",
     "name": "热门监控",
-    "descs": [
+    "descs_html": [
+        "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
         "1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅。",
         "2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。",
         "3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。",
