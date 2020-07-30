@@ -9,7 +9,8 @@
     "name": "微博超话（单账号版）",
     "descs_html": [
         "Cookie获取指南",
-        "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>"
+        "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>",
+        "Cookie获取分为三步，请仔细查看视频中弹出的三个通知。如果下面检查签到开关打开时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
       ],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
@@ -25,6 +26,18 @@
   },{
     "id": "hot",
     "name": "热门监控",
+    "descs": [
+        "1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅。",
+        "2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。",
+        "3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。",
+        "4、可选择是否合并同一榜单的全部通知。",
+        "5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。",
+        "6、B站、豆瓣榜单独立推送时可显示封面。",
+        "7、可选择是否附带跳转链接。",
+        "8、可自定每个榜单匹配关键词还是获取最新内容。",
+        "9、可自定每个榜单推送分开还是合并。",
+        "10、支持BoxJs直接运行脚本。"
+    ],
     "keys": [],
     "settings": [
       { "id": "evil_wb_keyword", "name": "监控关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入监控关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
