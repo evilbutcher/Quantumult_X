@@ -72,7 +72,7 @@
   },{
     "id": "checkin",
     "name": "机场签到",
-    "keys": [],
+    "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
     "settings": [
       { "id": "evil_checkintitle", "name": "标题", "val": "", "placeholder": "隔壁西站", "type": "textarea", "desc": "请依次填入标题，以中文逗号分隔" },
       { "id": "evil_checkinlogin", "name": "网址", "val": "", "placeholder": "https://example.com/auth/login", "type": "textarea", "desc": "请依次填入网址，以中文逗号分隔" },
