@@ -9,7 +9,7 @@
     "name": "微博超话（单账号版）",
     "descs_html": [
         "Cookie获取指南",
-        "<iframe type=\"text/html\" src=\"https://www.youtube.com/watch?v=SKR0stikm-8\" frameborder=\"0\"></iframe>"
+        "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>"
       ],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
