@@ -144,7 +144,7 @@
     ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
-    "icons": ["https://github.com/evilbutcher/Quantumult_X/blob/master/picture/funko_tran.png", "https://github.com/evilbutcher/Quantumult_X/blob/master/picture/funko.png"],
+    "icons": ["https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko_tran.png", "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
   }]
 }
