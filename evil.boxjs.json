@@ -28,16 +28,7 @@
     "name": "热门监控",
     "descs_html": [
         "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
-        "1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅。",
-        "2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。",
-        "3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。",
-        "4、可选择是否合并同一榜单的全部通知。",
-        "5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。",
-        "6、B站、豆瓣榜单独立推送时可显示封面。",
-        "7、可选择是否附带跳转链接。",
-        "8、可自定每个榜单匹配关键词还是获取最新内容。",
-        "9、可自定每个榜单推送分开还是合并。",
-        "10、支持BoxJs直接运行脚本。"
+        "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
     ],
     "keys": [],
     "settings": [
@@ -91,7 +82,7 @@
     "id": "checkin",
     "name": "机场签到",
     "descs_html": [
-        "多个机场使用样例👇<font class=\"green--text\">中文逗号</font>分隔",
+        "多个机场使用样例，<font class=\"error--text\">中文逗号</font>分隔",
         "<img width=\"50%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
         "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
     ],
