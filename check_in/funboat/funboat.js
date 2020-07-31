@@ -31,6 +31,12 @@ function checkin() {
         var obj = JSON.parse(body);
         if (obj.code == 160540409) {
           $.msg("Funboat", "", "重复签到✅");
+        } else if (code == 0) {
+          var prize = obj.data.prizes[0].points;
+          var count = obj.data.times;
+          var detail = "本次签到获得" + prize + "分\n连签天数" + count + "天";
+          $.msg("Funboat", "签到成功🎉", detail);
+          console.log(obj);
         } else {
           console.log(obj);
         }
