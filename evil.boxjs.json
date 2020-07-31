@@ -139,8 +139,8 @@
     ],
     "keys": ["evil_funkourl", "evil_funkocookie"],
     "settings": [
-      { "id": "evil_funkourl", "name": "签到url", "val": "", "type": "textarea", "desc": "可手动填入" },
-      { "id": "evil_funkocookie", "name": "签到从cookie", "val": "", "type": "textarea", "desc": "可手动填入" }
+      { "id": "evil_funkourl", "name": "签到url", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
+      { "id": "evil_funkocookie", "name": "签到cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
     ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
