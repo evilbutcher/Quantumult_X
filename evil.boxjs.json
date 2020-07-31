@@ -10,7 +10,8 @@
     "descs_html": [
         "Cookie获取指南",
         "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>",
-        "Cookie获取分为三步，请仔细查看视频中弹出的<font class=\"error--text\">三个通知</font>。如果下面应用设置第四个，检查签到开关<font class=\"error--text\">打开</font>时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
+        "Cookie获取分为三步，请仔细查看视频中弹出的<font class=\"error--text\">三个通知</font>。如果下面应用设置第四个，检查签到开关<font class=\"error--text\">打开</font>时，第三个Cookie必须获取；关闭时获取前两个即可运行。",
+        "点此直达<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js\">脚本地址</a>"
       ],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
@@ -28,7 +29,8 @@
     "name": "热门监控",
     "descs_html": [
         "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
-        "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
+        "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。",
+        "点此直达<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js\">脚本地址</a>"
     ],
     "keys": [],
     "settings": [
@@ -84,7 +86,8 @@
     "descs_html": [
         "多个机场使用样例，<font class=\"error--text\">中文逗号</font>分隔",
         "<img width=\"50%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
-        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
+        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到",
+        "点此直达<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js\">脚本地址</a>"
     ],
     "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
     "settings": [
@@ -121,7 +124,12 @@
   },{
     "id": "glados",
     "name": "GLaDOS签到",
-    "desc": "签到较为特殊，故独立写了一个。\n注册地址：https://github.com/glados-network/GLaDOS\n邀请码：3JRG4-KSGZJ-8QPXF-8PPOO",
+    "descs_html": [
+        "签到较为特殊，故独立写了一个。", 
+        "注册地址：https://github.com/glados-network/GLaDOS",
+        "邀请码：3JRG4-KSGZJ-8QPXF-8PPOO",
+        "点此直达<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js\">脚本地址</a>"
+    ]
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
