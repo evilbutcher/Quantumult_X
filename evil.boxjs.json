@@ -130,5 +130,21 @@
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
     "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados1_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados1.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
+  },{
+    "id": "funboat",
+    "name": "Funboat签到（自用）",
+    "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
+        "自用签到。"
+    ],
+    "keys": ["evil_funkourl", "evil_funkocookie"],
+    "settings": [
+      { "id": "evil_funkourl", "name": "签到url", "val": "", "type": "textarea", "desc": "可手动填入" },
+      { "id": "evil_funkocookie", "name": "签到从cookie", "val": "", "type": "textarea", "desc": "可手动填入" }
+    ],
+    "author": "@evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
+    "icons": ["https://github.com/evilbutcher/Quantumult_X/blob/master/picture/funko_tran.png", "https://github.com/evilbutcher/Quantumult_X/blob/master/picture/funko.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
   }]
 }
