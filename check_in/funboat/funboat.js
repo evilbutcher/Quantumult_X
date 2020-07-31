@@ -29,11 +29,14 @@ function checkin() {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-
-        console.log(obj);
+        if (obj.code == 160540409) {
+          $.msg("Funboat", "", "重复签到✅");
+        } else {
+          console.log(obj);
+        }
         resolve();
       } else {
-        console.log("出错啦");
+        $.msg("Funboat", "出错啦⚠️", "详情查看日志🔎");
         console.log(response);
         resolve();
       }
