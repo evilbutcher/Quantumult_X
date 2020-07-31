@@ -50,7 +50,6 @@ var message = [];
   }
   await signin();
   await status();
-  $.done();
 })()
   .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
