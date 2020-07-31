@@ -8,9 +8,10 @@
     "id": "weibotalk",
     "name": "微博超话（单账号版）",
     "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js\">脚本地址</a>】",
         "Cookie获取指南",
         "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>",
-        "Cookie获取分为三步，请仔细查看视频中弹出的三个通知。如果下面应用设置第四个，检查签到开关打开时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
+        "Cookie获取分为三步，请仔细查看视频中弹出的<font class=\"error--text\">三个通知</font>。如果下面应用设置第四个，检查签到开关<font class=\"error--text\">打开</font>时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
       ],
     "keys": ["evil_tokenurl", "evil_tokenheaders", "evil_tokencheckinurl", "evil_tokencheckinheaders", "evil_tokensinceurl", "evil_tokensinceheaders"],
     "settings": [
@@ -27,17 +28,9 @@
     "id": "hot",
     "name": "热门监控",
     "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js\">脚本地址</a>】",
         "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
-        "1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅。",
-        "2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。",
-        "3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。",
-        "4、可选择是否合并同一榜单的全部通知。",
-        "5、可选择匹配关键词或者直接获取热搜最新内容，并自定义数量。",
-        "6、B站、豆瓣榜单独立推送时可显示封面。",
-        "7、可选择是否附带跳转链接。",
-        "8、可自定每个榜单匹配关键词还是获取最新内容。",
-        "9、可自定每个榜单推送分开还是合并。",
-        "10、支持BoxJs直接运行脚本。"
+        "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
     ],
     "keys": [],
     "settings": [
@@ -91,9 +84,9 @@
     "id": "checkin",
     "name": "机场签到",
     "descs_html": [
-        "<font class=\"green--text\">多个</font> 机场使用样例👇 ",
-        "<img width=\"50%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
-        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js\">脚本地址</a>】",
+        "多个机场使用请用<font class=\"error--text\">中文逗号</font>分隔，顺序需要对应。",
+        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
     ],
     "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
     "settings": [
@@ -110,13 +103,9 @@
     "id": "checkincookie",
     "name": "机场签到Cookie版",
     "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js\">脚本地址</a>】",
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
-        "①需要将你的将机场域名加入mitm，例如cccat的域名为cccat.io，则hostname = cccat.io",
-        "②添加属于你自己的配置（重写/脚本），例如cccat👇",
-        "<img width=\"70%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie.jpeg\"></img>",
-        "③BoxJs中，填入机场登陆链接。",
-        "④配置好后，手动签到一次，提示Cookie获取成功，如无第二个机场即可禁用Cookie获取。",
-        "⑤此时返回BoxJs中查看，Cookie和URL都有数据，即可保存会话。如有需要再重复1-4，获取第二个机场的Cookie（记得更改url为第二个机场对应的登陆链接）。"
+        "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
     ],
     "keys": ["evil_checkinurl", "evil_checkincookie"],
     "settings": [
@@ -130,7 +119,12 @@
   },{
     "id": "glados",
     "name": "GLaDOS签到",
-    "desc": "签到较为特殊，故独立写了一个。\n注册地址：https://github.com/glados-network/GLaDOS\n邀请码：3JRG4-KSGZJ-8QPXF-8PPOO",
+    "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js\">脚本地址</a>】",
+        "签到较为特殊，故独立写了一个。", 
+        "注册地址：https://github.com/glados-network/GLaDOS",
+        "邀请码：3JRG4-KSGZJ-8QPXF-8PPOO"
+    ],
     "keys": ["evil_gladoscookie"],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
