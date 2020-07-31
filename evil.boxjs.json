@@ -85,9 +85,8 @@
     "name": "机场签到",
     "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js\">脚本地址</a>】",
-        "多个机场使用样例，<font class=\"error--text\">中文逗号</font>分隔",
-        "<img width=\"50%\" src=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin.jpeg\"></img>",
-        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
+        "多个机场使用请用<font class=\"error--text\">中文逗号</font>分隔，顺序需要对应。",
+        "也可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
     ],
     "keys": ["evil_checkintitle", "evil_checkinlogin", "evil_checkinemail", "evil_checkinpwd"],
     "settings": [
@@ -106,7 +105,7 @@
     "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js\">脚本地址</a>】",
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
-        "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到"
+        "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
     ],
     "keys": ["evil_checkinurl", "evil_checkincookie"],
     "settings": [
