@@ -2,7 +2,7 @@
 
 # Quantumult X脚本和规则整理
 
-绝大多数代码都用到了@chavyleung的Env.js，感谢！
+绝大多数代码都用到了@chavyleung的Env.js和@Peng-YM的OpenAPI.js，感谢！
 
 ## 脚本类
 ### [BoxJs](https://github.com/evilbutcher/Quantumult_X/blob/master/evilbutcher.boxjs.json)
@@ -22,7 +22,7 @@
 3、支持BoxJs。  
 4、checkin_env.js修改自@Neurogram-R，增加了多平台支持。
  
-### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch)
+### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 #### 功能特点
 1、可以选择性监控榜单。  
 2、可以分别设定每个榜单的最热内容数量。  
@@ -41,6 +41,11 @@
 15、监控Kindle图书关键词。  
 16、监控RSSHub订阅。  
 
+### [App价格监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
+#### 功能特点
+1、app可单独设置区域，未单独设置区域，则采用reg默认区域。  
+2、设置区域方式“1443988620:hk，1443988620/us，1443988620-uk，1443988620_jp，1443988620 au”。  
+3、支持BoxJs by evilbutcher。  
 
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
