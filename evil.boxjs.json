@@ -135,7 +135,10 @@
     "name": "AppMonitor",
     "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
-        "修改自Quantumult X群友分享，支持BoxJs。"
+        "修改自Quantumult X群友分享，支持BoxJs。",
+        "填写App ID可通过AppStore分享按钮拷贝想要监控App的链接，在链接最后有id，复制到监控ID内即可；未单独设置区域，则采用reg默认区域",
+        "关于ID，例如：https://apps.apple.com/cn/app/nplayer-plus/id<font class=\"error--text\">539397400</font>",
+        "@App价格监控.app_monitor为本地记录的监控相关信息，可以忽略"
     ],
     "keys": ["@App价格监控.apps","@App价格监控.reg", "@App价格监控.app_monitor"],
     "settings": [
@@ -148,7 +151,7 @@
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js"
    },{
     "id": "funboat",
-    "name": "Funboat签到（自用）",
+    "name": "Funboat签到（自用测试）",
     "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
         "微信小程序搜索 Funboat，自用签到，仍在测试中。"
