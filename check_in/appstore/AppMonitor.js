@@ -1,5 +1,12 @@
 /*app版本及价格监控(来自t.me/QuanXApp群友分享)
-//30 7-22/1 * * * AppMonitor.js
+
+【Quantumult X】
+30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
+【Surge】
+App价格监控 = type=cron,cronexp="30 7-22 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js,wake-system=true,timeout=600
+【Loon】
+cron "30 7-22 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, timeout=600, tag=App价格监控
+
 app可单独设置区域，未单独设置区域，则采用reg默认区域
 设置区域方式apps=["1443988620:hk","1443988620/us","1443988620-uk","1443988620_jp","1443988620 au"]
 以上方式均可 分隔符支持 空格/:|_-
