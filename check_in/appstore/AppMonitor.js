@@ -1,5 +1,9 @@
 /*app版本及价格监控(来自t.me/QuanXApp群友分享)
 
+感谢Peng YM的OpenAPI！
+
+支持BoxJs by evilbutcher，订阅：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
 【Quantumult X】
 30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
 【Surge】
@@ -257,7 +261,7 @@ function flag(x) {
   return flags.get(x.toUpperCase());
 }
 
-//Peng-YN
+//From Peng-YM's OpenAPI
 function ENV() {
   const e = "undefined" != typeof $task,
     t = "undefined" != typeof $loon,
