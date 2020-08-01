@@ -146,5 +146,20 @@
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
     "icons": ["https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko_tran.png", "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
+  },{
+    "id": "appmonitor",
+    "name": "AppMonitor（测试）",
+    "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
+        "测试中。"
+    ],
+    "keys": ["app_monitor"],
+    "settings": [
+      { "id": "app_monitor", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
+    ],
+    "author": "@evilbutcher",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/appstore",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/Apple.png", "https://raw.githubusercontent.com/Orz-3/mini/master/Apple.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in"
   }]
 }
