@@ -153,7 +153,7 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
         "测试中。"
     ],
-    "keys": ["@app_monitor"],
+    "keys": ["app_monitor"],
     "settings": [
       { "id": "app_monitor", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
     ],
