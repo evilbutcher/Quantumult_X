@@ -153,11 +153,12 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
         "测试中。"
     ],
-    "keys": ["@App价格监控.app_monitor"],
+    "keys": ["@App价格监控.apps","@App价格监控.app_monitor"],
     "settings": [
+      { "id": "@App价格监控.apps", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
       { "id": "@App价格监控.app_monitor", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
     ],
-    "author": "@t.me/QuanXApp群友, @evilbutcher",
+    "author": "@t.me/QuanXApp群友",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/appstore",
     "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/Apple.png", "https://raw.githubusercontent.com/Orz-3/task/master/appstore.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore"
