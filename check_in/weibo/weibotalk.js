@@ -547,6 +547,7 @@ function checkin(id, name, isSign = false) {
             obj.result == null ||
             obj.result == undefined
           ) {
+            $.stopNum += 1;
             $.msg(
               $.name,
               "🚨签到出现错误或接口返回数据错误",
