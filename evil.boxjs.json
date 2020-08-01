@@ -155,7 +155,7 @@
     ],
     "keys": ["@app_monitor"],
     "settings": [
-      { "id": "@app_monitor", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
+      { "id": "app_monitor", "name": "监控信息", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
     ],
     "author": "@t.me/QuanXApp群友, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/appstore",
