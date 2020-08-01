@@ -131,8 +131,27 @@
     "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/glados1_mini.png", "https://raw.githubusercontent.com/58xinian/icon/master/glados1.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js"
   },{
+    "id": "appmonitor",
+    "name": "AppMonitor",
+    "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
+        "修改自Quantumult X群友分享，支持BoxJs。",
+        "填写App ID可通过AppStore分享按钮拷贝想要监控App的链接，在链接最后有id，复制到监控ID内即可；未单独设置区域，则采用reg默认区域",
+        "关于ID，例如：https://apps.apple.com/cn/app/nplayer-plus/id<font class=\"error--text\">539397400</font>",
+        "@App价格监控.app_monitor为本地记录的监控相关信息，可以忽略"
+    ],
+    "keys": ["@App价格监控.apps","@App价格监控.reg", "@App价格监控.app_monitor"],
+    "settings": [
+      { "id": "@App价格监控.apps", "name": "监控ID", "val": "", "placeholder": "例如，“1312014438 cn，1282297037_au”", "type": "textarea", "desc": "ID与区域分隔符支持 空格/:|_-，但不同App之间请用中文逗号“，”分隔。" },
+      { "id": "@App价格监控.reg", "name": "默认区域", "val": "", "placeholder": "例如，cn/us/au", "type": "textarea", "desc": "请填写一个默认区域" }
+    ],
+    "author": "@t.me/QuanXApp群友",
+    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/appstore",
+    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/Apple.png", "https://raw.githubusercontent.com/Orz-3/task/master/appstore.png"],
+    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js"
+   },{
     "id": "funboat",
-    "name": "Funboat签到（自用）",
+    "name": "Funboat签到（自用测试）",
     "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
         "微信小程序搜索 Funboat，自用签到，仍在测试中。"
@@ -146,21 +165,5 @@
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
     "icons": ["https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko_tran.png", "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"],
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
-  },{
-    "id": "appmonitor",
-    "name": "AppMonitor（测试）",
-    "descs_html": [
-        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js\">脚本地址</a>】",
-        "修改自Quantumult X群友分享，支持BoxJs。"
-    ],
-    "keys": ["@App价格监控.apps","@App价格监控.reg", "@App价格监控.app_monitor"],
-    "settings": [
-      { "id": "@App价格监控.apps", "name": "监控ID", "val": "", "placeholder": "例如，“1312014438 cn，1282297037_au”", "type": "textarea", "desc": "ID与区域分隔符支持 空格/:|_-，但不同App之间请用中文逗号“，”分隔。" },
-      { "id": "@App价格监控.reg", "name": "默认区域", "val": "", "placeholder": "例如，cn/us/au", "type": "textarea", "desc": "请填写一个默认区域" }
-    ],
-    "author": "@t.me/QuanXApp群友",
-    "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/appstore",
-    "icons": ["https://raw.githubusercontent.com/Orz-3/mini/master/Apple.png", "https://raw.githubusercontent.com/Orz-3/task/master/appstore.png"],
-    "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore"
   }]
 }
