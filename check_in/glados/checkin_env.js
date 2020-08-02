@@ -67,29 +67,6 @@ if (
   $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
 }
 
-/*
-const accounts = [
-  [
-    "隔壁西站",
-    "https://pro.crosswall.cc/auth/login",
-    "email",
-    "password"
-  ],
-  [
-    "猪的免费大飞机",
-    "https://forever.fpork.com/auth/login",
-    "email",
-    "password"
-  ]
-  [
-    "cccat",
-    "https://cccat.io/user/login.php",
-    "email",
-    "password"
-  ]
-];
-*/
-
 const autoLogout = false;
 
 function launch() {
@@ -101,13 +78,12 @@ function launch() {
     if (autoLogout) {
       let logoutPath =
         url.indexOf("auth/login") != -1 ? "user/logout" : "user/logout.php";
-      $.get(
-        url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath,
-        function(error, response, data) {
-          console.log(response);
-          login(url, email, password, title);
-        }
-      );
+      var logouturl = {
+        url: url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath
+      };
+      $.get(logouturl, function(error, response, data) {
+        login(url, email, password, title);
+      });
     } else {
       checkin(url, email, password, title);
     }
@@ -134,6 +110,7 @@ function login(url, email, password, title) {
           /邮箱或者密码错误|Mail or password is incorrect/
         )
       ) {
+        console.log(response);
         $.msg(title + "邮箱或者密码错误", "", "");
       } else {
         checkin(url, email, password, title);
