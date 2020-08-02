@@ -32,11 +32,12 @@ function checkin() {
         if (obj.code == 160540409) {
           $.msg("Funboat", "", "重复签到✅");
         } else if (code == 0) {
+          console.log(obj);
           var prize = obj.data.prizes[0].points;
           var count = obj.data.times;
-          var detail = "本次签到获得" + prize + "分\n连签天数" + count + "天";
+          var detail = "本次签到获得 " + prize + "积分\n当前周期连签天数 " + count + "天";
+          console.log(detail);
           $.msg("Funboat", "签到成功🎉", detail);
-          console.log(obj);
         } else {
           console.log(obj);
         }
