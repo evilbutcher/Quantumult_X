@@ -14,15 +14,21 @@ GitHub: Neurogram-R
 
 ————————————————————
 
+【机场签到Cookie版】修改自Neurogram
 Modified by evilbutcher
 
-用chavy大佬的env修改了此脚本，支持Quantumult X和Loon，并支持BoxJs
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
+
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
+【致谢】
+使用Chavy的Env.js修改了原脚本，支持Quantumult X和Loon，并支持BoxJs
+
 
 【此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场】
 
-⚠️【必读】⚠️此处说明过的内容将不再解答‼️
-⚠️【必读】⚠️此处说明过的内容将不再解答‼️
-⚠️【必读】⚠️此处说明过的内容将不再解答‼️
+⚠️【必读】⚠️【必读】⚠️【必读】⚠️
+‼️此处说明过的内容将不再解答‼️
 
 ①需要将你的将机场域名加入mitm，例如cccat的域名为cccat.io，则hostname = cccat.io
 
@@ -58,10 +64,6 @@ cron "5 0 * * *" tag=机场签到Cookie版, script-path=https://raw.githubuserco
 ④配置好后，手动签到一次，提示Cookie获取成功，如无第二个机场即可禁用Cookie获取。
 
 ⑤此时返回BoxJs中查看，Cookie和URL都有数据，即可保存会话。如有需要再重复1-4，获取第二个机场的Cookie（记得更改url为第二个机场对应的登陆链接）。
-
-脚本地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
-
-BoxJs订阅：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
 */
 const $ = new Env("机场签到Cookie版");
@@ -196,7 +198,7 @@ function getCookie() {
   }
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(s) {
   (this.name = s),
     (this.data = null),

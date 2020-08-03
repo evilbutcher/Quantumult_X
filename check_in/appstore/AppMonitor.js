@@ -1,19 +1,31 @@
-/*app版本及价格监控(来自t.me/QuanXApp群友分享)
+/*
+【app版本及价格监控】修改自t.me/QuanXApp群友分享 
+Modified by evilbutcher
 
-感谢Peng YM的OpenAPI！
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
-支持BoxJs by evilbutcher，订阅：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
+【致谢】
+感谢来自t.me/QuanXApp群友分享脚本！
+感谢Peng-YM的OpenAPI.js！
 
 【Quantumult X】
+————————————————
 30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
+
 【Surge】
+————————————————
 App价格监控 = type=cron,cronexp="30 7-22 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js,wake-system=true,timeout=600
+
 【Loon】
+————————————————
 cron "30 7-22 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, timeout=600, tag=App价格监控
 
 app可单独设置区域，未单独设置区域，则采用reg默认区域
 设置区域方式apps=["1443988620:hk","1443988620/us","1443988620-uk","1443988620_jp","1443988620 au"]
 以上方式均可 分隔符支持 空格/:|_-
+
 */
 const $ = new API("App价格监控");
 let apps = [
@@ -261,7 +273,7 @@ function flag(x) {
   return flags.get(x.toUpperCase());
 }
 
-//From Peng-YM's OpenAPI
+//From Peng-YM's OpenAPI.js
 function ENV() {
   const e = "undefined" != typeof $task,
     t = "undefined" != typeof $loon,

@@ -1,9 +1,13 @@
 /*
 
 【热门监控】@evilbutcher
+
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
 【致谢】
+本脚本使用了Chavy的Env.js，感谢！
 @南叔、@mini计划-图标聚合、@zZPiglet、@xinian
 
 ⚠️【使用方法】请仔细阅读⚠️
@@ -21,12 +25,10 @@
 
 本地脚本keyword设置关键词，注意是英文逗号；BoxJs是用中文逗号。
 
-【BoxJs】订阅链接
+⚠️【BoxJs】设置注意事项⚠️
 ------------------------------------------
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 订阅后，可以在BoxJs里面修改关键词，设置清除Cookie、开启对应榜单等。
 
-⚠️BoxJs设置注意事项⚠️
 #微博热搜检测数量设置：建议最大为8，设置检测数量太多显示不完全，内容过多。其他榜单最大检测数量暂无建议，自行决定即可。
 
 #关键词：对所有榜单生效，榜单内无关键词匹配不会通知。
@@ -1502,7 +1504,7 @@ function getCookie() {
   }*/
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(t, s) {
   return new (class {
     constructor(t, s) {

@@ -1,14 +1,13 @@
 /**********
 
-  🐬主要作者：Evilbutcher （签到、cookie等主体逻辑编写）
+  🐬主要作者：evilbutcher （签到、cookie等主体逻辑编写）
   📕地址：https://github.com/evilbutcher/Quantumult_X/tree/master
 
   🐬次要作者: toulanboy （细节完善，支持多平台）
   📕地址：https://github.com/toulanboy/scripts
 
-  🐬 另，感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议。
-
-  evilbutcher:非专业人士制作，头一次写签到脚本，感谢@柠檬精帮忙调试代码、感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议，感谢@chavyleung模版。
+ 【致谢】
+  非专业人士制作，头一次写签到脚本，感谢@柠檬精帮忙调试代码、感谢@Seafun、@jaychou、@MEOW帮忙测试及提供建议，感谢@chavyleung模版。
   
   📌不定期更新各种签到、有趣的脚本，欢迎star🌟
 
@@ -23,9 +22,9 @@
   提示：如果超话过多提示频繁，可间隔半个小时以上再执行一次。
 
    ***************************************
-  【boxjs 订阅， 可以让你修改远程文件里面的变量】
+  【BoxJs 订阅， 可以让你修改远程文件里面的变量】
    ***************************************
-   box订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+   BoxJs订阅链接：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
    订阅后，可以在box里面进行 cookie清空、通知个数、签到延迟 等设置.
 
   *************************
@@ -34,18 +33,12 @@
   微博超话cookie获取 = type=http-request,pattern=^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button),script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.cookie.js,requires-body=false
   微博超话 = type=cron,cronexp="5 0  * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js,wake-system=true,timeout=600
 
-  [MITM]
-  hostname = api.weibo.cn
-
   *************************
   【Loon 2.1+ 脚本配置】
   *************************
   [script]
   cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js, timeout=600, tag=微博超话
   http-request ^https:\/\/api\.weibo\.cn\/2\/(cardlist|page\/button) script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.cookie.js,requires-body=false, tag=微博超话cookie获取
-  
-  [MITM]
-  hostname = api.weibo.cn
 
   *************************
   【 QX 1.0.10+ 脚本配置 】 
@@ -56,7 +49,8 @@
   [task]
   5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js, tag=微博超话
 
-  [MITM]
+
+  【All App MitM】
   hostname = api.weibo.cn
 
 *********/
@@ -609,7 +603,7 @@ function checkin(id, name, isSign = false) {
   });
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(s) {
   (this.name = s),
     (this.data = null),

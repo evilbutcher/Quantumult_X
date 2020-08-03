@@ -14,15 +14,18 @@ GitHub: Neurogram-R
 
 ————————————————————
 
+【机场签到Cookie版】修改自Neurogram
 Modified by evilbutcher
 
-用chavy大佬的env修改了此脚本，支持Quantumult X和Loon，并支持BoxJs
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
-自行写cron，例如“0 1 0 * * *”
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
-脚本地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
+【致谢】
+使用Chavy的Env.js修改了原脚本，支持Quantumult X和Loon，并支持BoxJs
 
-BoxJs订阅：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
+自行写cron，例如 0 1 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
 
 */
 const $ = new Env("机场签到");
@@ -202,7 +205,7 @@ function flowFormat(data) {
   return flow[0] + "B";
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(s) {
   (this.name = s),
     (this.data = null),

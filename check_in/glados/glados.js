@@ -1,7 +1,17 @@
 /*
+【GLaDOS】@evilbutcher
+
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
+
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
+【致谢】
+本脚本使用了Chavy的Env.js，感谢！
+
 
 登陆链接：https://glados.rocks/，登陆即可获取Cookie。
-欢迎体验，邀请码：3JRG4-KSGZJ-8QPXF-8PPOO
+注册地址：https://github.com/glados-network/GLaDOS
+邀请码：3JRG4-KSGZJ-8QPXF-8PPOO
 
 【Surge】
 -----------------
@@ -27,7 +37,7 @@ https:\/\/glados\.rocks\/api\/user\/status url script-request-header https://raw
 1 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
 
-【All App MITM】
+【All App MitM】
 hostname = glados.rocks
 */
 
@@ -120,7 +130,7 @@ function getCookie() {
   }
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(s) {
   (this.name = s),
     (this.data = null),
