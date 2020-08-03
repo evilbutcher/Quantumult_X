@@ -1,16 +1,54 @@
+/*
+【Funboat】@evilbutcher
+
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
+
+【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+
+【致谢】
+本脚本使用了Chavy的Env.js，感谢！
+
+微信搜索小程序Funboat，如想购买Funko手办可关注，脚本还在测试中。
+
+【Quantumult X】
+————————————————
+[rewrite_local]
+https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+
+[task_local]
+5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+
+【Surge】
+
+【Loon】
+
+【All App MitM】
+hostname = h5.youzan.com
+
+*/
 const $ = new Env("Funboat");
 const signurl = "evil_funkourl";
 const signcookie = "evil_funkocookie";
+const statusurl = "evil_funkostatusurl";
+const statuscookie = "evil_funkostatuscookie";
 
 var siurl = $.getdata(signurl);
 var sicookie = $.getdata(signcookie);
+var sturl = $.getdata(statusurl);
+var stcookie = $.getdata(statuscookie);
+
+var detail;
+var all;
 
 !(async () => {
   if (typeof $request != "undefined") {
     getCookie();
     return;
   }
-  checkin();
+  await checkin();
+  await getall();
+  out();
 })()
   .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
@@ -20,30 +58,35 @@ var sicookie = $.getdata(signcookie);
   });
 
 function checkin() {
-  const myRequest = {
+  const checkRequest = {
     url: siurl,
     headers: { "Extra-Data": sicookie }
   };
+  console.log("checkRequest");
+  console.log(checkRequest);
   return new Promise(resolve => {
-    $.get(myRequest, (error, response, data) => {
+    $.get(checkRequest, (error, response, data) => {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        if (obj.code == 160540409) {
-          $.msg("Funboat", "", "重复签到✅");
-        } else if (code == 0) {
-          console.log(obj);
+        console.log(obj);
+        if (obj.code == 0) {
           var prize = obj.data.prizes[0].points;
           var count = obj.data.times;
-          var detail = "本次签到获得 " + prize + "积分\n当前周期连签天数 " + count + "天";
+          detail =
+            "本次签到获得 " +
+            prize +
+            "积分\n当前周期连签天数 " +
+            count +
+            "天 ✅";
           console.log(detail);
-          $.msg("Funboat", "签到成功🎉", detail);
         } else {
-          console.log(obj);
+          detail = obj.msg;
+          console.log(detail);
         }
         resolve();
       } else {
-        $.msg("Funboat", "出错啦⚠️", "详情查看日志🔎");
+        console.log("出错啦⚠️详情查看日志🔎");
         console.log(response);
         resolve();
       }
@@ -51,23 +94,75 @@ function checkin() {
   });
 }
 
+function getall() {
+  const allRequest = {
+    url: sturl,
+    headers: { "Extra-Data": stcookie }
+  };
+  console.log("\nallRequest");
+  console.log(allRequest);
+  return new Promise(resolve => {
+    $.get(allRequest, (error, response, data) => {
+      if (response.statusCode == 200) {
+        var body = response.body;
+        var obj = JSON.parse(body);
+        console.log(obj);
+        if (obj.code == 0) {
+          var allpoints = obj.data.stats.points;
+          all = "总积分 " + allpoints + "分 🎉";
+          console.log(all);
+        } else {
+          all = obj.msg;
+          console.log(all);
+        }
+        resolve();
+      } else {
+        console.log("出错啦⚠️详情查看日志🔎");
+        console.log(response);
+        resolve();
+      }
+    });
+  });
+}
+
+function out() {
+  var msg = detail + "\n" + all;
+  $.msg("Funboat", "", msg, {
+    "media-url":
+      "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/img.png"
+  });
+}
+
 function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/checkin/)
+    $request.url.match(/checkin\_id/)
   ) {
-    const sinceurl = $request.url;
-    $.log(sinceurl);
+    const siurl = $request.url;
+    $.log(siurl);
     const sicookie = $request.headers["Extra-Data"];
     $.log(sicookie);
     $.setdata(siurl, signurl);
     $.setdata(sicookie, signcookie);
     $.msg("Funboat", "", "获取签到Cookie成功🎉");
   }
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/version/)
+  ) {
+    const sturl = $request.url;
+    $.log(sturl);
+    const stcookie = $request.headers["Extra-Data"];
+    $.log(stcookie);
+    $.setdata(sturl, statusurl);
+    $.setdata(stcookie, statuscookie);
+    $.msg("Funboat", "", "获取积分Cookie成功🎉");
+  }
 }
 
-//chavyleung
+//From chavyleung's Env.js
 function Env(s) {
   (this.name = s),
     (this.data = null),

@@ -2,7 +2,7 @@
   "id": "evilbutcher.app.sub",
   "name": "evilbutcher 应用订阅",
   "author": "@evilbutcher",
-  "icon": "https://github.com/evilbutcher/Quantumult_X/raw/master/picture/13th.png",
+  "icon": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/13th.png",
   "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master",
   "apps": [{
     "id": "weibotalk",
@@ -156,10 +156,12 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
         "微信小程序搜索 Funboat，自用签到，仍在测试中。"
     ],
-    "keys": ["evil_funkourl", "evil_funkocookie"],
+    "keys": ["evil_funkourl", "evil_funkocookie", "evil_funkostatusurl", "evil_funkostatuscookie"],
     "settings": [
       { "id": "evil_funkourl", "name": "签到url", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
-      { "id": "evil_funkocookie", "name": "签到cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
+      { "id": "evil_funkocookie", "name": "签到cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
+      { "id": "evil_funkostatusurl", "name": "积分url", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
+      { "id": "evil_funkostatuscookie", "name": "积分cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
     ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
