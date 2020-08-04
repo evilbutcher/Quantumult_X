@@ -8,7 +8,8 @@
 【致谢】
 本脚本使用了Chavy的Env.js，感谢！
 
-微信搜索小程序Funboat，如想购买Funko手办可关注，脚本还在测试中。
+微信搜索小程序Funboat，如想购买Funko手办可关注。点我的，提示获取积分Cookie成功，手动签到一次，提示获取签到Cookie成功，即可使用。
+⚠️其他基于有赞的小程序也可能触发获取Cookie，请获取完后及时禁用获取Cookie重写/脚本。
 
 【Quantumult X】
 ————————————————
@@ -20,8 +21,18 @@ https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-heade
 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 【Surge】
+————————————————
+[Script]
+Funboat签到 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Funboat获取签到Cookie = type=http-request,pattern=https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Funboat获取积分Cookie = type=http-request,pattern=https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 【Loon】
+————————————————
+[Script]
+cron "5 0 * * *" tag=Funboat签到, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+http-request https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin tag=Funboat获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+http-request https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats tag=Funboat获取积分Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 【All App MitM】
 hostname = h5.youzan.com

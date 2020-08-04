@@ -152,10 +152,11 @@
     "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js"
   }, {
     "id": "funboat",
-    "name": "Funboat签到（自用测试）",
+    "name": "Funboat签到",
     "descs_html": [
       "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
-      "微信小程序搜索 Funboat，自用签到，仍在测试中。"
+      "微信小程序搜索 Funboat，按照脚本提示获取Cookie。",
+      "⚠️其他基于有赞的小程序也可能触发获取Cookie，请获取完后及时禁用获取Cookie重写/脚本。"
     ],
     "keys": ["evil_funkourl", "evil_funkocookie", "evil_funkostatusurl", "evil_funkostatuscookie"],
     "settings": [
