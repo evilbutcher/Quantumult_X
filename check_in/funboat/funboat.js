@@ -148,7 +148,8 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/checkin\_id/)
+    $request.url.match(/checkin\_id/) &&
+    $request.url.match(/wx9b5caf9d1669dc96/)
   ) {
     const siurl = $request.url;
     $.log(siurl);
@@ -161,7 +162,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/version/)
+    $request.url.match(/wx9b5caf9d1669dc96/)
   ) {
     const sturl = $request.url;
     $.log(sturl);
