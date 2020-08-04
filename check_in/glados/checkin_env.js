@@ -29,6 +29,7 @@ Modified by evilbutcher
 
 */
 const $ = new Env("机场签到");
+$.autoLogout = false;
 
 if (
   $.getdata("evil_checkintitle") != undefined &&
@@ -70,7 +71,7 @@ if (
   $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
 }
 
-const autoLogout = false;
+$.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
 
 function launch() {
   for (var i in accounts) {
@@ -78,12 +79,13 @@ function launch() {
     let url = urls[i];
     let email = emails[i];
     let password = passwords[i];
-    if (autoLogout) {
+    if ($.autoLogout) {
       let logoutPath =
         url.indexOf("auth/login") != -1 ? "user/logout" : "user/logout.php";
       var logouturl = {
         url: url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath
       };
+      console.log(logouturl)
       $.get(logouturl, function(error, response, data) {
         login(url, email, password, title);
       });
@@ -103,6 +105,7 @@ function login(url, email, password, title) {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + loginPath,
     body: `email=${email}&passwd=${password}&rumber-me=week`
   };
+  console.log(table)
   $.post(table, function(error, response, data) {
     if (error) {
       console.log(error);
@@ -128,6 +131,7 @@ function checkin(url, email, password, title) {
   var checkinreqest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + checkinPath
   };
+  console.log(checkinreqest)
   $.post(checkinreqest, (error, response, data) => {
     if (error) {
       console.log(error);
@@ -147,6 +151,7 @@ function dataResults(url, checkinMsg, title) {
   var datarequest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + userPath
   };
+  console.log(datarequest)
   $.get(datarequest, (error, response, data) => {
     let resultData = "";
     let result = [];
