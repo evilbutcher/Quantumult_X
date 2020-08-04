@@ -268,7 +268,7 @@ function getnumber() {
             $.msg(
               $.name,
               "🚨获取超话页数出现错误或接口返回数据错误",
-              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+              `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
             $.pagenumber = 0;
             resolve();
@@ -330,7 +330,7 @@ function geturl(i) {
             $.msg(
               $.name,
               "🚨获取超话URL出现错误或接口返回数据错误",
-              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+              `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
             resolve();
             return;
@@ -391,7 +391,7 @@ function getSignStatus(i) {
             $.msg(
               $.name,
               "🚨获取签到状态出现错误或接口返回数据错误",
-              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+              `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
             resolve();
             return;
@@ -467,7 +467,7 @@ function getid(page) {
             $.msg(
               $.name,
               "🚨获取超话ID出现错误或接口返回数据错误",
-              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+              `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
             resolve();
             return;
@@ -533,6 +533,10 @@ function checkin(id, name, isSign = false) {
           $.failNum += 1;
           $.message.push(`【${idname}】：需要身份验证，请稍后再试`);
           console.log(`【${idname}】执行签到：需要身份验证，请稍后再试`);
+        } else if (response.statusCode == 502) {
+          $.failNum += 1;
+          $.message.push(`【${idname}】：无效响应，请稍后再试`);
+          console.log(`【${idname}】执行签到：无效响应，请稍后再试`);
         } else if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -545,7 +549,7 @@ function checkin(id, name, isSign = false) {
             $.msg(
               $.name,
               "🚨签到出现错误或接口返回数据错误",
-              `⚠️原因：${obj.errmsg}\n若为登陆保护等问题可尝试重新获取Cookie。`
+              `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
             resolve();
             return;
@@ -587,6 +591,7 @@ function checkin(id, name, isSign = false) {
           }
           resolve();
         } else {
+          $.failNum += 1;
           console.log("请将以下内容发送给作者\n");
           console.log(response);
           resolve();
