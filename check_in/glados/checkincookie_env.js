@@ -91,7 +91,14 @@ var sicookie = $.getdata(signcookie);
       "https://8.8.8.8/home"
     );
   }
-  checkin(siurl, sicookie);
+  var name = $.getdata("evil_checkincktitle")
+  if (
+    name == undefined ||
+    name == ""
+  ) {
+    name = "机场签到Cookie版"
+  }
+  checkin(siurl, sicookie, name);
 })()
   .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
@@ -100,7 +107,7 @@ var sicookie = $.getdata(signcookie);
     $.done();
   });
 
-function checkin(url, cookie) {
+function checkin(url, cookie, name) {
   let checkinPath =
     url.indexOf("auth/login") != -1 ? "user/checkin" : "user/_checkin.php";
   var checkinurl = url.replace(/(auth|user)\/login(.php)*/g, "") + checkinPath;
@@ -112,10 +119,10 @@ function checkin(url, cookie) {
   $.post(checkinrequest, (error, response, data) => {
     if (error) {
       console.log(error);
-      $.msg("机场签到Cookie版", "签到失败", error);
+      $.msg(name, "签到失败", error);
     } else {
       if (data.match(/\"msg\"\:/)) {
-        dataResults(url, cookie, JSON.parse(data).msg);
+        dataResults(url, cookie, JSON.parse(data).msg, name);
         console.log(JSON.parse(data).msg);
       } else {
         console.log(data);
@@ -125,12 +132,13 @@ function checkin(url, cookie) {
   });
 }
 
-function dataResults(url, cookie, checkinMsg) {
+function dataResults(url, cookie, checkinMsg, name) {
   let userPath = url.indexOf("auth/login") != -1 ? "user" : "user/index.php";
   var datarequest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + userPath,
-    header: { Cookie: cookie }
+    headers: { Cookie: cookie }
   };
+  console.log(datarequest)
   $.get(datarequest, (error, response, data) => {
     let resultData = "";
     let result = [];
@@ -179,7 +187,7 @@ function dataResults(url, cookie, checkinMsg) {
       }
     }
     let flowMsg = resultData == "" ? "流量信息获取失败" : resultData;
-    $.msg("机场签到Cookie版", checkinMsg, flowMsg);
+    $.msg(name, checkinMsg, flowMsg);
   });
 }
 
