@@ -9,8 +9,8 @@ https:\/\/api\.xiaoheihe\.cn\/account\/get_ads_info\ url reject
 
 #cainiao
 https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.nbnetflow\.guoappstartup\.ads\.show url reject
-https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.recommend url reject
-https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show url reject
+;失效https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.recommend url reject
+;失效https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show url reject
 
 #xianyu(test)
 https:\/\/iyes\.youku\.com\/start\/rt? url reject
