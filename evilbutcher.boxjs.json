@@ -108,8 +108,9 @@
       "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
       "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
     ],
-    "keys": ["evil_checkinurl", "evil_checkincookie"],
+    "keys": ["evil_checkincktitle", "evil_checkinurl", "evil_checkincookie"],
     "settings": [
+      { "id": "evil_checkincktitle", "name": "机场名称", "val": "", "type": "textarea", "desc": "手动填入机场名称" },
       { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" },
       { "id": "evil_checkincookie", "name": "Cookie", "val": "", "type": "textarea", "desc": "自动获取，请不要修改，有能力可自行抓包填入" }
     ],
