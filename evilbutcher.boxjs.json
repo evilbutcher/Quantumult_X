@@ -111,8 +111,7 @@
     "keys": ["evil_checkincktitle", "evil_checkinurl", "evil_checkincookie"],
     "settings": [
       { "id": "evil_checkincktitle", "name": "机场名称", "val": "", "type": "textarea", "desc": "手动填入机场名称" },
-      { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" },
-      { "id": "evil_checkincookie", "name": "Cookie", "val": "", "type": "textarea", "desc": "自动获取，请不要修改，有能力可自行抓包填入" }
+      { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" }
     ],
     "author": "@Neurogram, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
@@ -160,12 +159,6 @@
       "⚠️其他基于有赞的小程序也可能触发获取Cookie，请获取完后及时禁用获取Cookie重写/脚本。"
     ],
     "keys": ["evil_funkourl", "evil_funkocookie", "evil_funkostatusurl", "evil_funkostatuscookie"],
-    "settings": [
-      { "id": "evil_funkourl", "name": "签到url", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
-      { "id": "evil_funkocookie", "name": "签到cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
-      { "id": "evil_funkostatusurl", "name": "积分url", "val": "", "type": "textarea", "desc": "可手动填入/修改" },
-      { "id": "evil_funkostatuscookie", "name": "积分cookie", "val": "", "type": "textarea", "desc": "可手动填入/修改" }
-    ],
     "author": "@evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/funboat",
     "icons": ["https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko_tran.png", "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"],
