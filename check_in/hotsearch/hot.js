@@ -12,7 +12,7 @@
 
 ⚠️【使用方法】请仔细阅读⚠️
 ------------------------------------------
-1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅
+1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅、人人影视最新美剧资源
 2、不再需要获取Cookie，无用Cookie会自动清除；B站榜单对应关系：0全站，1动画，3音乐，4游戏，5娱乐，36科技，119鬼畜，129舞蹈。
 3、本地直接修改关键词，远程可通过BoxJs修改关键词，有关键词更新时会通知，否则不通知。
 4、可选择是否合并同一榜单的全部通知。
@@ -79,6 +79,8 @@ $.amazon = true; //是否开启相应榜单监控
 $.amznum = 6; //自定Kindle图书榜单数量
 $.rss = true; //是否开启相应榜单监控
 $.rssnum = 6; //自定rss订阅推送数量
+$.zmz = true; //是否开启相应榜单监控
+$.zmznum = 6; //自定人人影视推送数量
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -97,6 +99,8 @@ $.splitpushamz = false; //是否分开推送Kindle图书榜单
 $.pushnewamz = false; //是否忽略关键词推送Kindle图书最新内容
 $.splitpushrss = false; //是否分开推送rss内容
 $.pushnewrss = false; //是否忽略关键词推送rss最新内容
+$.splitpushzmz = false; //是否分开推送人人影视内容
+$.pushnewzmz = false; //是否忽略关键词推送人人影视最新内容
 $.attachurl = false; //通知是否附带跳转链接
 $.rid = 0; //更改B站监控榜单
 $.time = 2; //榜单获取时限，单位秒
@@ -111,6 +115,7 @@ var itemsdy = [];
 var itemsk36 = [];
 var itemsamz = [];
 var itemsrss = [];
+var itemszmz = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
@@ -120,6 +125,7 @@ var urlsdy = [];
 var urlsk36 = [];
 var urlsamz = [];
 var urlsrss = [];
+var urlszmz = [];
 var coversbl = [];
 var coversdb = [];
 var coversamz = [];
@@ -133,6 +139,7 @@ var resultdy = [];
 var resultk36 = [];
 var resultamz = [];
 var resultrss = [];
+var resultzmz = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
@@ -142,6 +149,7 @@ var openurldy = [];
 var openurlk36 = [];
 var openurlamz = [];
 var openurlrss = [];
+var openurlzmz = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 var mediaurlamz = [];
@@ -251,6 +259,18 @@ var titlerss = [];
     } else {
       $.log("Kindle图书榜单未获取😫");
     }
+    if ($.zmz == true) {
+      await getzmzlist();
+      if (resultzmz.length != 0) {
+        if ($.splitpushzmz == true) {
+          splitpushnotify(resultzmz, openurlzmz);
+        } else {
+          mergepushnotify(resultzmz);
+        }
+      }
+    } else {
+      $.log("人人影视榜单未获取😫");
+    }
     if ($.rss == true) {
       if (haversslink()) {
         for (var i = 0; i < rsslink.length; i++) {
@@ -285,7 +305,7 @@ var titlerss = [];
     }
     last();
     final();
-    deluselessck();
+    //deluselessck();
   }
 })()
   .catch(e => {
@@ -358,6 +378,7 @@ function getsetting() {
   $.k36 = JSON.parse($.getdata("evil_k36") || $.k36);
   $.amazon = JSON.parse($.getdata("evil_amazon") || $.amazon);
   $.rss = JSON.parse($.getdata("evil_rss") || $.rss);
+  $.zmz = JSON.parse($.getdata("evil_zmz") || $.zmz);
   $.splitpushwb = JSON.parse($.getdata("evil_splitpushwb") || $.splitpushwb);
   $.splitpushzh = JSON.parse($.getdata("evil_splitpushzh") || $.splitpushzh);
   $.splitpushbd = JSON.parse($.getdata("evil_splitpushbd") || $.splitpushbd);
@@ -367,6 +388,7 @@ function getsetting() {
   $.splitpushk36 = JSON.parse($.getdata("evil_splitpushk36") || $.splitpushk36);
   $.splitpushamz = JSON.parse($.getdata("evil_splitpushamz") || $.splitpushamz);
   $.splitpushrss = JSON.parse($.getdata("evil_splitpushrss") || $.splitpushrss);
+  $.splitpushzmz = JSON.parse($.getdata("evil_splitpushzmz") || $.splitpushzmz);
   $.pushnewwb = JSON.parse($.getdata("evil_pushnewwb") || $.pushnewwb);
   $.pushnewzh = JSON.parse($.getdata("evil_pushnewzh") || $.pushnewzh);
   $.pushnewbd = JSON.parse($.getdata("evil_pushnewbd") || $.pushnewbd);
@@ -376,6 +398,7 @@ function getsetting() {
   $.pushnewk36 = JSON.parse($.getdata("evil_pushnewk36") || $.pushnewk36);
   $.pushnewamz = JSON.parse($.getdata("evil_pushnewamz") || $.pushnewamz);
   $.pushnewrss = JSON.parse($.getdata("evil_pushnewrss") || $.pushnewrss);
+  $.pushnewzmz = JSON.parse($.getdata("evil_pushnewzmz") || $.pushnewzmz);
   $.attachurl = JSON.parse($.getdata("evil_attachurl") || $.attachurl);
   $.rid = $.getdata("evil_blrid") * 1 || $.rid;
   $.wbnum = $.getdata("evil_wbnum") * 1 || $.wbnum;
@@ -387,6 +410,7 @@ function getsetting() {
   $.k36num = $.getdata("evil_k36num") * 1 || $.k36num;
   $.amznum = $.getdata("evil_amznum") * 1 || $.amznum;
   $.rssnum = $.getdata("evil_rssnum") * 1 || $.rssnum;
+  $.zmznum = $.getdata("evil_zmznum") * 1 || $.zmznum;
   $.time = $.getdata("evil_time") * 1000 || $.time * 1000;
   $.log("监控关键词 " + keyword);
   $.log("监控rss链接 " + rsslink);
@@ -426,6 +450,19 @@ function getsetting() {
   $.log("分开推送Kindle图书内容 " + $.splitpushamz);
   $.log("忽略关键词获取Kindle图书最热内容 " + $.pushnewamz);
   $.log("获取Kindle图书榜单数量 " + $.amznum + "个");
+  $.log("获取人人影视榜单 " + $.zmz);
+  $.log("分开推送人人影视内容 " + $.splitpushzmz);
+  $.log("忽略关键词获取人人影视最新内容 " + $.pushnewzmz);
+  $.log("获取人人影视榜单数量 " + $.zmznum + "个");
+  if ($.getdata("evil_xl115") == "true") {
+    $.log("调用迅雷");
+    $.link =
+      "shortcuts://x-callback-url/run-shortcut?name=%E8%BF%85%E9%9B%B7%E7%BD%91%E9%A1%B5%E7%A6%BB%E7%BA%BF&input=";
+  } else {
+    $.log("调用115");
+    $.link =
+      "shortcuts://x-callback-url/run-shortcut?name=115%E7%A6%BB%E7%BA%BF%E4%B8%8B%E8%BD%BD&input=";
+  }
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -1031,6 +1068,81 @@ function getamazonlist() {
   });
 }
 
+function getzmzlist() {
+  $.log("开始获取人人影视榜单...");
+  return new Promise(resolve => {
+    try {
+      const zmzRequest = {
+        url: `http://file.apicvn.com/file/list?page=1&order=create_time&sort=desc`,
+        headers: {
+          Host: "file.apicvn.com",
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": "Mozilla/5.0"
+        }
+      };
+      $.get(zmzRequest, (error, response, data) => {
+        if (error) {
+          throw new Error(error);
+        }
+        if (response.statusCode == 200) {
+          var body = response.body;
+          var obj = JSON.parse(body);
+          for (var i = 0; i < obj.length; i++) {
+            var item = obj[i]["file_name"];
+            var oriurl = obj[i]["magnet_url"];
+            var url = $.link + oriurl;
+            var size = (obj[i]["file_size"] / 1048576).toFixed(2);
+            var finalsize = size + "MB";
+            if (size > 1024) {
+              size = (obj[i]["file_size"] / 1073741824).toFixed(2);
+              finalsize = size + "GB";
+            }
+            var finalitem = item + "\n📦大小：" + finalsize;
+            itemszmz.push(finalitem);
+            urlszmz.push(url);
+          }
+          $.log("人人影视榜单获取成功✅\n" + itemszmz);
+          if ($.pushnewzmz == false) {
+            for (var j = 0; j < keyword.length; j++) {
+              getkeywordcontenturl(
+                $.splitpushzmz,
+                "人人影视",
+                resultzmz,
+                openurlzmz,
+                keyword[j],
+                itemszmz,
+                urlszmz
+              );
+            }
+          } else {
+            gethotcontenturl(
+              $.splitpushzmz,
+              "人人影视",
+              resultzmz,
+              openurlzmz,
+              $.zmznum,
+              itemszmz,
+              urlszmz
+            );
+          }
+          resolve();
+        } else {
+          $.log("获取人人影视榜单出现错误❌以下详情:\n");
+          $.log(response);
+        }
+        resolve();
+      });
+    } catch (e) {
+      $.log("获取人人影视榜单出现错误❌原因：\n");
+      $.log(e);
+      resolve();
+    }
+    setTimeout(() => {
+      resolve();
+    }, $.time);
+  });
+}
+
 function getrsslist(
   rsslink,
   resultrss,
@@ -1448,6 +1560,7 @@ function last() {
     resultdy.length == 0 &&
     resultk36.length == 0 &&
     resultamz.length == 0 &&
+    resultzmz.length == 0 &&
     checkrssresult() == false
   ) {
     $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
@@ -1464,7 +1577,8 @@ function final() {
     $.douyin == false &&
     $.k36 == false &&
     $.amazon == false &&
-    $.rss == false
+    $.rss == false &&
+    $.zmz == false
   ) {
     $.msg(
       "热门监控",
