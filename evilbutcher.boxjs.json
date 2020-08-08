@@ -32,9 +32,11 @@
       "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
       "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
     ],
-    "keys": [],
+    "keys": ["evil_saveditem", "evil_savedtime"],
     "settings": [
       { "id": "evil_wb_keyword", "name": "监控关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入监控关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
+      { "id": "evil_settime", "name": "间隔时间（时）", "val": 6, "type": "number", "desc": "重复内容默认在6小时内不再通知，可自行修改" },
+      { "id": "evil_refreshtime", "name": "刷新时间（时）", "val": 24, "type": "number", "desc": "重复内容默认在24小时后清空，可自行修改" },
       { "id": "evil_rsslink", "name": "RSS订阅", "val": "", "type": "textarea", "desc": "请输入RSS订阅链接，以中文逗号分隔" },
       { "id": "evil_rss", "name": "rss订阅", "val": false, "type": "boolean", "desc": "打开则会监控rss订阅" },
       { "id": "evil_splitpushrss", "name": "分开推送rss内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新" },
