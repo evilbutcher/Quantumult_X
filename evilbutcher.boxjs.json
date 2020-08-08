@@ -116,8 +116,7 @@
     "keys": ["evil_checkincktitle", "evil_checkinurl", "evil_checkincookie"],
     "settings": [
       { "id": "evil_checkincktitle", "name": "机场名称", "val": "", "type": "textarea", "desc": "手动填入机场名称" },
-      { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" },
-      { "id": "evil_checkincookie", "name": "Cookie", "val": "", "type": "textarea", "desc": "自动获取，请不要修改，有能力可自行抓包填入" }
+      { "id": "evil_checkinurl", "name": "登录链接", "val": "", "type": "textarea", "desc": "手动填入登陆链接" }
     ],
     "author": "@Neurogram, @evilbutcher",
     "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
