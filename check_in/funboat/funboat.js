@@ -162,6 +162,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
+    $request.url.match(/stats/) &&
     $request.url.match(/wx9b5caf9d1669dc96/)
   ) {
     const sturl = $request.url;
