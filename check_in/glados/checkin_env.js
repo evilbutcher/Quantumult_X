@@ -38,7 +38,7 @@ if (
   var acc = $.getdata("evil_checkintitle");
   accounts = acc.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
+  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -48,7 +48,7 @@ if (
   var ur = $.getdata("evil_checkinlogin");
   urls = ur.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
+  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -58,7 +58,7 @@ if (
   var ema = $.getdata("evil_checkinemail");
   emails = ema.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
+  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -68,7 +68,7 @@ if (
   var pwd = $.getdata("evil_checkinpwd");
   passwords = pwd.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "https://8.8.8.8/home");
+  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
 }
 
 $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);

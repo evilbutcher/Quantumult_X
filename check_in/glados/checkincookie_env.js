@@ -88,7 +88,7 @@ var sicookie = $.getdata(signcookie);
       "机场签到Cookie版",
       "",
       "❌请在 BoxJs 检查填写是否正确或是否获取到Cookie",
-      "https://8.8.8.8/home"
+      "http://boxjs.com"
     );
   }
   var name = $.getdata("evil_checkincktitle")
