@@ -40,6 +40,8 @@
 14、监控36氪关键词。  
 15、监控Kindle图书关键词。  
 16、监控RSSHub订阅。  
+17、监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。  
+18、可自定关键词推送间隔。  
 
 ### [App价格监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
 #### 功能特点

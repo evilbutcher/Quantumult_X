@@ -10,6 +10,16 @@
 本脚本使用了Chavy的Env.js，感谢！
 @南叔、@mini计划-图标聚合、@zZPiglet、@xinian
 
+⚠️【免责声明】
+------------------------------------------
+1、此脚本仅用于学习研究，不保证其合法性、准确性、有效性，请根据情况自行判断，本人对此不承担任何保证责任。
+2、由于此脚本仅用于学习研究，您必须在下载后 24 小时内将所有内容从您的计算机或手机或任何存储设备中完全删除，若违反规定引起任何事件本人对此均不负责。
+3、请勿将此脚本用于任何商业或非法目的，若违反规定请自行对此负责。
+4、此脚本涉及应用与本人无关，本人对因此引起的任何隐私泄漏或其他后果不承担任何责任。
+5、本人对任何脚本引发的问题概不负责，包括但不限于由脚本错误引起的任何损失和损害。
+6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
+7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
+
 ⚠️【使用方法】请仔细阅读⚠️
 ------------------------------------------
 1、按照客户端配置好task，支持监控微博热搜、知乎热榜、百度风云榜、B站日榜、豆瓣榜单、抖音榜单、36氪、Kindle图书、rss订阅、人人影视最新美剧资源
@@ -56,6 +66,7 @@ cron "30 0 8-22/2 * * *" script-path=https://raw.githubusercontent.com/evilbutch
 */
 
 const $ = new Env("热门监控");
+const base64 = new Base64Code();
 
 //⚠️本地自定参数修改位置⚠️
 var keyword = ["万茜"]; //👈本地脚本关键词在这里设置。
@@ -362,19 +373,32 @@ function getsetting() {
     $.getdata("evil_savedtime") != ""
   ) {
     $.savedtime = $.getdata("evil_savedtime");
-    $.nowtime = parseInt(new Date().getTime() / 1000);
+    $.nowtime = new Date().getTime();
   } else {
-    $.savedtime = parseInt(new Date().getTime() / 1000);
-    $.nowtime = parseInt(new Date().getTime() / 1000);
-    $.setdata($.nowtime, "evil_savedtime");
+    $.savedtime = new Date().getTime();
+    $.nowtime = new Date().getTime();
+    $.setdata(JSON.stringify($.nowtime), "evil_savedtime");
+    $.setdata("[]", "evil_saveditem");
   }
+  $.refreshtime = $.getdata("evil_refreshtime") || $.refreshtime;
   var minus = $.nowtime - $.savedtime;
-  if (minus > $.refreshtime * 3600) {
-    $.setdata("", "evil_saveditem");
+  if (minus > $.refreshtime * 3600000) {
+    $.setdata("[]", "evil_saveditem");
+    $.setdata(JSON.stringify($.nowtime), "evil_savedtime");
   }
-  var storeitem = JSON.parse($.getdata("evil_saveditem"));
+  if (
+    $.getdata("evil_saveditem") != undefined &&
+    $.getdata("evil_saveditem") != ""
+  ) {
+    var storeitem = JSON.parse($.getdata("evil_saveditem"));
+  } else {
+    storeitem = [];
+  }
   for (var i = 0; i < storeitem.length; i++) {
     saveditem.push(storeitem[i]);
+  }
+  if (saveditem.length != 0) {
+    $.log("\n刷新时间内不再通知的内容👇\n" + saveditem + "\n");
   }
   if (
     $.getdata("evil_wb_keyword") != undefined &&
@@ -436,7 +460,8 @@ function getsetting() {
   $.log("监控关键词 " + keyword);
   $.log("刷新时间 " + $.refreshtime + "小时");
   $.log("此次运行时间戳 " + $.nowtime);
-  $.log("上次运行时间戳 " + $.savedtime);
+  $.log("上次保存时间戳 " + $.savedtime);
+  $.log("间隔 " + (minus / 3600000).toFixed(2) + "小时");
   $.log("监控rss链接 " + rsslink);
   $.log("获取rss订阅 " + $.rss);
   $.log("分开推送rss内容 " + $.splitpushrss);
@@ -478,6 +503,13 @@ function getsetting() {
   $.log("分开推送人人影视内容 " + $.splitpushzmz);
   $.log("忽略关键词获取人人影视最新内容 " + $.pushnewzmz);
   $.log("获取人人影视榜单数量 " + $.zmznum + "个");
+  if ($.getdata("evil_cltz") == "1") {
+    $.log("调用迅雷");
+  } else if ($.getdata("evil_cltz") == "2") {
+    $.log("调用115");
+  }
+  $.link =
+    "shortcuts://x-callback-url/run-shortcut?name=%E7%A3%81%E5%8A%9B%E7%A6%BB%E7%BA%BF&input=";
   $.log("附带跳转链接 " + $.attachurl + "\n");
 }
 
@@ -1105,9 +1137,13 @@ function getzmzlist() {
           for (var i = 0; i < obj.length; i++) {
             var item = obj[i]["file_name"];
             var oriurl = obj[i]["magnet_url"];
-            var url =
-              "shortcuts://x-callback-url/run-shortcut?name=%E7%A3%81%E5%8A%9B%E7%A6%BB%E7%BA%BF&input=" +
-              oriurl;
+            if ($.getdata("evil_cltz") == "1") {
+              var posturl = "xunlei｜" + oriurl;
+            } else if ($.getdata("evil_cltz") == "2") {
+              posturl = "115｜" + oriurl;
+            }
+            var encodeurl = base64.encode(posturl);
+            var url = $.link + encodeurl;
             var size = (obj[i]["file_size"] / 1048576).toFixed(2);
             var finalsize = size + "MB";
             if (size > 1024) {
@@ -1366,8 +1402,7 @@ function getkeywordcontenturl(
 ) {
   if (splitpush == false) {
     for (var i = 0; i < items.length; i++) {
-      if (items[i].indexOf(key) != -1) {
-        saveditem.push(items[i]);
+      if (items[i].indexOf(key) != -1 && saveditem.indexOf(items[i]) == -1) {
         if ($.attachurl == true) {
           result.push(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
@@ -1379,12 +1414,12 @@ function getkeywordcontenturl(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
           );
         }
+        saveditem.push(items[i]);
       }
     }
   } else {
     for (i = 0; i < items.length; i++) {
-      if (items[i].indexOf(key) != -1) {
-        saveditem.push(items[i]);
+      if (items[i].indexOf(key) != -1 && saveditem.indexOf(items[i]) == -1) {
         if ($.attachurl == true) {
           result.push(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
@@ -1397,6 +1432,7 @@ function getkeywordcontenturl(
           );
         }
         openurl.push(urls[i]);
+        saveditem.push(items[i]);
       }
     }
   }
@@ -1448,8 +1484,7 @@ function getkeywordcontentmedia(
 ) {
   if (splitpush == false) {
     for (var i = 0; i < items.length; i++) {
-      if (items[i].indexOf(key) != -1) {
-        saveditem.push(items[i]);
+      if (items[i].indexOf(key) != -1 && saveditem.indexOf(items[i]) == -1) {
         if ($.attachurl == true) {
           result.push(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
@@ -1461,12 +1496,12 @@ function getkeywordcontentmedia(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}`
           );
         }
+        saveditem.push(items[i]);
       }
     }
   } else {
     for (i = 0; i < items.length; i++) {
-      if (items[i].indexOf(key) != -1) {
-        saveditem.push(items[i]);
+      if (items[i].indexOf(key) != -1 && saveditem.indexOf(items[i]) == -1) {
         if ($.attachurl == true) {
           result.push(
             `🎉"${text}"的关键词"${key}"更新\n第${i + 1}名：${items[i]}\n${
@@ -1480,6 +1515,7 @@ function getkeywordcontentmedia(
         }
         openurl.push(urls[i]);
         mediaurl.push(covers[i]);
+        saveditem.push(items[i]);
       }
     }
   }
@@ -1586,7 +1622,7 @@ function last() {
   ) {
     $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
-  $.setdata(saveditem, "evil_saveditem");
+  $.setdata(JSON.stringify(saveditem), "evil_saveditem");
 }
 
 function final() {
@@ -1638,6 +1674,112 @@ function getCookie() {
     $.setdata(sicookie, cookie);
     $.msg("热门监控", "", "获取微博热搜Cookie成功🎉");
   }*/
+}
+
+//From https://github.com/dankogai/js-base64
+function Base64Code() {
+  var r = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+    t = (function(r) {
+      for (var t = {}, e = 0, n = r.length; e < n; e++) t[r.charAt(e)] = e;
+      return t;
+    })(r),
+    e = String.fromCharCode,
+    n = function(r) {
+      if (r.length < 2) {
+        var t = r.charCodeAt(0);
+        return t < 128
+          ? r
+          : t < 2048
+          ? e(192 | (t >>> 6)) + e(128 | (63 & t))
+          : e(224 | ((t >>> 12) & 15)) +
+            e(128 | ((t >>> 6) & 63)) +
+            e(128 | (63 & t));
+      }
+      t = 65536 + 1024 * (r.charCodeAt(0) - 55296) + (r.charCodeAt(1) - 56320);
+      return (
+        e(240 | ((t >>> 18) & 7)) +
+        e(128 | ((t >>> 12) & 63)) +
+        e(128 | ((t >>> 6) & 63)) +
+        e(128 | (63 & t))
+      );
+    },
+    c = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g,
+    a = function(r) {
+      return r.replace(c, n);
+    },
+    o = function(t) {
+      var e = [0, 2, 1][t.length % 3],
+        n =
+          (t.charCodeAt(0) << 16) |
+          ((t.length > 1 ? t.charCodeAt(1) : 0) << 8) |
+          (t.length > 2 ? t.charCodeAt(2) : 0),
+        c = [
+          r.charAt(n >>> 18),
+          r.charAt((n >>> 12) & 63),
+          e >= 2 ? "=" : r.charAt((n >>> 6) & 63),
+          e >= 1 ? "=" : r.charAt(63 & n)
+        ];
+      return c.join("");
+    },
+    h = function(r) {
+      return r.replace(/[\s\S]{1,3}/g, o);
+    };
+  this.encode = function(r) {
+    var t = "[object Uint8Array]" === Object.prototype.toString.call(r);
+    return t ? r.toString("base64") : h(a(String(r)));
+  };
+  var u = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g,
+    i = function(r) {
+      switch (r.length) {
+        case 4:
+          var t =
+              ((7 & r.charCodeAt(0)) << 18) |
+              ((63 & r.charCodeAt(1)) << 12) |
+              ((63 & r.charCodeAt(2)) << 6) |
+              (63 & r.charCodeAt(3)),
+            n = t - 65536;
+          return e(55296 + (n >>> 10)) + e(56320 + (1023 & n));
+        case 3:
+          return e(
+            ((15 & r.charCodeAt(0)) << 12) |
+              ((63 & r.charCodeAt(1)) << 6) |
+              (63 & r.charCodeAt(2))
+          );
+        default:
+          return e(((31 & r.charCodeAt(0)) << 6) | (63 & r.charCodeAt(1)));
+      }
+    },
+    A = function(r) {
+      return r.replace(u, i);
+    },
+    g = function(r) {
+      var n = r.length,
+        c = n % 4,
+        a =
+          (n > 0 ? t[r.charAt(0)] << 18 : 0) |
+          (n > 1 ? t[r.charAt(1)] << 12 : 0) |
+          (n > 2 ? t[r.charAt(2)] << 6 : 0) |
+          (n > 3 ? t[r.charAt(3)] : 0),
+        o = [e(a >>> 16), e((a >>> 8) & 255), e(255 & a)];
+      return (o.length -= [0, 0, 2, 1][c]), o.join("");
+    },
+    d = function(r) {
+      return r.replace(/\S{1,4}/g, g);
+    },
+    l = function(r) {
+      return A(d(r));
+    };
+  this.decode = function(r) {
+    return l(
+      String(r)
+        .replace(/[-_]/g, function(r) {
+          return "-" == r ? "+" : "/";
+        })
+        .replace(/[^A-Za-z0-9\+\/]/g, "")
+    )
+      .replace(/&gt;/g, ">")
+      .replace(/&lt;/g, "<");
+  };
 }
 
 //From chavyleung's Env.js

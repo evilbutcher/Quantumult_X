@@ -35,8 +35,7 @@
     "keys": ["evil_saveditem", "evil_savedtime"],
     "settings": [
       { "id": "evil_wb_keyword", "name": "监控关键词", "val": "", "placeholder": "万茜", "type": "textarea", "desc": "请输入监控关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）" },
-      { "id": "evil_settime", "name": "间隔时间（时）", "val": 6, "type": "number", "desc": "重复内容默认在6小时内不再通知，可自行修改" },
-      { "id": "evil_refreshtime", "name": "刷新时间（时）", "val": 24, "type": "number", "desc": "重复内容默认在24小时后清空，可自行修改" },
+      { "id": "evil_refreshtime", "name": "刷新时间（时）", "val": 6, "type": "number", "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改" },
       { "id": "evil_rsslink", "name": "RSS订阅", "val": "", "type": "textarea", "desc": "请输入RSS订阅链接，以中文逗号分隔" },
       { "id": "evil_rss", "name": "rss订阅", "val": false, "type": "boolean", "desc": "打开则会监控rss订阅" },
       { "id": "evil_splitpushrss", "name": "分开推送rss内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新" },
@@ -79,6 +78,7 @@
       { "id": "evil_splitpushzmz", "name": "分开推送人人影视内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新" },
       { "id": "evil_pushnewzmz", "name": "忽略关键词推送人人影视最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容" },
       { "id": "evil_zmznum", "name": "忽略关键词时获取的人人影视榜单数量", "val": 6, "type": "number", "desc": "自定匹配人人影视榜单内容数量" },
+      { "id": "evil_cltz", "name": "人人影视磁力跳转", "val": "cili", "type": "radios", "desc": "选择跳转方式", "items": [{ "key": "1", "label": "调用迅雷" }, { "key": "2", "label": "调用115" }]},
       { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接" },
       { "id": "evil_time", "name": "榜单获取时限（s）", "val": 2, "type": "number", "desc": "榜单获取时限" }
     ],
