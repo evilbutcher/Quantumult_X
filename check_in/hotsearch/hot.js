@@ -504,9 +504,13 @@ function getsetting() {
   $.log("忽略关键词获取人人影视最新内容 " + $.pushnewzmz);
   $.log("获取人人影视榜单数量 " + $.zmznum + "个");
   if ($.getdata("evil_cltz") == "1") {
-    $.log("调用迅雷");
+    $.log("调用迅雷离线");
   } else if ($.getdata("evil_cltz") == "2") {
-    $.log("调用115");
+    $.log("调用115离线");
+  } else if ($.getdata("evil_cltz") == "3") {
+    $.log("调用袋鼠下载");
+  } else if ($.getdata("evil_cltz") == "4") {
+    $.log("调用闪电下载");
   }
   $.link =
     "shortcuts://x-callback-url/run-shortcut?name=%E7%A3%81%E5%8A%9B%E7%A6%BB%E7%BA%BF&input=";
@@ -1141,6 +1145,10 @@ function getzmzlist() {
               var posturl = "xunlei｜" + oriurl;
             } else if ($.getdata("evil_cltz") == "2") {
               posturl = "115｜" + oriurl;
+            } else if ($.getdata("evil_cltz") == "3") {
+              posturl = "daishu｜" + oriurl;
+            } else if ($.getdata("evil_cltz") == "4") {
+              posturl = "shandian｜" + oriurl;
             }
             var encodeurl = base64.encode(posturl);
             var url = $.link + encodeurl;
@@ -1150,7 +1158,12 @@ function getzmzlist() {
               size = (obj[i]["file_size"] / 1073741824).toFixed(2);
               finalsize = size + "GB";
             }
-            var finalitem = item + "\n📦大小：" + finalsize;
+            if (oriurl == "") {
+              var postitem = "🧲未找到｜" + item;
+            } else {
+              postitem = item;
+            }
+            var finalitem = postitem + "\n📦大小：" + finalsize;
             itemszmz.push(finalitem);
             urlszmz.push(url);
           }
