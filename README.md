@@ -8,6 +8,12 @@
 ### [BoxJs](https://github.com/evilbutcher/Quantumult_X/blob/master/evilbutcher.boxjs.json)
 订阅地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
+### 【Quantumult X】订阅：
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Rewrite.conf
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf（复制到[task_local]）
+
+Surge和Loon稍后会支持...
+
 ### [微博超话（单账号）](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo)
 #### 功能特点
 1、自动获取最新超话列表。  
