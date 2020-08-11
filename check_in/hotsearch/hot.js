@@ -1149,6 +1149,8 @@ function getzmzlist() {
               posturl = "daishu｜" + oriurl;
             } else if ($.getdata("evil_cltz") == "4") {
               posturl = "shandian｜" + oriurl;
+            } else {
+              posturl = "xunlei｜" + oriurl;
             }
             var encodeurl = base64.encode(posturl);
             var url = $.link + encodeurl;

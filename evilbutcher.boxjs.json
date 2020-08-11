@@ -78,7 +78,7 @@
       { "id": "evil_splitpushzmz", "name": "分开推送人人影视内容", "val": false, "type": "boolean", "desc": "打开则会独立推送每条更新" },
       { "id": "evil_pushnewzmz", "name": "忽略关键词推送人人影视最新内容", "val": false, "type": "boolean", "desc": "打开则会忽略关键词，自动推送最新内容" },
       { "id": "evil_zmznum", "name": "忽略关键词时获取的人人影视榜单数量", "val": 6, "type": "number", "desc": "自定匹配人人影视榜单内容数量" },
-      { "id": "evil_cltz", "name": "人人影视磁力跳转", "val": "cili", "type": "radios", "desc": "选择跳转方式", "items": [{ "key": "1", "label": "调用迅雷离线" }, { "key": "2", "label": "调用115离线" }, { "key": "3", "label": "调用袋鼠下载" }, { "key": "4", "label": "调用闪电下载" }]},
+      { "id": "evil_cltz", "name": "人人影视磁力跳转", "val": "1", "type": "radios", "desc": "选择跳转方式", "items": [{ "key": "1", "label": "调用迅雷离线" }, { "key": "2", "label": "调用115离线" }, { "key": "3", "label": "调用袋鼠下载" }, { "key": "4", "label": "调用闪电下载" }]},
       { "id": "evil_attachurl", "name": "附带跳转链接", "val": true, "type": "boolean", "desc": "打开则会附带跳转链接" },
       { "id": "evil_time", "name": "榜单获取时限（s）", "val": 2, "type": "number", "desc": "榜单获取时限" }
     ],
@@ -149,7 +149,7 @@
     ],
     "keys": ["@App价格监控.apps", "@App价格监控.reg", "@App价格监控.app_monitor"],
     "settings": [
-      { "id": "@App价格监控.apps", "name": "监控ID", "val": "", "placeholder": "例如，1312014438 cn，1282297037_au", "type": "textarea", "autoGrow": true, "rows": 5, "desc": "ID与区域分隔符支持 空格/:|_-，但不同App之间请用中文逗号“，”分隔。" },
+      { "id": "@App价格监控.apps", "name": "监控ID", "val": "", "placeholder": "例如，1312014438 cn，1282297037_au", "type": "textarea", "autoGrow": true, "rows": 5, "desc": "ID与区域分隔符支持 空格/:|_-，但不同App之间请用中文逗号"，"分隔。" },
       { "id": "@App价格监控.reg", "name": "默认区域", "val": "", "placeholder": "例如，cn/us/au", "type": "textarea", "autoGrow": true, "rows": 2, "desc": "请填写一个默认区域" }
     ],
     "author": "@t.me/QuanXApp群友",
