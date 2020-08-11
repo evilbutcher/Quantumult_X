@@ -1,0 +1,12 @@
+#!name=evilbutcher Tasks Module
+#!desc=Tasks 模块配置
+#!system=ios
+
+[Script]
+Tasks: App价格监控 = type=cron,cronexp=30 7-22 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js
+Tasks: 热门监控 = type=cron,cronexp=30 0 8-22/2 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+Tasks: 微博超话 = type=cron,cronexp=5 0  * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js
+Tasks: GLaDOS签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+Tasks: 机场签到 = type=cron,cronexp=0 1 0 * * *,script-path=ttps://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
+Tasks: 机场签到Cookie版 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
+Tasks: Funboat签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
