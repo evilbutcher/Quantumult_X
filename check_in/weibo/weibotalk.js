@@ -584,7 +584,11 @@ function checkin(id, name, isSign = false) {
             if (debugcheckin) console.log(response);
           } else if (result == 382010) {
             $.message.push(`【${idname}】：超话不存在⚠️`);
-            console.log(`【${idname}】执行签到：超话不存在⚠️`);
+            console.log(`【${idname}】执行签到：超话不存在⚠️`); 
+            if (debugcheckin) console.log(response);
+          } else if (result == 201001) {
+            $.message.push(`【${idname}】：获取超时，请稍后重试⚠️`);
+            console.log(`【${idname}】执行签到：获取超时，请稍后重试⚠️`);
             if (debugcheckin) console.log(response);
           } else if (obj["errno"] == -100) {
             $.stopNum += 1;
