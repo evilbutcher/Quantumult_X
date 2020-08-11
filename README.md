@@ -10,7 +10,7 @@
 
 ### 【Quantumult X】订阅：
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Rewrite.conf
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf  （复制到[task_local]）
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf  （需要将内容复制到[task_local]）
 
 Surge和Loon稍后会支持...
 
