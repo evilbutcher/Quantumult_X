@@ -5,10 +5,10 @@
 绝大多数代码都用到了@chavyleung的Env.js和@Peng-YM的OpenAPI.js，感谢！
 
 ## 脚本类
-### [BoxJs](https://github.com/evilbutcher/Quantumult_X/blob/master/evilbutcher.boxjs.json)
-订阅地址：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
+### 【BoxJs】订阅
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
-### 【Quantumult X】订阅：
+### 【Quantumult X】脚本订阅合集+自己写的去广告
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Rewrite.conf
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf  （需要将内容复制到[task_local]）
 
