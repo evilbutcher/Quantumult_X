@@ -12,6 +12,10 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Rewrite.conf
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf  （需要将内容复制到[task_local]）
 
+### 【Surge】脚本订阅合集
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_tasks.sgmodule
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_cookies.sgmodule
+
 Surge和Loon稍后会支持...
 
 ### [微博超话（单账号）](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo)
