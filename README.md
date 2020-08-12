@@ -4,7 +4,7 @@
 
 绝大多数代码都用到了@chavyleung的Env.js和@Peng-YM的OpenAPI.js，感谢！
 
-## 脚本类
+## 脚本合集
 ### 【BoxJs】订阅
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
@@ -16,9 +16,10 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Re
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_tasks.sgmodule
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_cookies.sgmodule
 
-### 【Surge】脚本订阅合集
+### 【Loon】脚本订阅合集
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.plugin
 
+## 脚本
 ### [微博超话（单账号）](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo)
 #### 功能特点
 1、自动获取最新超话列表。  
