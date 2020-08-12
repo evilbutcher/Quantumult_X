@@ -17,7 +17,6 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_tasks.sg
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_cookies.sgmodule
 
 ### 【Surge】脚本订阅合集
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.cookies.plugin
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.plugin
 
 ### [微博超话（单账号）](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo)
