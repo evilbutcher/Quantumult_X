@@ -1,6 +1,19 @@
 const $ = new API("Twitter通知")
+const token = $.read("evil_twittertoken")
 
-$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "在做了咕咕咕")
+$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "在做了不知道做不做得出来咕咕咕")
+
+!(async () => {
+
+
+})()
+    .catch(e => {
+        $.log("", `❌失败! 原因: ${e}!`, "");
+    })
+    .finally(() => {
+        $.done();
+    });
+
 
 function ENV() {
     const isQX = typeof $task != "undefined";
