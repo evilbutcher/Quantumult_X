@@ -9,12 +9,12 @@
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
 ### 【Quantumult X】脚本订阅合集+自己写的去广告
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Rewrite.conf
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX_Remote_Task.conf  （需要将内容复制到[task_local]）
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.rewrite.conf
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.conf  （需要将内容复制到[task_local]）
 
 ### 【Surge】脚本订阅合集
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_tasks.sgmodule
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge_cookies.sgmodule
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge.tasks.sgmodule
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge.cookies.sgmodule
 
 ### 【Loon】脚本订阅合集
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.plugin
