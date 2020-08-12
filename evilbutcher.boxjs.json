@@ -68,10 +68,7 @@
         "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
         "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
       ],
-      "keys": [
-        "evil_saveditem",
-        "evil_savedtime"
-      ],
+      "keys": ["evil_saveditem", "evil_savedtime"],
       "settings": [
         {
           "id": "evil_wb_keyword",
@@ -513,11 +510,7 @@
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
         "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
       ],
-      "keys": [
-        "evil_checkincktitle",
-        "evil_checkinurl",
-        "evil_checkincookie"
-      ],
+      "keys": ["evil_checkincktitle", "evil_checkinurl", "evil_checkincookie"],
       "settings": [
         {
           "id": "evil_checkincktitle",
@@ -555,9 +548,7 @@
         "注册地址：https://github.com/glados-network/GLaDOS",
         "邀请码：3JRG4-KSGZJ-8QPXF-8PPOO"
       ],
-      "keys": [
-        "evil_gladoscookie"
-      ],
+      "keys": ["evil_gladoscookie"],
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
       "icons": [
