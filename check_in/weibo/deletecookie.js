@@ -1,3 +1,5 @@
+const $ = new Env("微博超话");
+
 $.setdata("", tokenurl);
 $.setdata("", tokenheaders);
 $.setdata("", tokencheckinurl);
