@@ -60,7 +60,7 @@
       ],
       "scripts": [
         {
-          "name": "微博超话签到",
+          "name": "执行微博超话签到",
           "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js"
         },
         {

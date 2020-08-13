@@ -128,12 +128,7 @@ $.stopNum = 0;
 
 !(async () => {
   if ($.delete_cookie) {
-    $.setdata("", tokenurl);
-    $.setdata("", tokenheaders);
-    $.setdata("", tokencheckinurl);
-    $.setdata("", tokencheckinheaders);
-    $.setdata("", tokensinceurl);
-    $.setdata("", tokensinceheaders);
+    deletecookie();
     $.msg(
       "微博超话",
       "✅Cookie清除成功",
@@ -199,8 +194,9 @@ $.stopNum = 0;
       await checkin($.id_list[i], $.name_list[i], $.sign_status[i]);
       $.wait($.time);
       if ($.stopNum != 0) {
-        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止");
-        console.log("🚨检测到Cookie失效，脚本已自动停止");
+        deletecookie();
+        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止并清除Cookie");
+        console.log("🚨检测到Cookie失效，脚本已自动停止并清除Cookie");
         return;
       }
     }
@@ -212,8 +208,9 @@ $.stopNum = 0;
       await checkin($.id_list[i], $.name_list[i], false);
       $.wait($.time);
       if ($.stopNum != 0) {
-        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止");
-        console.log("🚨检测到Cookie失效，脚本已自动停止");
+        deletecookie();
+        $.msg("微博超话", "🚨检测到Cookie失效，脚本已自动停止并清除Cookie");
+        console.log("🚨检测到Cookie失效，脚本已自动停止并清除Cookie");
         return;
       }
     }
@@ -226,6 +223,15 @@ $.stopNum = 0;
   .finally(() => {
     $.done();
   });
+
+function deletecookie() {
+  $.setdata("", tokenurl);
+  $.setdata("", tokenheaders);
+  $.setdata("", tokencheckinurl);
+  $.setdata("", tokencheckinheaders);
+  $.setdata("", tokensinceurl);
+  $.setdata("", tokensinceheaders);
+}
 
 function output() {
   $.this_msg = ``;
@@ -584,7 +590,7 @@ function checkin(id, name, isSign = false) {
             if (debugcheckin) console.log(response);
           } else if (result == 382010) {
             $.message.push(`【${idname}】：超话不存在⚠️`);
-            console.log(`【${idname}】执行签到：超话不存在⚠️`); 
+            console.log(`【${idname}】执行签到：超话不存在⚠️`);
             if (debugcheckin) console.log(response);
           } else if (result == 201001) {
             $.message.push(`【${idname}】：获取超时，请稍后重试⚠️`);
