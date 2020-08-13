@@ -3,7 +3,7 @@ const token = $.read("evil_twittertoken");
 const authorization = $.read("evil_twitterauthorization");
 const cookie = $.read("evil_twittercookie");
 
-$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "有反爬虫机制咕咕咕");
+$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "有API以后再说了咕咕咕");
 
 !(async () => {})()
   .catch((e) => {
