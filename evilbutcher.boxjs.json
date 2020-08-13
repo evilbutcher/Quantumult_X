@@ -58,7 +58,16 @@
         "https://raw.githubusercontent.com/Orz-3/mini/master/weibo.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/weibo.png"
       ],
-      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js"
+      "scripts": [
+        {
+          "name": "微博超话签到",
+          "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js"
+        },
+        {
+          "name": "一键清除Cookie",
+          "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/deletecookie.js"
+        }
+      ]
     },
     {
       "id": "hot",
