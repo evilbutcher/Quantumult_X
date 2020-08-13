@@ -1,5 +1,10 @@
 const $ = new Env("微博超话");
-
+const tokenurl = "evil_tokenurl";
+const tokencheckinurl = "evil_tokencheckinurl";
+const tokenheaders = "evil_tokenheaders";
+const tokensinceurl = "evil_tokensinceurl";
+const tokensinceheaders = "evil_tokensinceheaders";
+const tokencheckinheaders = "evil_tokencheckinheaders";
 $.setdata("", tokenurl);
 $.setdata("", tokenheaders);
 $.setdata("", tokencheckinurl);
