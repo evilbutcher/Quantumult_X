@@ -1,7 +1,9 @@
 const $ = new API("Twitter通知");
 const token = $.read("evil_twittertoken");
+const authorization = $.read("evil_twitterauthorization");
+const cookie = $.read("evil_twittercookie");
 
-$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "在做了不知道做不做得出来咕咕咕");
+$.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "有反爬虫机制咕咕咕");
 
 !(async () => {})()
   .catch((e) => {
@@ -10,6 +12,16 @@ $.notify("Twitter通知", "咕咕咕咕咕咕咕咕咕", "在做了不知道做�
   .finally(() => {
     $.done();
   });
+
+function getuserid(){
+  const getidrequest = {
+    url: "",
+    headers: {
+      "Cookie": cookie
+    }
+  }
+  $.http.get()
+}
 
 function ENV() {
   const isQX = typeof $task != "undefined";
