@@ -86,7 +86,7 @@
           "placeholder": "万茜",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 2,
           "desc": "请输入监控关键词，以中文逗号分隔（请指定一个关键词，避免消息爆炸式推送）"
         },
         {
@@ -102,7 +102,7 @@
           "val": "",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 2,
           "desc": "请输入RSS订阅链接，以中文逗号分隔"
         },
         {
@@ -469,7 +469,7 @@
           "placeholder": "请填写，例如：隔壁西站",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 1,
           "desc": "请依次填入标题，以中文逗号分隔"
         },
         {
@@ -479,7 +479,7 @@
           "placeholder": "请填写，例如：https://example.com/auth/login",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 1,
           "desc": "请依次填入网址，以中文逗号分隔"
         },
         {
@@ -489,7 +489,7 @@
           "placeholder": "请填写，例如：example@v2bz.com",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 1,
           "desc": "请依次填入邮箱，以中文逗号分隔"
         },
         {
@@ -499,7 +499,7 @@
           "placeholder": "请填写，例如：password",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 3,
+          "rows": 1,
           "desc": "请依次填入密码，以中文逗号分隔"
         }
       ],
@@ -527,7 +527,7 @@
           "val": "",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 2,
+          "rows": 1,
           "desc": "手动填入机场名称"
         },
         {
@@ -536,7 +536,7 @@
           "val": "",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 2,
+          "rows": 1,
           "desc": "手动填入登陆链接"
         },
         {
@@ -545,7 +545,7 @@
           "val": "",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 2,
+          "rows": 1,
           "desc": "自动获取，也可手动填入Cookie，请不要修改"
         }
       ],
@@ -598,7 +598,7 @@
           "placeholder": "例如，1312014438 cn，1282297037_au",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 5,
+          "rows": 2,
           "desc": "ID与区域分隔符支持 空格/:|_-，但不同App之间请用中文逗号\"，\"分隔。"
         },
         {
@@ -608,7 +608,7 @@
           "placeholder": "例如，cn/us/au",
           "type": "textarea",
           "autoGrow": true,
-          "rows": 2,
+          "rows": 1,
           "desc": "请填写一个默认区域"
         }
       ],
