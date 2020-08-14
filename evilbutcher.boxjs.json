@@ -538,6 +538,15 @@
           "autoGrow": true,
           "rows": 2,
           "desc": "手动填入登陆链接"
+        },
+        {
+          "id": "evil_checkincookie",
+          "name": "Cookie",
+          "val": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "自动获取，也可手动填入Cookie，请不要修改"
         }
       ],
       "author": "@Neurogram, @evilbutcher",

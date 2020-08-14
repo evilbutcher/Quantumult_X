@@ -133,9 +133,12 @@ function checkin(url, cookie, name) {
       if (data.match(/\"msg\"\:/)) {
         dataResults(url, cookie, JSON.parse(data).msg, name);
         console.log(JSON.parse(data).msg);
+      } else if (data.match(/login/)) {
+        console.log(data);
+        $.msg(name, "", "⚠️Cookie失效啦，请重新获取Cookie")
       } else {
         console.log(data);
-        console.log("⚠️签到失败，某些地方出错啦");
+        $.msg(name, "", "⚠️签到失败，某些地方出错啦，请查看日志");
       }
     }
   });
@@ -174,18 +177,18 @@ function dataResults(url, cookie, checkinMsg, name) {
         resultData = result.join("\n\n");
       }
     } else {
-      let todayUsed = data.match(/>*\s*今日(已用)*[^B]+/);
+      let todayUsed = data.match(/>*\s*今日(已用|使用)*[^B]+/);
       if (todayUsed) {
         todayUsed = flowFormat(todayUsed[0]);
         result.push(`今日：${todayUsed}`);
       }
-      let usedData = data.match(/(Used Transfer|>过去已用|>已用|\"已用)[^B]+/);
+      let usedData = data.match(/(Used Transfer|>过去已用|>已用|>总已用|\"已用)[^B]+/);
       if (usedData) {
         usedData = flowFormat(usedData[0]);
         result.push(`已用：${usedData}`);
       }
       let restData = data.match(
-        /(Remaining Transfer|>剩余流量|>可用|\"剩余)[^B]+/
+        /(Remaining Transfer|>剩余流量|>流量剩余|>可用|\"剩余)[^B]+/
       );
       if (restData) {
         restData = flowFormat(restData[0]);
