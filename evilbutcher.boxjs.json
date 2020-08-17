@@ -7,7 +7,7 @@
   "apps": [
     {
       "id": "weibotalk",
-      "name": "微博超话（单账号版）",
+      "name": "微博超话(单账号)",
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js\">脚本地址</a>】",
         "Cookie获取指南",
@@ -513,7 +513,7 @@
     },
     {
       "id": "checkincookie",
-      "name": "机场签到Cookie版",
+      "name": "机场签到(Cookie)",
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js\">脚本地址</a>】",
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
@@ -559,7 +559,7 @@
     },
     {
       "id": "glados",
-      "name": "GLaDOS签到",
+      "name": "GLaDOS",
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js\">脚本地址</a>】",
         "签到较为特殊，故独立写了一个。",
@@ -622,7 +622,7 @@
     },
     {
       "id": "funboat",
-      "name": "Funboat签到",
+      "name": "Funboat",
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js\">脚本地址</a>】",
         "微信小程序搜索 Funboat，按照脚本提示获取Cookie。",
