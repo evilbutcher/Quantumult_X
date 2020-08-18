@@ -70,7 +70,7 @@ const base64 = new Base64Code();
 
 //⚠️本地自定参数修改位置⚠️
 var keyword = ["万茜"]; //👈本地脚本关键词在这里设置。
-var rsslink = ["https://rsshub.app/bilibili/user/video/2267573"]; //👈本地rss订阅设置
+var rsslink = ["http://sspai.me/feed"]; //👈本地rss订阅设置
 //⚠️👆以上用英文逗号、英文双引号⚠️
 $.weibo = true; //是否开启相应榜单监控
 $.wbnum = 6; //自定微博热搜数量
@@ -585,13 +585,13 @@ function gethotsearch() {
           resolve();
         } else {
           $.log("获取微博热搜出现错误❌以下详情：\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取微博热搜出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -664,13 +664,13 @@ function gethotlist() {
           resolve();
         } else {
           $.log("获取知乎热榜出现错误❌以下详情：\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取知乎热榜出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -751,13 +751,13 @@ function getfylist() {
           resolve();
         } else {
           $.log("获取百度风云榜出现错误❌以下详情：\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取百度风云榜出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -834,13 +834,13 @@ function getbllist() {
           resolve();
         } else {
           $.log("获取B站日榜出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取B站日榜出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -928,13 +928,13 @@ function getdblist() {
           resolve();
         } else {
           $.log("获取豆瓣榜单出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取豆瓣榜单出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -984,13 +984,13 @@ function getdylist() {
           resolve();
         } else {
           $.log("获取抖音榜单出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取抖音榜单出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -1040,13 +1040,13 @@ function getk36list() {
           resolve();
         } else {
           $.log("获取36氪榜单出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取36氪榜单出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -1104,13 +1104,13 @@ function getamazonlist() {
           resolve();
         } else {
           $.log("获取Kindle图书榜单出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取Kindle图书榜单出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -1196,13 +1196,13 @@ function getzmzlist() {
           resolve();
         } else {
           $.log("获取人人影视榜单出现错误❌以下详情:\n");
-          $.log(response);
+          $.log(JSON.stringify(response));
         }
         resolve();
       });
     } catch (e) {
       $.log("获取人人影视榜单出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -1225,7 +1225,9 @@ function getrsslist(
   return new Promise(resolve => {
     try {
       const rssRequest = {
-        url: rsslink
+        url:
+          "https://api.rss2json.com/v1/api.json?rss_url=" +
+          encodeURIComponent(rsslink)
       };
       $.get(rssRequest, (error, response, data) => {
         if (error) {
@@ -1233,7 +1235,39 @@ function getrsslist(
         }
         if (response.statusCode == 200) {
           var body = response.body;
-          parsehtmlrss(body, titlerss, itemsrss, urlsrss, coversrss);
+          var obj = JSON.parse(body);
+          titlerss = obj.feed.title;
+          var items = obj.items;
+          var num = items.length;
+          for (var i = 0; i < num; i++) {
+            var title = items[i].title;
+            var url = items[i].link;
+            if (items[i].thumbnail != null) {
+              var cover = items[i].thumbnail;
+            } else {
+              cover =
+                "https://raw.githubusercontent.com/58xinian/icon/master/hot.png";
+            }
+            if (items[i].description != null) {
+              var des = items[i].description;
+              var postdes = des
+                .replace(new RegExp(/\\n/, "gm"), "")
+                .replace(new RegExp(/\<.*?\>/, "gm"), "");
+              var finaldes = postdes.slice(0, 50);
+              var description = "\n🔎详情：" + finaldes.trim();
+            } else {
+              description = "\n🔎详情：暂无";
+            }
+            if (items[i].author == "") {
+              var author = "\n👨‍💻作者：暂无";
+            } else {
+              author = "\n👨‍💻作者：" + items[i].author;
+            }
+            var item = title + author + description;
+            itemsrss.push(item);
+            urlsrss.push(url);
+            coversrss.push(cover);
+          }
           $.log("RSS内容获取成功✅\n" + itemsrss);
           if ($.pushnewrss == false) {
             for (var j = 0; j < keyword.length; j++) {
@@ -1265,100 +1299,26 @@ function getrsslist(
           resolve();
         } else {
           $.log("获取RSS内容出现错误❌以下详情:\n");
-          $.log(response);
+          var obj = JSON.parse(response.body);
+          $.log(JSON.stringify(obj));
+          if (obj.status == "error")
+            $.msg(
+              "热门监控",
+              "RSS解析出错❌",
+              "请尝试检查订阅链接，稍后重试⚠️\n" + obj.message
+            );
         }
         resolve();
       });
     } catch (e) {
       $.log("获取RSS内容出现错误❌原因：\n");
-      $.log(e);
+      $.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
       resolve();
     }, $.time);
   });
-}
-
-function parsehtmlrss(str, title, items, urls, covers) {
-  var text = JSON.stringify(str);
-  //title表达式
-  var alltitle = /channel\>(\\\S.*?|)\<title\>(\<\!\[CDATA\[.*?\]|.*?)\>/;
-  //括号表达式
-  var getbracket = /CDATA\[.*?]/;
-  //箭头表达式
-  var getarrow = /title\>.*?\</;
-  //获取title
-  var pretitle = text.match(alltitle);
-  //检测括号
-  var kuotitle = pretitle[0].match(getbracket);
-  //检测箭头
-  var jiantitle = pretitle[0].match(getarrow);
-  title.splice(0);
-  if (kuotitle != null) {
-    title.push(kuotitle[0].slice(6, -1));
-  } else {
-    title.push(jiantitle[0].slice(6, -1));
-  }
-  //item表达式
-  var content = /item\>.*?\<\/item/g;
-  var detail = text.match(content);
-  for (var i = 0; i < detail.length; i++) {
-    //subtitle表达式
-    var subtitle = /title\>(\<\!\[CDATA\[.*?\]|.*?)\>\</;
-    //description表达式
-    var allwords = /description\>(\<\!\[CDATA\[.*?\]|\S.*?)\>\</;
-    //openurl的link表达式
-    var allurls = /link\>http.*?\</;
-    //mediaurl的link表达式
-    var allcovers = /img src=(\\\"|\S).*?(jpg|png|&#34)/;
-    //筛选http
-    var getcovers = /http.*?(jpg|png|&#34)/;
-    //获取subtitle
-    var presubtitle = detail[i].match(subtitle);
-    if (presubtitle != null) {
-      //检测括号
-      var postsubtitle = presubtitle[0].match(getbracket);
-      if (postsubtitle != null) {
-        var finalsubtitle = postsubtitle[0].slice(6, -1);
-      } else {
-        finalsubtitle = presubtitle[0].slice(6, -9);
-      }
-      //获取description
-      var prewords = detail[i].match(allwords);
-      //检测括号
-      var postwords = prewords[0].match(getbracket);
-      if (postwords != null) {
-        var getwords = postwords[0].slice(6, -1);
-      } else {
-        getwords = "未获取";
-      }
-      var finalwords = getwords
-        .replace(new RegExp(/\\n/, "gm"), "")
-        .replace(new RegExp(/\<.*?\>/, "gm"), "");
-      if (finalwords.length != 0) {
-        var item = finalsubtitle + "\n🔍详情  " + finalwords;
-        items.push(item);
-      } else {
-        var item = finalsubtitle + "\n🔍详情  暂无";
-        items.push(item);
-      }
-      var preurls = detail[i].match(allurls);
-      var posturls = preurls[0].slice(5, -1);
-      urls.push(posturls);
-      var precovers = detail[i].match(allcovers);
-      if (precovers != null) {
-        var postcovers = precovers[0].match(getcovers);
-        covers.push(postcovers[0]);
-      } else {
-        covers.push(
-          "https://raw.githubusercontent.com/58xinian/icon/master/hot.png"
-        );
-      }
-    } else {
-      continue;
-    }
-  }
 }
 
 function parsehtml(str, items, urls) {
@@ -1694,12 +1654,12 @@ function getCookie() {
 //From https://github.com/dankogai/js-base64
 function Base64Code() {
   var r = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-    t = (function(r) {
+    t = (function (r) {
       for (var t = {}, e = 0, n = r.length; e < n; e++) t[r.charAt(e)] = e;
       return t;
     })(r),
     e = String.fromCharCode,
-    n = function(r) {
+    n = function (r) {
       if (r.length < 2) {
         var t = r.charCodeAt(0);
         return t < 128
@@ -1719,10 +1679,10 @@ function Base64Code() {
       );
     },
     c = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g,
-    a = function(r) {
+    a = function (r) {
       return r.replace(c, n);
     },
-    o = function(t) {
+    o = function (t) {
       var e = [0, 2, 1][t.length % 3],
         n =
           (t.charCodeAt(0) << 16) |
@@ -1736,15 +1696,15 @@ function Base64Code() {
         ];
       return c.join("");
     },
-    h = function(r) {
+    h = function (r) {
       return r.replace(/[\s\S]{1,3}/g, o);
     };
-  this.encode = function(r) {
+  this.encode = function (r) {
     var t = "[object Uint8Array]" === Object.prototype.toString.call(r);
     return t ? r.toString("base64") : h(a(String(r)));
   };
   var u = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g,
-    i = function(r) {
+    i = function (r) {
       switch (r.length) {
         case 4:
           var t =
@@ -1764,10 +1724,10 @@ function Base64Code() {
           return e(((31 & r.charCodeAt(0)) << 6) | (63 & r.charCodeAt(1)));
       }
     },
-    A = function(r) {
+    A = function (r) {
       return r.replace(u, i);
     },
-    g = function(r) {
+    g = function (r) {
       var n = r.length,
         c = n % 4,
         a =
@@ -1778,16 +1738,16 @@ function Base64Code() {
         o = [e(a >>> 16), e((a >>> 8) & 255), e(255 & a)];
       return (o.length -= [0, 0, 2, 1][c]), o.join("");
     },
-    d = function(r) {
+    d = function (r) {
       return r.replace(/\S{1,4}/g, g);
     },
-    l = function(r) {
+    l = function (r) {
       return A(d(r));
     };
-  this.decode = function(r) {
+  this.decode = function (r) {
     return l(
       String(r)
-        .replace(/[-_]/g, function(r) {
+        .replace(/[-_]/g, function (r) {
           return "-" == r ? "+" : "/";
         })
         .replace(/[^A-Za-z0-9\+\/]/g, "")
