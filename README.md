@@ -61,6 +61,10 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 2、设置区域方式“1443988620:hk，1443988620/us，1443988620-uk，1443988620_jp，1443988620 au”。  
 3、支持BoxJs by evilbutcher。  
 
+### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
+#### 功能特点
+1、喜欢funko可以关注该微信小程序。
+
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 #### 功能特点
