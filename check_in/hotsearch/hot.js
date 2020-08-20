@@ -286,29 +286,29 @@ var saveditem = [];
     }
     if ($.rss == true) {
       if (haversslink()) {
-        for (var i = 0; i < rsslink.length; i++) {
-          resultrss[i] = [];
-          openurlrss[i] = [];
-          mediaurlrss[i] = [];
-          titlerss[i] = [];
-          itemsrss[i] = [];
-          urlsrss[i] = [];
-          coversrss[i] = [];
+        for await(rss of rsslink) {
+          resultrss = [];
+          openurlrss = [];
+          mediaurlrss = [];
+          titlerss = [];
+          itemsrss = [];
+          urlsrss = [];
+          coversrss = [];
           await getrsslist(
-            rsslink[i],
-            resultrss[i],
-            openurlrss[i],
-            mediaurlrss[i],
-            titlerss[i],
-            itemsrss[i],
-            urlsrss[i],
-            coversrss[i]
+            rss,
+            resultrss,
+            openurlrss,
+            mediaurlrss,
+            titlerss,
+            itemsrss,
+            urlsrss,
+            coversrss
           );
-          if (resultrss[i].length != 0) {
+          if (resultrss.length != 0) {
             if ($.splitpushrss == true) {
-              splitpushnotifymedia(resultrss[i], openurlrss[i], mediaurlrss[i]);
+              splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
             } else {
-              mergepushnotify(resultrss[i]);
+              mergepushnotify(resultrss);
             }
           }
         }
