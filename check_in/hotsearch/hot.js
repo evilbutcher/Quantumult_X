@@ -305,7 +305,6 @@ var saveditem = [];
               urlsrss,
               coversrss
             );
-            //$.log(rss + "获取完成");
             if (resultrss.length != 0) {
               if ($.splitpushrss == true) {
                 splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
@@ -523,15 +522,13 @@ function getsetting() {
 function gethotsearch() {
   $.log("开始获取微博榜单...");
   return new Promise(resolve => {
-    try {
-      const wbRequest = {
-        url:
-          "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot"
-      };
-      $.get(wbRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const wbRequest = {
+      url:
+        "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot"
+    };
+    $.get(wbRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -591,30 +588,28 @@ function gethotsearch() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取微博热搜出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取微博热搜出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function gethotlist() {
   $.log("开始获取知乎榜单...");
   return new Promise(resolve => {
-    try {
-      const zhRequest = {
-        url:
-          "https://api.zhihu.com/topstory/hot-lists/total?limit=10&reverse_order=0"
-      };
-      $.get(zhRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const zhRequest = {
+      url:
+        "https://api.zhihu.com/topstory/hot-lists/total?limit=10&reverse_order=0"
+    };
+    $.get(zhRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -670,29 +665,27 @@ function gethotlist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取知乎热榜出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取知乎热榜出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getfylist() {
   $.log("开始获取百度榜单...");
   return new Promise(resolve => {
-    try {
-      const bdRequest = {
-        url: "http://top.baidu.com/mobile_v2/buzz?b=1&c=515"
-      };
-      $.get(bdRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const bdRequest = {
+      url: "http://top.baidu.com/mobile_v2/buzz?b=1&c=515"
+    };
+    $.get(bdRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -757,29 +750,27 @@ function getfylist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取百度风云榜出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取百度风云榜出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getbllist() {
   $.log("开始获取B站日榜...");
   return new Promise(resolve => {
-    try {
-      const blRequest = {
-        url: "https://app.bilibili.com/x/v2/rank/region?rid=" + $.rid
-      };
-      $.get(blRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const blRequest = {
+      url: "https://app.bilibili.com/x/v2/rank/region?rid=" + $.rid
+    };
+    $.get(blRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -840,34 +831,33 @@ function getbllist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取B站日榜出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取B站日榜出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getdblist() {
   $.log("开始获取豆瓣榜单...");
   return new Promise(resolve => {
-    try {
-      const dbheader = {
-        Referer: `https://m.douban.com/pwa/cache_worker`
-      };
-      const dbRequest = {
-        url:
-          "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1",
-        headers: dbheader
-      };
-      $.get(dbRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const dbheader = {
+      Referer: `https://m.douban.com/pwa/cache_worker`
+    };
+    const dbRequest = {
+      url:
+        "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1",
+      headers: dbheader
+    };
+    $.get(dbRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
+
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -934,29 +924,28 @@ function getdblist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取豆瓣榜单出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取豆瓣榜单出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getdylist() {
   $.log("开始获取抖音榜单...");
   return new Promise(resolve => {
-    try {
-      const dyRequest = {
-        url: "https://tophub.today/n/DpQvNABoNE"
-      };
-      $.get(dyRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const dyRequest = {
+      url: "https://tophub.today/n/DpQvNABoNE"
+    };
+    $.get(dyRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
+
         if (response.statusCode == 200) {
           var body = response.body;
           parsehtml(body, itemsdy, urlsdy);
@@ -990,29 +979,27 @@ function getdylist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取抖音榜单出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取抖音榜单出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getk36list() {
   $.log("开始获取36氪榜单...");
   return new Promise(resolve => {
-    try {
-      const k36Request = {
-        url: "https://tophub.today/n/Q1Vd5Ko85R"
-      };
-      $.get(k36Request, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const k36Request = {
+      url: "https://tophub.today/n/Q1Vd5Ko85R"
+    };
+    $.get(k36Request, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           parsehtml(body, itemsk36, urlsk36);
@@ -1046,33 +1033,31 @@ function getk36list() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取36氪榜单出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取36氪榜单出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getamazonlist() {
   $.log("开始获取Kindle图书榜单...");
   return new Promise(resolve => {
-    try {
-      const amazonRequest = {
-        url: "https://www.amazon.cn/gp/bestsellers/digital-text",
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1"
-        }
-      };
-      $.get(amazonRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const amazonRequest = {
+      url: "https://www.amazon.cn/gp/bestsellers/digital-text",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1"
+      }
+    };
+    $.get(amazonRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           parsehtmlkindle(body, itemsamz, urlsamz, coversamz);
@@ -1110,34 +1095,32 @@ function getamazonlist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取Kindle图书榜单出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取Kindle图书榜单出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
 function getzmzlist() {
   $.log("开始获取人人影视榜单...");
   return new Promise(resolve => {
-    try {
-      const zmzRequest = {
-        url: `http://file.apicvn.com/file/list?page=1&order=create_time&sort=desc`,
-        headers: {
-          Host: "file.apicvn.com",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": "Mozilla/5.0"
-        }
-      };
-      $.get(zmzRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const zmzRequest = {
+      url: `http://file.apicvn.com/file/list?page=1&order=create_time&sort=desc`,
+      headers: {
+        Host: "file.apicvn.com",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "Mozilla/5.0"
+      }
+    };
+    $.get(zmzRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -1202,15 +1185,15 @@ function getzmzlist() {
           $.log(JSON.stringify(response));
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取人人影视榜单出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取人人影视榜单出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
@@ -1226,16 +1209,14 @@ function getrsslist(
 ) {
   $.log("开始获取RSS内容...");
   return new Promise(resolve => {
-    try {
-      const rssRequest = {
-        url:
-          "https://api.rss2json.com/v1/api.json?rss_url=" +
-          encodeURIComponent(rsslink)
-      };
-      $.get(rssRequest, (error, response, data) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const rssRequest = {
+      url:
+        "https://api.rss2json.com/v1/api.json?rss_url=" +
+        encodeURIComponent(rsslink)
+    };
+    $.get(rssRequest, (error, response, data) => {
+      try {
+        if (error) throw new Error(error);
         if (response.statusCode == 200) {
           var body = response.body;
           var obj = JSON.parse(body);
@@ -1280,9 +1261,7 @@ function getrsslist(
               url: rsslink
             };
             $.get(rssregRequest, (error, response, data) => {
-              if (error) {
-                throw new Error(error);
-              }
+              if (error) throw new Error(error);
               if (response.statusCode == 200) {
                 var body = response.body;
                 parsehtmlrss(body, titlerss, itemsrss, urlsrss, coversrss);
@@ -1324,15 +1303,15 @@ function getrsslist(
           );
         }
         resolve();
-      });
-    } catch (e) {
-      $.log("获取RSS内容出现错误❌原因：\n");
-      $.log(JSON.stringify(e));
-      resolve();
-    }
-    setTimeout(() => {
-      resolve();
-    }, $.time);
+      } catch (e) {
+        $.log("获取RSS内容出现错误❌原因：\n");
+        $.log(JSON.stringify(e));
+        resolve();
+      }
+      setTimeout(() => {
+        resolve();
+      }, $.time);
+    });
   });
 }
 
