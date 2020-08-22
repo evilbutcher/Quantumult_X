@@ -168,6 +168,7 @@ var mediaurlamz = [];
 var mediaurlrss = [];
 var titlerss = [];
 var saveditem = [];
+var checkrssresult = false;
 
 !(async () => {
   /*if (typeof $request != "undefined") {
@@ -178,109 +179,46 @@ var saveditem = [];
   if (havekeyword() == true) {
     if ($.weibo == true) {
       await gethotsearch();
-      if (resultwb.length != 0) {
-        if ($.splitpushwb == true) {
-          splitpushnotify(resultwb, openurlwb);
-        } else {
-          mergepushnotify(resultwb);
-        }
-      }
     } else {
       $.log("微博热搜未获取😫");
     }
     if ($.zhihu == true) {
       await gethotlist();
-      if (resultzh.length != 0) {
-        if ($.splitpushzh == true) {
-          splitpushnotify(resultzh, openurlzh);
-        } else {
-          mergepushnotify(resultzh);
-        }
-      }
     } else {
       $.log("知乎热榜未获取😫");
     }
     if ($.baidu == true) {
       await getfylist();
-      if (resultbd.length != 0) {
-        if ($.splitpushbd == true) {
-          splitpushnotify(resultbd, openurlbd);
-        } else {
-          mergepushnotify(resultbd);
-        }
-      }
     } else {
       $.log("百度风云榜未获取😫");
     }
     if ($.bilibili == true) {
       await getbllist();
-      if (resultbl.length != 0) {
-        if ($.splitpushbl == true) {
-          splitpushnotifymedia(resultbl, openurlbl, mediaurlbl);
-        } else {
-          mergepushnotify(resultbl);
-        }
-      }
     } else {
       $.log("B站日榜未获取😫");
     }
     if ($.douban == true) {
       await getdblist();
-      if (resultdb.length != 0) {
-        if ($.splitpushdb == true) {
-          splitpushnotifymedia(resultdb, openurldb, mediaurldb);
-        } else {
-          mergepushnotify(resultdb);
-        }
-      }
     } else {
       $.log("豆瓣榜单未获取😫");
     }
     if ($.douyin == true) {
       await getdylist();
-      if (resultdy.length != 0) {
-        if ($.splitpushdy == true) {
-          splitpushnotify(resultdy, openurldy);
-        } else {
-          mergepushnotify(resultdy);
-        }
-      }
     } else {
       $.log("抖音榜单未获取😫");
     }
     if ($.k36 == true) {
       await getk36list();
-      if (resultk36.length != 0) {
-        if ($.splitpushk36 == true) {
-          splitpushnotify(resultk36, openurlk36);
-        } else {
-          mergepushnotify(resultk36);
-        }
-      }
     } else {
       $.log("36氪榜单未获取😫");
     }
     if ($.amazon == true) {
       await getamazonlist();
-      if (resultamz.length != 0) {
-        if ($.splitpushamz == true) {
-          splitpushnotifymedia(resultamz, openurlamz, mediaurlamz);
-        } else {
-          mergepushnotify(resultamz);
-        }
-      }
     } else {
       $.log("Kindle图书榜单未获取😫");
     }
     if ($.zmz == true) {
       await getzmzlist();
-      if (resultzmz.length != 0) {
-        if ($.splitpushzmz == true) {
-          splitpushnotify(resultzmz, openurlzmz);
-        } else {
-          mergepushnotify(resultzmz);
-        }
-      }
     } else {
       $.log("人人影视榜单未获取😫");
     }
@@ -288,13 +226,6 @@ var saveditem = [];
       if (haversslink()) {
         await Promise.all(
           rsslink.map(async rss => {
-            resultrss = [];
-            openurlrss = [];
-            mediaurlrss = [];
-            titlerss = [];
-            itemsrss = [];
-            urlsrss = [];
-            coversrss = [];
             await getrsslist(
               rss,
               resultrss,
@@ -305,13 +236,6 @@ var saveditem = [];
               urlsrss,
               coversrss
             );
-            if (resultrss.length != 0) {
-              if ($.splitpushrss == true) {
-                splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
-              } else {
-                mergepushnotify(resultrss);
-              }
-            }
           })
         );
       }
@@ -582,6 +506,13 @@ function gethotsearch() {
               urlswb
             );
           }
+          if (resultwb.length != 0) {
+            if ($.splitpushwb == true) {
+              splitpushnotify(resultwb, openurlwb);
+            } else {
+              mergepushnotify(resultwb);
+            }
+          }
           resolve();
         } else {
           $.log("获取微博热搜出现错误❌以下详情：\n");
@@ -658,6 +589,13 @@ function gethotlist() {
               itemszh,
               urlszh
             );
+          }
+          if (resultzh.length != 0) {
+            if ($.splitpushzh == true) {
+              splitpushnotify(resultzh, openurlzh);
+            } else {
+              mergepushnotify(resultzh);
+            }
           }
           resolve();
         } else {
@@ -744,6 +682,13 @@ function getfylist() {
               urlsbd
             );
           }
+          if (resultbd.length != 0) {
+            if ($.splitpushbd == true) {
+              splitpushnotify(resultbd, openurlbd);
+            } else {
+              mergepushnotify(resultbd);
+            }
+          }
           resolve();
         } else {
           $.log("获取百度风云榜出现错误❌以下详情：\n");
@@ -824,6 +769,13 @@ function getbllist() {
               urlsbl,
               coversbl
             );
+          }
+          if (resultbl.length != 0) {
+            if ($.splitpushbl == true) {
+              splitpushnotifymedia(resultbl, openurlbl, mediaurlbl);
+            } else {
+              mergepushnotify(resultbl);
+            }
           }
           resolve();
         } else {
@@ -918,6 +870,13 @@ function getdblist() {
               coversdb
             );
           }
+          if (resultdb.length != 0) {
+            if ($.splitpushdb == true) {
+              splitpushnotifymedia(resultdb, openurldb, mediaurldb);
+            } else {
+              mergepushnotify(resultdb);
+            }
+          }
           resolve();
         } else {
           $.log("获取豆瓣榜单出现错误❌以下详情:\n");
@@ -973,6 +932,13 @@ function getdylist() {
               urlsdy
             );
           }
+          if (resultdy.length != 0) {
+            if ($.splitpushdy == true) {
+              splitpushnotify(resultdy, openurldy);
+            } else {
+              mergepushnotify(resultdy);
+            }
+          }
           resolve();
         } else {
           $.log("获取抖音榜单出现错误❌以下详情:\n");
@@ -1026,6 +992,13 @@ function getk36list() {
               itemsk36,
               urlsk36
             );
+          }
+          if (resultk36.length != 0) {
+            if ($.splitpushk36 == true) {
+              splitpushnotify(resultk36, openurlk36);
+            } else {
+              mergepushnotify(resultk36);
+            }
           }
           resolve();
         } else {
@@ -1088,6 +1061,13 @@ function getamazonlist() {
               urlsamz,
               coversamz
             );
+          }
+          if (resultamz.length != 0) {
+            if ($.splitpushamz == true) {
+              splitpushnotifymedia(resultamz, openurlamz, mediaurlamz);
+            } else {
+              mergepushnotify(resultamz);
+            }
           }
           resolve();
         } else {
@@ -1179,6 +1159,13 @@ function getzmzlist() {
               urlszmz
             );
           }
+          if (resultzmz.length != 0) {
+            if ($.splitpushzmz == true) {
+              splitpushnotify(resultzmz, openurlzmz);
+            } else {
+              mergepushnotify(resultzmz);
+            }
+          }
           resolve();
         } else {
           $.log("获取人人影视榜单出现错误❌以下详情:\n");
@@ -1208,6 +1195,13 @@ function getrsslist(
   coversrss
 ) {
   $.log("开始获取RSS内容...");
+  resultrss = [];
+  openurlrss = [];
+  mediaurlrss = [];
+  titlerss = [];
+  itemsrss = [];
+  urlsrss = [];
+  coversrss = [];
   return new Promise(resolve => {
     const rssRequest = {
       url:
@@ -1301,6 +1295,14 @@ function getrsslist(
             urlsrss,
             coversrss
           );
+        }
+        if (resultrss.length != 0) {
+          checkrssresult = true;
+          if ($.splitpushrss == true) {
+            splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
+          } else {
+            mergepushnotify(resultrss);
+          }
         }
         resolve();
       } catch (e) {
@@ -1646,17 +1648,6 @@ function splitpushnotifymedia(result, openurl, mediaurl) {
   }
 }
 
-function checkrssresult() {
-  for (var i = 0; i < rsslink.length; i++) {
-    if (resultrss[i] != undefined) {
-      if (resultrss[i].length != 0) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
 function last() {
   if (
     resultwb.length == 0 &&
@@ -1668,7 +1659,7 @@ function last() {
     resultk36.length == 0 &&
     resultamz.length == 0 &&
     resultzmz.length == 0 &&
-    checkrssresult() == false
+    checkrssresult == false
   ) {
     $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
   }
@@ -1696,7 +1687,7 @@ function final() {
   }
 }
 
-function deluselessck() {
+/*function deluselessck() {
   $.setdata("", "evil_hotsearchurl");
   $.setdata("", "evil_hotsearchcookie");
   $.setdata("", "evil_zhihuurl");
@@ -1711,7 +1702,7 @@ function deluselessck() {
 }
 
 function getCookie() {
-  /*if (
+  if (
     $request &&
     $request.method != "OPTIONS" &&
     $request.url.match(/display\_time/)
@@ -1723,8 +1714,8 @@ function getCookie() {
     $.setdata(siurl, url);
     $.setdata(sicookie, cookie);
     $.msg("热门监控", "", "获取微博热搜Cookie成功🎉");
-  }*/
-}
+  }
+}*/
 
 //From https://github.com/dankogai/js-base64
 function Base64Code() {
