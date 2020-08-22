@@ -70,7 +70,7 @@ const base64 = new Base64Code();
 
 //⚠️本地自定参数修改位置⚠️
 var keyword = ["万茜"]; //👈本地脚本关键词在这里设置。
-var rsslink = ["http://sspai.me/feed"]; //👈本地rss订阅设置
+var rsslink = ["http://sspai.me/feed", "http://songshuhui.net/feed"]; //👈本地rss订阅设置
 //⚠️👆以上用英文逗号、英文双引号⚠️
 $.weibo = true; //是否开启相应榜单监控
 $.wbnum = 6; //自定微博热搜数量
@@ -286,32 +286,35 @@ var saveditem = [];
     }
     if ($.rss == true) {
       if (haversslink()) {
-        for await(rss of rsslink) {
-          resultrss = [];
-          openurlrss = [];
-          mediaurlrss = [];
-          titlerss = [];
-          itemsrss = [];
-          urlsrss = [];
-          coversrss = [];
-          await getrsslist(
-            rss,
-            resultrss,
-            openurlrss,
-            mediaurlrss,
-            titlerss,
-            itemsrss,
-            urlsrss,
-            coversrss
-          );
-          if (resultrss.length != 0) {
-            if ($.splitpushrss == true) {
-              splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
-            } else {
-              mergepushnotify(resultrss);
+        await Promise.all(
+          rsslink.map(async rss => {
+            resultrss = [];
+            openurlrss = [];
+            mediaurlrss = [];
+            titlerss = [];
+            itemsrss = [];
+            urlsrss = [];
+            coversrss = [];
+            await getrsslist(
+              rss,
+              resultrss,
+              openurlrss,
+              mediaurlrss,
+              titlerss,
+              itemsrss,
+              urlsrss,
+              coversrss
+            );
+            //$.log(rss + "获取完成");
+            if (resultrss.length != 0) {
+              if ($.splitpushrss == true) {
+                splitpushnotifymedia(resultrss, openurlrss, mediaurlrss);
+              } else {
+                mergepushnotify(resultrss);
+              }
             }
-          }
-        }
+          })
+        );
       }
     } else {
       $.log("rss订阅未获取😫");
