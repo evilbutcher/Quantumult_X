@@ -35,7 +35,7 @@ function getpic() {
         return obj;
       } else if (response.statusCode == 404) {
         var obj = JSON.parse(response.body);
-        $.notify("NASA每日一图", "", obj.msg);
+        return obj
       } else {
         $.error(JSON.stringify(response));
         $.notify("NASA每日一图", "", "未知错误，请查看日志");
@@ -47,8 +47,10 @@ function getpic() {
 }
 
 function showmsg() {
-  $.log($.data);
-  if ($.data != undefined) {
+  //$.log($.data);
+  if($.data.code == 404){
+    $.notify("NASA每日一图", "", "暂无图片更新，晚点再来看看吧~");
+  } else if ($.data.code != undefined) {
     var exp = $.data.explanation;
     var title = $.data.title;
     var time = $.data.date;
@@ -56,7 +58,7 @@ function showmsg() {
     var copyright = $.data.copyright;
     var detail = `©️版权：${copyright}\n⌚️时间：${time}\n${exp}`;
     $.notify("NASA每日一图", title, detail, { "media-url": cover });
-  }
+  }  
 }
 
 function MYERR() {
