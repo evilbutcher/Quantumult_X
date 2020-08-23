@@ -38,7 +38,6 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/nasa.png
 */
 
-
 const $ = new API("NASA");
 const ERR = MYERR();
 const translate = [true, 'true'].includes($.read("translate")) || false;
