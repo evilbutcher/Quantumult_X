@@ -65,6 +65,13 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 #### 功能特点
 1、喜欢funko可以关注该微信小程序。
 
+### [NASA每日一图](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/nasa/nasapic.js)
+#### 功能特点
+1、首先前往https://api.nasa.gov/ 申请一个API，秒通过。  
+2、将申请好的API填入BoxJs。  
+3、可以选择输出中文还是英文。  
+4、点击通知可以打开浏览器图片-保存。  
+
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 #### 功能特点
