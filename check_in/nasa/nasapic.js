@@ -54,11 +54,11 @@ const translate = [true, 'true'].includes($.read("translate")) || false;
 })()
   .catch(err => {
     if (err instanceof ERR.TokenError) {
-      $.notify("NASA每日一图 - API 错误", "", err.message, {
+      $.notify("NASA - API 错误", "", err.message, {
         "open-url": "https://api.nasa.gov/"
       });
     } else {
-      $.notify("NASA每日一图", "❌ 出现错误", JSON.stringify(err));
+      $.notify("NASA", "❌ 出现错误", JSON.stringify(err));
     }
   })
   .finally($.done());
@@ -73,10 +73,10 @@ function getpic() {
       var obj = JSON.parse(response.body);
       $.data = obj;
     } else if (response.statusCode == 404) {
-      $.notify("NASA每日一图", "", "暂无图片更新，晚点再来看看吧~");
+      $.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
     } else {
       $.error(JSON.stringify(response));
-      $.notify("NASA每日一图", "", "未知错误，请查看日志");
+      $.notify("NASA", "", "未知错误，请查看日志");
     }
   });
 }
@@ -122,7 +122,7 @@ function showmsg() {
     detail = `©️Copyright：${copyright}\n⌚️Date：${time}\n${exp}`;
   }
   var cover = $.data.url;
-  $.notify("NASA每日一图", title, detail, { "media-url": cover, "open-url":cover });
+  $.notify("NASA", title, detail, { "media-url": cover, "open-url":cover });
 }
 
 function MYERR() {
