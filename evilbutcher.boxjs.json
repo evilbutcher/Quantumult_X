@@ -621,6 +621,41 @@
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js"
     },
     {
+      "id": "nasapic",
+      "name": "NASA每日一图",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js\">脚本地址</a>】",
+        "首先前往<a href=\"https://api.nasa.gov\">NASA</a>申请一个API，申请流程非常简单，把得到的API填入脚本即可"
+      ],
+      "keys": ["@NASA.nasaapi"],
+      "settings": [
+        {
+          "id": "@NASA.translate",
+          "name": "翻译",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否进行翻译"
+        },
+        {
+          "id": "@NASA.nasaapi",
+          "name": "API",
+          "val": "",
+          "placeholder": "686BJ2YbpY****************Op8gaVTeVs0t",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 1,
+          "desc": "请填入API"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/nasa",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/nasa_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/nasa.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js"
+    },
+    {
       "id": "funboat",
       "name": "Funboat",
       "descs_html": [
