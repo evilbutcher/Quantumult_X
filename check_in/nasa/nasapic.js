@@ -7,9 +7,8 @@ const translate = JSON.parse($.read("translate")) || "false";
     throw new ERR.TokenError("❌ 未获取或填写NASA API");
   } else {
     await getpic();
-if (translate == true) await translatetitle();
+    if (translate == true) await translatetitle();
     if (translate == true) await translateexp();
-    
     showmsg();
   }
 })()
@@ -71,18 +70,18 @@ function showmsg() {
     for (var i = 0; i < $.transexp.length; i++) {
       exp += $.transexp[i].trans;
     }
-  } else {
-    exp = $.data.explanation || "无";
-  }
-  if (translate == true) {
     var title = $.transtitle[0].trans;
+    var time = $.data.date || "无";
+    var copyright = $.data.copyright || "无";
+    var detail = `©️版权：${copyright}\n⌚️时间：${time}\n${exp}`;
   } else {
-    title = $.data.title || "无";
+    exp = $.data.explanation || "None";
+    title = $.data.title || "None";
+    time = $.data.date || "None";
+    copyright = $.data.copyright || "None";
+    detail = `©️Copyright：${copyright}\n⌚️Date：${time}\n${exp}`;
   }
-  var time = $.data.date || "无";
   var cover = $.data.url;
-  var copyright = $.data.copyright || "无";
-  var detail = `©️版权：${copyright}\n⌚️时间：${time}\n${exp}`;
   $.notify("NASA每日一图", title, detail, { "media-url": cover });
 }
 
