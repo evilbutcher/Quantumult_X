@@ -1,22 +1,23 @@
-const $ = new API("NASA", true);
+const $ = new API("NASA");
 const ERR = MYERR();
+const translate = JSON.parse($.read("translate")) || "false";
 
 !(async () => {
   if (!$.read("nasaapi")) {
     throw new ERR.TokenError("❌ 未获取或填写NASA API");
   } else {
     await getpic();
+if (translate == true) await translatetitle();
+    if (translate == true) await translateexp();
+    
     showmsg();
   }
 })()
-  .catch((err) => {
+  .catch(err => {
     if (err instanceof ERR.TokenError) {
-      $.notify(
-        "NASA每日一图 - API 错误",
-        "",
-        err.message,
-        "https://api.nasa.gov/"
-      );
+      $.notify("NASA每日一图 - API 错误", "", err.message, {
+        "open-url": "https://api.nasa.gov/"
+      });
     } else {
       $.notify("NASA每日一图", "❌ 出现错误", JSON.stringify(err));
     }
@@ -24,41 +25,65 @@ const ERR = MYERR();
   .finally($.done());
 
 function getpic() {
-  return new Promise(async (resolve) => {
-    const url = `https://api.nasa.gov/planetary/apod?api_key=${$.read(
-      "nasaapi"
-    )}`;
-    const res = await $.http.get(url).then((response) => {
-      $.log(response);
-      if (response.statusCode == 200) {
-        var obj = JSON.parse(response.body);
-        return obj;
-      } else if (response.statusCode == 404) {
-        var obj = JSON.parse(response.body);
-        return obj
-      } else {
-        $.error(JSON.stringify(response));
-        $.notify("NASA每日一图", "", "未知错误，请查看日志");
-      }
-    });
-    $.data = res;
-    resolve();
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${$.read(
+    "nasaapi"
+  )}`;
+  return $.http.get(url).then(response => {
+    $.log(response);
+    if (response.statusCode == 200) {
+      var obj = JSON.parse(response.body);
+      $.data = obj;
+    } else if (response.statusCode == 404) {
+      $.notify("NASA每日一图", "", "暂无图片更新，晚点再来看看吧~");
+    } else {
+      $.error(JSON.stringify(response));
+      $.notify("NASA每日一图", "", "未知错误，请查看日志");
+    }
+  });
+}
+
+function translateexp() {
+  var wtext = $.data.explanation.replace(new RegExp(" ", "gm"), "%20") || "无";
+  const tranexp = {
+    url: `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh_cn&q=${wtext}`
+  };
+  return $.http.get(tranexp).then(response => {
+    $.transexp = JSON.parse(response.body).sentences;
+    $.log($.transexp);
+  });
+}
+
+function translatetitle() {
+  var wtitle = $.data.title.replace(new RegExp(" ", "gm"), "%20") || "无";
+  const trantitle = {
+    url: `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh_cn&q=${wtitle}`
+  };
+  return $.http.get(trantitle).then(response => {
+    $.log(response);
+    $.transtitle = JSON.parse(response.body).sentences;
+    $.log($.transtitle);
   });
 }
 
 function showmsg() {
-  //$.log($.data);
-  if($.data.code == 404){
-    $.notify("NASA每日一图", "", "暂无图片更新，晚点再来看看吧~");
-  } else if ($.data.code != undefined) {
-    var exp = $.data.explanation;
-    var title = $.data.title;
-    var time = $.data.date;
-    var cover = $.data.url;
-    var copyright = $.data.copyright;
-    var detail = `©️版权：${copyright}\n⌚️时间：${time}\n${exp}`;
-    $.notify("NASA每日一图", title, detail, { "media-url": cover });
-  }  
+  var exp = "";
+  if (translate == true) {
+    for (var i = 0; i < $.transexp.length; i++) {
+      exp += $.transexp[i].trans;
+    }
+  } else {
+    exp = $.data.explanation || "无";
+  }
+  if (translate == true) {
+    var title = $.transtitle[0].trans;
+  } else {
+    title = $.data.title || "无";
+  }
+  var time = $.data.date || "无";
+  var cover = $.data.url;
+  var copyright = $.data.copyright || "无";
+  var detail = `©️版权：${copyright}\n⌚️时间：${time}\n${exp}`;
+  $.notify("NASA每日一图", title, detail, { "media-url": cover });
 }
 
 function MYERR() {
@@ -69,7 +94,7 @@ function MYERR() {
     }
   }
   return {
-    TokenError,
+    TokenError
   };
 }
 
@@ -96,10 +121,10 @@ function HTTP(baseURL, defaultOptions = {}) {
     const events = {
       ...{
         onRequest: () => {},
-        onResponse: (resp) => resp,
-        onTimeout: () => {},
+        onResponse: resp => resp,
+        onTimeout: () => {}
       },
-      ...options.events,
+      ...options.events
     };
 
     events.onRequest(method, options);
@@ -116,7 +141,7 @@ function HTTP(baseURL, defaultOptions = {}) {
             resolve({
               statusCode: response.status || response.statusCode,
               headers: response.headers,
-              body,
+              body
             });
         });
       });
@@ -135,18 +160,17 @@ function HTTP(baseURL, defaultOptions = {}) {
       : null;
 
     return (timer
-      ? Promise.race([timer, worker]).then((res) => {
+      ? Promise.race([timer, worker]).then(res => {
           clearTimeout(timeoutid);
           return res;
         })
       : worker
-    ).then((resp) => events.onResponse(resp));
+    ).then(resp => events.onResponse(resp));
   }
 
   const http = {};
   methods.forEach(
-    (method) =>
-      (http[method.toLowerCase()] = (options) => send(method, options))
+    method => (http[method.toLowerCase()] = options => send(method, options))
   );
   return http;
 }
@@ -166,7 +190,7 @@ function API(name = "untitled", debug = false) {
           const fs = require("fs");
 
           return {
-            fs,
+            fs
           };
         } else {
           return null;
@@ -201,7 +225,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
         }
         this.root = {};
@@ -213,7 +237,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
           this.cache = {};
         } else {
@@ -234,13 +258,13 @@ function API(name = "untitled", debug = false) {
           `${this.name}.json`,
           data,
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
         this.node.fs.writeFileSync(
           "root.json",
           JSON.stringify(this.root),
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
       }
     }
@@ -319,7 +343,7 @@ function API(name = "untitled", debug = false) {
           const push = require("push");
           push.schedule({
             title: title,
-            body: (subtitle ? subtitle + "\n" : "") + content_,
+            body: (subtitle ? subtitle + "\n" : "") + content_
           });
         } else {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -341,7 +365,7 @@ function API(name = "untitled", debug = false) {
     }
 
     wait(millisec) {
-      return new Promise((resolve) => setTimeout(resolve, millisec));
+      return new Promise(resolve => setTimeout(resolve, millisec));
     }
 
     done(value = {}) {
