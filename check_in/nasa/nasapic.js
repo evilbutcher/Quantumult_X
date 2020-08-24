@@ -57,6 +57,8 @@ const translate = [true, 'true'].includes($.read("translate")) || false;
       $.notify("NASA - API 错误", "", err.message, {
         "open-url": "https://api.nasa.gov/"
       });
+    } else if (err instanceof ERR.TimeError) {
+      $.notify("NASA - 暂无图片", "", err.message);
     } else {
       $.notify("NASA", "❌ 出现错误", JSON.stringify(err));
     }
@@ -73,10 +75,11 @@ function getpic() {
       var obj = JSON.parse(response.body);
       $.data = obj;
     } else if (response.statusCode == 404) {
-      $.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
+      throw new ERR.TimeError("❌ 暂无图片，内容在更新，请稍等呦～");
+      //$.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
     } else {
       $.error(JSON.stringify(response));
-      $.notify("NASA", "", "未知错误，请查看日志");
+      $.notify("NASA", "", "❌ 未知错误，请查看日志");
     }
   });
 }
@@ -132,8 +135,15 @@ function MYERR() {
       this.name = "TokenError";
     }
   }
+  class TimeError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "TimeError";
+    }
+  }
   return {
-    TokenError
+    TokenError,
+    TimeError
   };
 }
 
