@@ -21,17 +21,17 @@
 【Surge】
 -----------------
 [Script]
-iDaily = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js
+iDaily每日环球视野 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js
 
 【Loon】
 -----------------
 [Script]
-cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily
+cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily每日环球视野
 
 【Quantumult X】
 -----------------
 [task_local]
-5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily
+5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily每日环球视野
 
 【icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily_tran.png
@@ -49,7 +49,7 @@ $.random = [true, "true"].includes($.read("random")) || false;
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
-      $.notify("iDaily", "", err.message);
+      $.notify("iDaily", "❌ 解析数据出现错误", err.message);
     } else {
       $.notify("iDaily", "❌ 出现错误", JSON.stringify(err));
     }
@@ -76,7 +76,7 @@ function getcontent() {
       $.data = obj;
     } else {
       $.error(JSON.stringify(response));
-      $.notify("NASA", "", "❌ 未知错误，请查看日志");
+      $.notify("iDaily", "", "❌ 未知错误，请查看日志");
     }
   });
 }
@@ -101,7 +101,7 @@ function showmsg() {
       "open-url": link,
     });
   } catch (err) {
-    throw new ERR.ParseError("❌ 解析数据出现错误，请稍候重试");
+    throw new ERR.ParseError("请稍候重试");
   }
 }
 
