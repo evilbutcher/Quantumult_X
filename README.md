@@ -1,24 +1,18 @@
 [![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=evilbutcher)](https://github.com/anuraghazra/github-readme-stats)
-
 # Quantumult X脚本和规则整理
-
-绝大多数代码都用到了@chavyleung的Env.js和@Peng-YM的OpenAPI.js，感谢！
-
+[English Version](https://github.com/evilbutcher/Quantumult_X/blob/master/README_EN.md)
+绝大多数代码都用到了@chavyleung的Env.js和@Peng-YM的OpenAPI.js，感谢！  
 ## 脚本合集
 ### 【BoxJs】订阅
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
-
 ### 【Quantumult X】脚本订阅合集+自己写的去广告
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.rewrite.conf
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.conf  （需要将内容复制到[task_local]）
-
 ### 【Surge】脚本订阅合集
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge.tasks.sgmodule
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Surge.cookies.sgmodule
-
 ### 【Loon】脚本订阅合集
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.conf
-
 ## 脚本
 ### [微博超话（单账号）](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/weibo)
 #### 功能特点
@@ -26,14 +20,12 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 2、自动签到。  
 3、如果超话数量大于100，可以先检查签到情况，未签到才会执行，更好解决签到频繁问题。  
 4、支持BoxJs。  
-
 ### [自用签到](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados)
 #### 功能特点
 1、自动签到。  
 2、查看流量信息。  
 3、支持BoxJs。  
-4、checkin_env.js修改自@Neurogram-R，增加了多平台支持。
- 
+4、checkin_env.js修改自@Neurogram-R，增加了多平台支持。  
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 #### 功能特点
 1、可以选择性监控榜单。  
@@ -54,23 +46,20 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 16、监控RSSHub订阅，感谢@api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json)。  
 17、监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。  
 18、可自定关键词推送间隔。  
-
 ### [App价格监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
 #### 功能特点
 1、app可单独设置区域，未单独设置区域，则采用reg默认区域。  
 2、设置区域方式“1443988620:hk，1443988620/us，1443988620-uk，1443988620_jp，1443988620 au”。  
 3、支持BoxJs by evilbutcher。  
-
-### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
-#### 功能特点
-1、喜欢funko可以关注该微信小程序。
-
 ### [NASA每日一图](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/nasa/nasapic.js)
-#### 功能特点
+#### 功能特点 
 1、首先前往https://api.nasa.gov/ 申请一个API，秒通过。  
 2、将申请好的API填入BoxJs。  
 3、可以选择输出中文还是英文。  
 4、点击通知可以打开浏览器图片-保存。  
+### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
+#### 功能特点
+1、喜欢funko可以关注该微信小程序。
 
 ## 规则类
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
