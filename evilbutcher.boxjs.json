@@ -656,6 +656,30 @@
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js"
     },
     {
+      "id": "idaily",
+      "name": "iDaily",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/iDaily/iDaily.js\">脚本地址</a>】"
+      ],
+      "keys": ["@iDaily.random"],
+      "settings": [
+        {
+          "id": "@iDaily.random",
+          "name": "随机获取",
+          "val": false,
+          "type": "boolean",
+          "desc": "打开将会随机获取内容"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/idaily",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js"
+    },
+    {
       "id": "funboat",
       "name": "Funboat",
       "descs_html": [
