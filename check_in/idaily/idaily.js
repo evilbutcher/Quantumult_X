@@ -33,7 +33,7 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily每日环球视野
 
-【icon】
+【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily_tran.png
 彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily.png
 */
