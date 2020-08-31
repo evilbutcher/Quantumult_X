@@ -2,7 +2,7 @@
 
 # Scripts and Rules Collation
 
-The majority of the code used Env.js (@chavyleung's) and OpenAPI.js (@Peng-YM), thanks!
+The majority of the code used Env.js (@chavyleung) and OpenAPI.js (@Peng-YM), thanks!
 
 ## All Scripts for Different Platforms.
 
@@ -65,7 +65,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 15. Monitor Kindle book keywords.
 16. Monitor RSSHub feeds, thanks to @api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json).
 17. Monitor the latest uploads of RenRenTV, with shortcuts [magnetic offline](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209) can achieve magnetic download, unlocking a new way to catch up on dramas.
-18. you can customize the keyword push interval.
+18. You can customize the keyword push interval.
 
 ### [App Price Monitor](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
 
@@ -81,7 +81,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 1. First, go to https://api.nasa.gov/ to apply for an API, which is passed in seconds.
 2. Fill in the applied API into BoxJs.
-3. you can choose to output Chinese or English.
+3. You can choose to output Chinese or English.
 4. Click on the notification to open the browser image - Save.
 
 ### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
