@@ -86,6 +86,12 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 3. 可以选择输出中文还是英文。
 4. 点击通知可以打开浏览器图片-保存。
 
+### [iDaily 每日环球视野](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/idaily/idaily.js)
+
+#### 功能特点
+
+1. 可选择随机 or 最新内容
+
 ### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
 
 #### 功能特点

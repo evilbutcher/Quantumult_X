@@ -84,6 +84,12 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 3. You can choose to output Chinese or English.
 4. Click on the notification to open the browser image - Save.
 
+### [iDaily] (https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/idaily/idaily.js)
+
+### Features
+
+1. Optional random or newest content
+
 ### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
 
 #### Features
