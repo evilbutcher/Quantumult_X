@@ -78,6 +78,7 @@ function getpic() {
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
       $.data = obj;
+      $.info(obj)
     } else if (response.statusCode == 404) {
       throw new ERR.TimeError("❌ 暂无图片，内容在更新，请稍等呦～");
       //$.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
@@ -88,8 +89,8 @@ function getpic() {
   });
 }
 
-function translateexp() {
-  var wtext = $.data.explanation.replace(new RegExp(" ", "gm"), "%20") || "无";
+async function translateexp() {
+  var wtext = encodeURI($.data.explanation) || "无";
   const tranexp = {
     url: `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh_cn&q=${wtext}`
   };
@@ -99,13 +100,12 @@ function translateexp() {
   });
 }
 
-function translatetitle() {
-  var wtitle = $.data.title.replace(new RegExp(" ", "gm"), "%20") || "无";
+async function translatetitle() {
+  var wtitle = encodeURI($.data.title) || "无";
   const trantitle = {
     url: `http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh_cn&q=${wtitle}`
   };
   return $.http.get(trantitle).then(response => {
-    $.log(response);
     $.transtitle = JSON.parse(response.body).sentences;
     $.log($.transtitle);
   });
