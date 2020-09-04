@@ -80,7 +80,7 @@ function getpic() {
       $.data = obj;
       $.info(obj)
     } else if (response.statusCode == 404) {
-      throw new ERR.TimeError("❌ 暂无图片，内容在更新，请稍等呦～");
+      throw new ERR.TimeError("❌ 暂无图片，内容在更新，请稍等呦～\n注意：北京时间8:00-13:00为NASA更新时间段。");
       //$.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
     } else {
       $.error(JSON.stringify(response));
