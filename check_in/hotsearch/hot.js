@@ -225,7 +225,7 @@ var checkrssresult = false;
     if ($.rss == true) {
       if (haversslink()) {
         await Promise.all(
-          rsslink.map(async rss => {
+          rsslink.map(async (rss) => {
             await getrsslist(
               rss,
               resultrss,
@@ -247,7 +247,7 @@ var checkrssresult = false;
     //deluselessck();
   }
 })()
-  .catch(e => {
+  .catch((e) => {
     $.log("", `❌失败! 原因: ${e}!`, "");
   })
   .finally(() => {
@@ -445,10 +445,10 @@ function getsetting() {
 
 function gethotsearch() {
   $.log("开始获取微博榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const wbRequest = {
       url:
-        "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot"
+        "https://m.weibo.cn/api/container/getIndex?containerid=106003%26filter_type%3Drealtimehot",
     };
     $.get(wbRequest, (error, response, data) => {
       try {
@@ -533,10 +533,10 @@ function gethotsearch() {
 
 function gethotlist() {
   $.log("开始获取知乎榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const zhRequest = {
       url:
-        "https://api.zhihu.com/topstory/hot-lists/total?limit=10&reverse_order=0"
+        "https://api.zhihu.com/topstory/hot-lists/total?limit=10&reverse_order=0",
     };
     $.get(zhRequest, (error, response, data) => {
       try {
@@ -617,9 +617,9 @@ function gethotlist() {
 
 function getfylist() {
   $.log("开始获取百度榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const bdRequest = {
-      url: "http://top.baidu.com/mobile_v2/buzz?b=1&c=515"
+      url: "http://top.baidu.com/mobile_v2/buzz?b=1&c=515",
     };
     $.get(bdRequest, (error, response, data) => {
       try {
@@ -709,9 +709,9 @@ function getfylist() {
 
 function getbllist() {
   $.log("开始获取B站日榜...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const blRequest = {
-      url: "https://app.bilibili.com/x/v2/rank/region?rid=" + $.rid
+      url: "https://app.bilibili.com/x/v2/rank/region?rid=" + $.rid,
     };
     $.get(blRequest, (error, response, data) => {
       try {
@@ -797,14 +797,14 @@ function getbllist() {
 
 function getdblist() {
   $.log("开始获取豆瓣榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const dbheader = {
-      Referer: `https://m.douban.com/pwa/cache_worker`
+      Referer: `https://m.douban.com/pwa/cache_worker`,
     };
     const dbRequest = {
       url:
         "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items?start=0&count=50&items_only=1&for_mobile=1",
-      headers: dbheader
+      headers: dbheader,
     };
     $.get(dbRequest, (error, response, data) => {
       try {
@@ -897,9 +897,9 @@ function getdblist() {
 
 function getdylist() {
   $.log("开始获取抖音榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const dyRequest = {
-      url: "https://tophub.today/n/DpQvNABoNE"
+      url: "https://tophub.today/n/DpQvNABoNE",
     };
     $.get(dyRequest, (error, response, data) => {
       try {
@@ -959,9 +959,9 @@ function getdylist() {
 
 function getk36list() {
   $.log("开始获取36氪榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const k36Request = {
-      url: "https://tophub.today/n/Q1Vd5Ko85R"
+      url: "https://tophub.today/n/Q1Vd5Ko85R",
     };
     $.get(k36Request, (error, response, data) => {
       try {
@@ -1020,13 +1020,13 @@ function getk36list() {
 
 function getamazonlist() {
   $.log("开始获取Kindle图书榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const amazonRequest = {
       url: "https://www.amazon.cn/gp/bestsellers/digital-text",
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1"
-      }
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1",
+      },
     };
     $.get(amazonRequest, (error, response, data) => {
       try {
@@ -1089,14 +1089,14 @@ function getamazonlist() {
 
 function getzmzlist() {
   $.log("开始获取人人影视榜单...");
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const zmzRequest = {
       url: `http://file.apicvn.com/file/list?page=1&order=create_time&sort=desc`,
       headers: {
         Host: "file.apicvn.com",
         "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": "Mozilla/5.0"
-      }
+        "User-Agent": "Mozilla/5.0",
+      },
     };
     $.get(zmzRequest, (error, response, data) => {
       try {
@@ -1202,11 +1202,11 @@ function getrsslist(
   itemsrss = [];
   urlsrss = [];
   coversrss = [];
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const rssRequest = {
       url:
         "https://api.rss2json.com/v1/api.json?rss_url=" +
-        encodeURIComponent(rsslink)
+        encodeURIComponent(rsslink),
     };
     $.get(rssRequest, (error, response, data) => {
       try {
@@ -1250,9 +1250,9 @@ function getrsslist(
         } else {
           $.log(JSON.stringify(response.body));
           $.log("RSS解析出错❌请检查订阅稍后重试⚠️本次将使用正则。");
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             const rssregRequest = {
-              url: rsslink
+              url: rsslink,
             };
             $.get(rssregRequest, (error, response, data) => {
               if (error) throw new Error(error);
@@ -1643,7 +1643,7 @@ function splitpushnotifymedia(result, openurl, mediaurl) {
     $.this_msg += `${result[m]}`;
     $.msg("热门监控", "", $.this_msg, {
       "open-url": openurl[m],
-      "media-url": mediaurl[m]
+      "media-url": mediaurl[m],
     });
   }
 }
@@ -1758,7 +1758,7 @@ function Base64Code() {
           r.charAt(n >>> 18),
           r.charAt((n >>> 12) & 63),
           e >= 2 ? "=" : r.charAt((n >>> 6) & 63),
-          e >= 1 ? "=" : r.charAt(63 & n)
+          e >= 1 ? "=" : r.charAt(63 & n),
         ];
       return c.join("");
     },
@@ -1825,9 +1825,38 @@ function Base64Code() {
 
 //From chavyleung's Env.js
 function Env(name, opts) {
+  class Http {
+    constructor(env) {
+      this.env = env;
+    }
+
+    send(opts, method = "GET") {
+      opts = typeof opts === "string" ? { url: opts } : opts;
+      let sender = this.get;
+      if (method === "POST") {
+        sender = this.post;
+      }
+      return new Promise((resolve, reject) => {
+        sender.call(this, opts, (err, resp, body) => {
+          if (err) reject(err);
+          else resolve(resp);
+        });
+      });
+    }
+
+    get(opts) {
+      return this.send.call(this.env, opts);
+    }
+
+    post(opts) {
+      return this.send.call(this.env, opts, "POST");
+    }
+  }
+
   return new (class {
     constructor(name, opts) {
       this.name = name;
+      this.http = new Http(this);
       this.data = null;
       this.dataFile = "box.dat";
       this.logs = [];
@@ -1837,25 +1866,66 @@ function Env(name, opts) {
       Object.assign(this, opts);
       this.log("", `🔔${this.name}, 开始!`);
     }
+
     isNode() {
       return "undefined" !== typeof module && !!module.exports;
     }
+
     isQuanX() {
       return "undefined" !== typeof $task;
     }
+
     isSurge() {
       return "undefined" !== typeof $httpClient && "undefined" === typeof $loon;
     }
+
     isLoon() {
       return "undefined" !== typeof $loon;
     }
+
+    toObj(str, defaultValue = null) {
+      try {
+        return JSON.parse(str);
+      } catch {
+        return defaultValue;
+      }
+    }
+
+    toStr(obj, defaultValue = null) {
+      try {
+        return JSON.stringify(obj);
+      } catch {
+        return defaultValue;
+      }
+    }
+
+    getjson(key, defaultValue) {
+      let json = defaultValue;
+      const val = this.getdata(key);
+      if (val) {
+        try {
+          json = JSON.parse(this.getdata(key));
+        } catch {}
+      }
+      return json;
+    }
+
+    setjson(val, key) {
+      try {
+        return this.setdata(JSON.stringify(val), key);
+      } catch {
+        return false;
+      }
+    }
+
     getScript(url) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.get({ url }, (err, resp, body) => resolve(body));
       });
     }
+
     runScript(script, runOpts) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         let httpapi = this.getdata("@chavy_boxjs_userCfgs.httpapi");
         httpapi = httpapi ? httpapi.replace(/\n/g, "").trim() : httpapi;
         let httpapi_timeout = this.getdata(
@@ -1870,13 +1940,14 @@ function Env(name, opts) {
           body: {
             script_text: script,
             mock_type: "cron",
-            timeout: httpapi_timeout
+            timeout: httpapi_timeout,
           },
-          headers: { "X-Key": key, Accept: "*/*" }
+          headers: { "X-Key": key, Accept: "*/*" },
         };
         this.post(opts, (err, resp, body) => resolve(body));
-      }).catch(e => this.logErr(e));
+      }).catch((e) => this.logErr(e));
     }
+
     loaddata() {
       if (this.isNode()) {
         this.fs = this.fs ? this.fs : require("fs");
@@ -1901,6 +1972,7 @@ function Env(name, opts) {
         } else return {};
       } else return {};
     }
+
     writedata() {
       if (this.isNode()) {
         this.fs = this.fs ? this.fs : require("fs");
@@ -1923,6 +1995,7 @@ function Env(name, opts) {
         }
       }
     }
+
     lodash_get(source, path, defaultValue = undefined) {
       const paths = path.replace(/\[(\d+)\]/g, ".$1").split(".");
       let result = source;
@@ -1934,6 +2007,7 @@ function Env(name, opts) {
       }
       return result;
     }
+
     lodash_set(obj, path, value) {
       if (Object(obj) !== obj) return obj;
       if (!Array.isArray(path)) path = path.toString().match(/[^.[\]]+/g) || [];
@@ -1948,6 +2022,7 @@ function Env(name, opts) {
         )[path[path.length - 1]] = value;
       return obj;
     }
+
     getdata(key) {
       let val = this.getval(key);
       // 如果以 @
@@ -1965,6 +2040,7 @@ function Env(name, opts) {
       }
       return val;
     }
+
     setdata(val, key) {
       let issuc = false;
       if (/^@/.test(key)) {
@@ -1989,6 +2065,7 @@ function Env(name, opts) {
       }
       return issuc;
     }
+
     getval(key) {
       if (this.isSurge() || this.isLoon()) {
         return $persistentStore.read(key);
@@ -2001,6 +2078,7 @@ function Env(name, opts) {
         return (this.data && this.data[key]) || null;
       }
     }
+
     setval(val, key) {
       if (this.isSurge() || this.isLoon()) {
         return $persistentStore.write(val, key);
@@ -2015,6 +2093,7 @@ function Env(name, opts) {
         return (this.data && this.data[key]) || null;
       }
     }
+
     initGotEnv(opts) {
       this.got = this.got ? this.got : require("got");
       this.cktough = this.cktough ? this.cktough : require("tough-cookie");
@@ -2026,6 +2105,7 @@ function Env(name, opts) {
         }
       }
     }
+
     get(opts, callback = () => {}) {
       if (opts.headers) {
         delete opts.headers["Content-Type"];
@@ -2041,11 +2121,11 @@ function Env(name, opts) {
         });
       } else if (this.isQuanX()) {
         $task.fetch(opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
@@ -2063,14 +2143,15 @@ function Env(name, opts) {
             // this.ckjar.setCookieSync(resp.headers['set-cookie'].map(Cookie.parse).toString())
           })
           .then(
-            resp => {
+            (resp) => {
               const { statusCode: status, statusCode, headers, body } = resp;
               callback(null, { status, statusCode, headers, body }, body);
             },
-            err => callback(err)
+            (err) => callback(err)
           );
       }
     }
+
     post(opts, callback = () => {}) {
       // 如果指定了请求体, 但没指定`Content-Type`, 则自动生成
       if (opts.body && opts.headers && !opts.headers["Content-Type"]) {
@@ -2088,21 +2169,21 @@ function Env(name, opts) {
       } else if (this.isQuanX()) {
         opts.method = "POST";
         $task.fetch(opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
         const { url, ..._opts } = opts;
         this.got.post(url, _opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => callback(err)
         );
       }
     }
@@ -2123,7 +2204,7 @@ function Env(name, opts) {
         "m+": new Date().getMinutes(),
         "s+": new Date().getSeconds(),
         "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds()
+        S: new Date().getMilliseconds(),
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
@@ -2140,6 +2221,7 @@ function Env(name, opts) {
           );
       return fmt;
     }
+
     /**
      * 系统通知
      *
@@ -2157,19 +2239,22 @@ function Env(name, opts) {
      *
      */
     msg(title = name, subt = "", desc = "", opts) {
-      const toEnvOpts = rawopts => {
+      const toEnvOpts = (rawopts) => {
         if (!rawopts || (!this.isLoon() && this.isSurge())) return rawopts;
         if (typeof rawopts === "string") {
           if (this.isLoon()) return rawopts;
           else if (this.isQuanX()) return { "open-url": rawopts };
           else return undefined;
-        } else if (
-          typeof rawopts === "object" &&
-          (rawopts["open-url"] || rawopts["media-url"])
-        ) {
-          if (this.isLoon()) return rawopts["open-url"];
-          else if (this.isQuanX()) return rawopts;
-          else undefined;
+        } else if (typeof rawopts === "object") {
+          if (this.isLoon()) {
+            let openUrl = rawopts.openUrl || rawopts["open-url"];
+            let mediaUrl = rawopts.mediaUrl || rawopts["media-url"];
+            return { openUrl, mediaUrl };
+          } else if (this.isQuanX()) {
+            let openUrl = rawopts["open-url"] || rawopts.openUrl;
+            let mediaUrl = rawopts["media-url"] || rawopts.mediaUrl;
+            return { "open-url": openUrl, "media-url": mediaUrl };
+          }
         } else {
           return undefined;
         }
@@ -2188,12 +2273,14 @@ function Env(name, opts) {
       console.log(logs.join("\n"));
       this.logs = this.logs.concat(logs);
     }
+
     log(...logs) {
       if (logs.length > 0) {
         this.logs = [...this.logs, ...logs];
       }
       console.log(logs.join(this.logSeparator));
     }
+
     logErr(err, msg) {
       const isPrintSack = !this.isSurge() && !this.isQuanX() && !this.isLoon();
       if (!isPrintSack) {
@@ -2202,9 +2289,11 @@ function Env(name, opts) {
         this.log("", `❗️${this.name}, 错误!`, err.stack);
       }
     }
+
     wait(time) {
-      return new Promise(resolve => setTimeout(resolve, time));
+      return new Promise((resolve) => setTimeout(resolve, time));
     }
+
     done(val = {}) {
       const endTime = new Date().getTime();
       const costTime = (endTime - this.startTime) / 1000;
