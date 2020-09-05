@@ -47,7 +47,7 @@ $.random = [true, "true"].includes($.read("random")) || false;
   await getcontent();
   showmsg();
 })()
-  .catch((err) => {
+  .catch(err => {
     if (err instanceof ERR.ParseError) {
       $.notify("iDaily", "❌ 解析数据出现错误", err.message);
     } else {
@@ -63,13 +63,13 @@ function getcontent() {
     Host: `idaily-cdn.idailycdn.com`,
     "Accept-Encoding": `gzip`,
     "User-Agent": `CLKit 1.0 rv:1 (iPhone; iOS 13.6.1; zh_CN)`,
-    "Content-Type": "text/html; charset=utf-8",
+    "Content-Type": "text/html; charset=utf-8"
   };
   const myRequest = {
     url: url,
-    headers: headers,
+    headers: headers
   };
-  return $.http.get(myRequest).then((response) => {
+  return $.http.get(myRequest).then(response => {
     $.log(JSON.parse(response.body));
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
@@ -98,7 +98,7 @@ function showmsg() {
     var detail = `📍 ${location}\n${content}`;
     $.notify(`📅 ${title}`, `⏩ ${caption}`, detail, {
       "media-url": cover,
-      "open-url": link,
+      "open-url": link
     });
   } catch (err) {
     throw new ERR.ParseError("请稍候重试");
@@ -113,7 +113,7 @@ function MYERR() {
     }
   }
   return {
-    ParseError,
+    ParseError
   };
 }
 
@@ -125,11 +125,12 @@ function ENV() {
   const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
   const isNode = typeof require == "function" && !isJSBox;
   const isRequest = typeof $request !== "undefined";
-  return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest };
+  const isScriptable = typeof importModule !== "undefined";
+  return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable };
 }
 
 function HTTP(baseURL, defaultOptions = {}) {
-  const { isQX, isLoon, isSurge } = ENV();
+  const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
 
   function send(method, options) {
@@ -140,10 +141,10 @@ function HTTP(baseURL, defaultOptions = {}) {
     const events = {
       ...{
         onRequest: () => {},
-        onResponse: (resp) => resp,
-        onTimeout: () => {},
+        onResponse: resp => resp,
+        onTimeout: () => {}
       },
-      ...options.events,
+      ...options.events
     };
 
     events.onRequest(method, options);
@@ -151,18 +152,35 @@ function HTTP(baseURL, defaultOptions = {}) {
     let worker;
     if (isQX) {
       worker = $task.fetch({ method, ...options });
-    } else {
+    } else if (isLoon || isSurge || isNode) {
       worker = new Promise((resolve, reject) => {
-        const request = isSurge || isLoon ? $httpClient : require("request");
+        const request = isNode ? require("request") : $httpClient;
         request[method.toLowerCase()](options, (err, response, body) => {
           if (err) reject(err);
           else
             resolve({
               statusCode: response.status || response.statusCode,
               headers: response.headers,
-              body,
+              body
             });
         });
+      });
+    } else if (isScriptable) {
+      const request = new Request(options.url);
+      request.method = method;
+      request.headers = options.headers;
+      request.body = options.body;
+      worker = new Promise((resolve, reject) => {
+        request
+          .loadString()
+          .then(body => {
+            resolve({
+              statusCode: request.response.statusCode,
+              headers: request.response.headers,
+              body
+            });
+          })
+          .catch(err => reject(err));
       });
     }
 
@@ -179,24 +197,23 @@ function HTTP(baseURL, defaultOptions = {}) {
       : null;
 
     return (timer
-      ? Promise.race([timer, worker]).then((res) => {
+      ? Promise.race([timer, worker]).then(res => {
           clearTimeout(timeoutid);
           return res;
         })
       : worker
-    ).then((resp) => events.onResponse(resp));
+    ).then(resp => events.onResponse(resp));
   }
 
   const http = {};
   methods.forEach(
-    (method) =>
-      (http[method.toLowerCase()] = (options) => send(method, options))
+    method => (http[method.toLowerCase()] = options => send(method, options))
   );
   return http;
 }
 
 function API(name = "untitled", debug = false) {
-  const { isQX, isLoon, isSurge, isNode, isJSBox } = ENV();
+  const { isQX, isLoon, isSurge, isNode, isJSBox, isScriptable } = ENV();
   return new (class {
     constructor(name, debug) {
       this.name = name;
@@ -210,7 +227,7 @@ function API(name = "untitled", debug = false) {
           const fs = require("fs");
 
           return {
-            fs,
+            fs
           };
         } else {
           return null;
@@ -245,7 +262,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
         }
         this.root = {};
@@ -257,7 +274,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
           this.cache = {};
         } else {
@@ -278,13 +295,13 @@ function API(name = "untitled", debug = false) {
           `${this.name}.json`,
           data,
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
         this.node.fs.writeFileSync(
           "root.json",
           JSON.stringify(this.root),
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
       }
     }
@@ -357,13 +374,22 @@ function API(name = "untitled", debug = false) {
 
       if (isQX) $notify(title, subtitle, content, options);
       if (isSurge) $notification.post(title, subtitle, content_);
-      if (isLoon) $notification.post(title, subtitle, content, openURL);
-      if (isNode) {
+      if (isLoon) {
+        let opts = {};
+        if (openURL) opts["openUrl"] = openURL;
+        if (mediaURL) opts["mediaUrl"] = mediaURL;
+        if (JSON.stringify(opts) == "{}") {
+          $notification.post(title, subtitle, content);
+        } else {
+          $notification.post(title, subtitle, content, opts);
+        }
+      }
+      if (isNode || isScriptable) {
         if (isJSBox) {
           const push = require("push");
           push.schedule({
             title: title,
-            body: (subtitle ? subtitle + "\n" : "") + content_,
+            body: (subtitle ? subtitle + "\n" : "") + content_
           });
         } else {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -385,7 +411,7 @@ function API(name = "untitled", debug = false) {
     }
 
     wait(millisec) {
-      return new Promise((resolve) => setTimeout(resolve, millisec));
+      return new Promise(resolve => setTimeout(resolve, millisec));
     }
 
     done(value = {}) {

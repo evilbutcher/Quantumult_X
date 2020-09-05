@@ -44,7 +44,7 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 
 const $ = new API("NASA");
 const ERR = MYERR();
-const translate = [true, 'true'].includes($.read("translate")) || false;
+const translate = [true, "true"].includes($.read("translate")) || false;
 
 !(async () => {
   if (!$.read("nasaapi")) {
@@ -78,9 +78,11 @@ function getpic() {
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
       $.data = obj;
-      $.info(obj)
+      $.info(obj);
     } else if (response.statusCode == 404) {
-      throw new ERR.TimeError("❌ 暂无图片，内容在更新，请稍等呦～\n注意：北京时间8:00-13:00为NASA更新时间段。");
+      throw new ERR.TimeError(
+        "❌ 暂无图片，内容在更新，请稍等呦～\n北京时间8:00-13:00为NASA更新时间段。"
+      );
       //$.notify("NASA", "", "暂无图片更新，晚点再来看看吧~");
     } else {
       $.error(JSON.stringify(response));
@@ -129,7 +131,7 @@ function showmsg() {
     detail = `©️Copyright：${copyright}\n⌚️Date：${time}\n${exp}`;
   }
   var cover = $.data.url;
-  $.notify("NASA", title, detail, { "media-url": cover, "open-url":cover });
+  $.notify("NASA", title, detail, { "media-url": cover, "open-url": cover });
 }
 
 function MYERR() {
@@ -159,11 +161,12 @@ function ENV() {
   const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
   const isNode = typeof require == "function" && !isJSBox;
   const isRequest = typeof $request !== "undefined";
-  return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest };
+  const isScriptable = typeof importModule !== "undefined";
+  return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable };
 }
 
 function HTTP(baseURL, defaultOptions = {}) {
-  const { isQX, isLoon, isSurge } = ENV();
+  const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
 
   function send(method, options) {
@@ -185,9 +188,9 @@ function HTTP(baseURL, defaultOptions = {}) {
     let worker;
     if (isQX) {
       worker = $task.fetch({ method, ...options });
-    } else {
+    } else if (isLoon || isSurge || isNode) {
       worker = new Promise((resolve, reject) => {
-        const request = isSurge || isLoon ? $httpClient : require("request");
+        const request = isNode ? require("request") : $httpClient;
         request[method.toLowerCase()](options, (err, response, body) => {
           if (err) reject(err);
           else
@@ -197,6 +200,23 @@ function HTTP(baseURL, defaultOptions = {}) {
               body
             });
         });
+      });
+    } else if (isScriptable) {
+      const request = new Request(options.url);
+      request.method = method;
+      request.headers = options.headers;
+      request.body = options.body;
+      worker = new Promise((resolve, reject) => {
+        request
+          .loadString()
+          .then(body => {
+            resolve({
+              statusCode: request.response.statusCode,
+              headers: request.response.headers,
+              body
+            });
+          })
+          .catch(err => reject(err));
       });
     }
 
@@ -229,7 +249,7 @@ function HTTP(baseURL, defaultOptions = {}) {
 }
 
 function API(name = "untitled", debug = false) {
-  const { isQX, isLoon, isSurge, isNode, isJSBox } = ENV();
+  const { isQX, isLoon, isSurge, isNode, isJSBox, isScriptable } = ENV();
   return new (class {
     constructor(name, debug) {
       this.name = name;
@@ -390,8 +410,17 @@ function API(name = "untitled", debug = false) {
 
       if (isQX) $notify(title, subtitle, content, options);
       if (isSurge) $notification.post(title, subtitle, content_);
-      if (isLoon) $notification.post(title, subtitle, content, openURL);
-      if (isNode) {
+      if (isLoon) {
+        let opts = {};
+        if (openURL) opts["openUrl"] = openURL;
+        if (mediaURL) opts["mediaUrl"] = mediaURL;
+        if (JSON.stringify(opts) == "{}") {
+          $notification.post(title, subtitle, content);
+        } else {
+          $notification.post(title, subtitle, content, opts);
+        }
+      }
+      if (isNode || isScriptable) {
         if (isJSBox) {
           const push = require("push");
           push.schedule({
