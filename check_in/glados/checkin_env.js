@@ -118,7 +118,7 @@ function login(url, email, password, title) {
   $.post(table, function (error, response, data) {
     if (error) {
       console.log(error);
-      $.msg(title + "登录失败", error, "");
+      $.msg(title + "登录失败", JSON.stringify(error), "");
     } else {
       if (
         JSON.parse(data).msg.match(
@@ -144,7 +144,7 @@ function checkin(url, email, password, title) {
   $.post(checkinreqest, (error, response, data) => {
     if (error) {
       console.log(error);
-      $.msg(title + "签到失败", error, "");
+      $.msg(title + "签到失败", JSON.stringify(error), "");
     } else {
       if (data.match(/\"msg\"\:/)) {
         dataResults(url, JSON.parse(data).msg, title);
