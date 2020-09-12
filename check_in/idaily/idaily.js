@@ -368,13 +368,17 @@ function API(name = "untitled", debug = false) {
       const openURL = options["open-url"];
       const mediaURL = options["media-url"];
 
-      const content_ =
-        content +
-        (openURL ? `\n点击跳转: ${openURL}` : "") +
-        (mediaURL ? `\n多媒体: ${mediaURL}` : "");
-
       if (isQX) $notify(title, subtitle, content, options);
-      if (isSurge) $notification.post(title, subtitle, content_);
+      if (isSurge) {
+        $notification.post(
+          title,
+          subtitle,
+          content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`,
+          {
+            url: openURL,
+          }
+        );
+      }
       if (isLoon) {
         let opts = {};
         if (openURL) opts["openUrl"] = openURL;
@@ -386,6 +390,10 @@ function API(name = "untitled", debug = false) {
         }
       }
       if (isNode || isScriptable) {
+        const content_ =
+          content +
+          (openURL ? `\n点击跳转: ${openURL}` : "") +
+          (mediaURL ? `\n多媒体: ${mediaURL}` : "");
         if (isJSBox) {
           const push = require("push");
           push.schedule({

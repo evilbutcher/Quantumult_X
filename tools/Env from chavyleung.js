@@ -1,10 +1,41 @@
 function Env(name, opts) {
+  class Http {
+    constructor(env) {
+      this.env = env;
+    }
+
+    send(opts, method = "GET") {
+      opts = typeof opts === "string" ? { url: opts } : opts;
+      let sender = this.get;
+      if (method === "POST") {
+        sender = this.post;
+      }
+      return new Promise((resolve, reject) => {
+        sender.call(this, opts, (err, resp, body) => {
+          if (err) reject(err);
+          else resolve(resp);
+        });
+      });
+    }
+
+    get(opts) {
+      return this.send.call(this.env, opts);
+    }
+
+    post(opts) {
+      return this.send.call(this.env, opts, "POST");
+    }
+  }
+
   return new (class {
     constructor(name, opts) {
       this.name = name;
+      this.http = new Http(this);
       this.data = null;
       this.dataFile = "box.dat";
       this.logs = [];
+      this.isMute = false;
+      this.isNeedRewrite = false;
       this.logSeparator = "\n";
       this.startTime = new Date().getTime();
       Object.assign(this, opts);
@@ -20,11 +51,76 @@ function Env(name, opts) {
     }
 
     isSurge() {
-      return "undefined" !== typeof $httpClient;
+      return "undefined" !== typeof $httpClient && "undefined" === typeof $loon;
     }
 
     isLoon() {
       return "undefined" !== typeof $loon;
+    }
+
+    toObj(str, defaultValue = null) {
+      try {
+        return JSON.parse(str);
+      } catch {
+        return defaultValue;
+      }
+    }
+
+    toStr(obj, defaultValue = null) {
+      try {
+        return JSON.stringify(obj);
+      } catch {
+        return defaultValue;
+      }
+    }
+
+    getjson(key, defaultValue) {
+      let json = defaultValue;
+      const val = this.getdata(key);
+      if (val) {
+        try {
+          json = JSON.parse(this.getdata(key));
+        } catch {}
+      }
+      return json;
+    }
+
+    setjson(val, key) {
+      try {
+        return this.setdata(JSON.stringify(val), key);
+      } catch {
+        return false;
+      }
+    }
+
+    getScript(url) {
+      return new Promise((resolve) => {
+        this.get({ url }, (err, resp, body) => resolve(body));
+      });
+    }
+
+    runScript(script, runOpts) {
+      return new Promise((resolve) => {
+        let httpapi = this.getdata("@chavy_boxjs_userCfgs.httpapi");
+        httpapi = httpapi ? httpapi.replace(/\n/g, "").trim() : httpapi;
+        let httpapi_timeout = this.getdata(
+          "@chavy_boxjs_userCfgs.httpapi_timeout"
+        );
+        httpapi_timeout = httpapi_timeout ? httpapi_timeout * 1 : 20;
+        httpapi_timeout =
+          runOpts && runOpts.timeout ? runOpts.timeout : httpapi_timeout;
+        const [key, addr] = httpapi.split("@");
+        const opts = {
+          url: `http://${addr}/v1/scripting/evaluate`,
+          body: {
+            script_text: script,
+            mock_type: "cron",
+            timeout: httpapi_timeout,
+          },
+          headers: { "X-Key": key, Accept: "*/*" },
+        };
+        this.post(opts, (err, resp, body) => resolve(body));
+      }).catch((e) => this.logErr(e));
     }
 
     loaddata() {
@@ -45,7 +141,7 @@ function Env(name, opts) {
             : rootDirDataFilePath;
           try {
             return JSON.parse(this.fs.readFileSync(datPath));
-          } catch {
+          } catch (e) {
             return {};
           }
         } else return {};
@@ -134,15 +230,13 @@ function Env(name, opts) {
           const objedval = JSON.parse(objval);
           this.lodash_set(objedval, paths, val);
           issuc = this.setval(JSON.stringify(objedval), objkey);
-          console.log(`${objkey}: ${JSON.stringify(objedval)}`);
-        } catch {
+        } catch (e) {
           const objedval = {};
           this.lodash_set(objedval, paths, val);
           issuc = this.setval(JSON.stringify(objedval), objkey);
-          console.log(`${objkey}: ${JSON.stringify(objedval)}`);
         }
       } else {
-        issuc = $.setval(val, key);
+        issuc = this.setval(val, key);
       }
       return issuc;
     }
@@ -193,20 +287,28 @@ function Env(name, opts) {
         delete opts.headers["Content-Length"];
       }
       if (this.isSurge() || this.isLoon()) {
+        if (this.isSurge() && this.isNeedRewrite) {
+          opts.headers = opts.headers || {};
+          Object.assign(opts.headers, { "X-Surge-Skip-Scripting": false });
+        }
         $httpClient.get(opts, (err, resp, body) => {
           if (!err && resp) {
             resp.body = body;
             resp.statusCode = resp.status;
-            callback(err, resp, body);
           }
+          callback(err, resp, body);
         });
       } else if (this.isQuanX()) {
+        if (this.isNeedRewrite) {
+          opts.opts = opts.opts || {};
+          Object.assign(opts.opts, { hints: false });
+        }
         $task.fetch(opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
@@ -224,11 +326,14 @@ function Env(name, opts) {
             // this.ckjar.setCookieSync(resp.headers['set-cookie'].map(Cookie.parse).toString())
           })
           .then(
-            resp => {
+            (resp) => {
               const { statusCode: status, statusCode, headers, body } = resp;
               callback(null, { status, statusCode, headers, body }, body);
             },
-            err => callback(err)
+            (err) => {
+              const { message: error, response: resp } = err;
+              callback(error, resp, resp && resp.body);
+            }
           );
       }
     }
@@ -238,35 +343,80 @@ function Env(name, opts) {
       if (opts.body && opts.headers && !opts.headers["Content-Type"]) {
         opts.headers["Content-Type"] = "application/x-www-form-urlencoded";
       }
-      delete opts.headers["Content-Length"];
+      if (opts.headers) delete opts.headers["Content-Length"];
       if (this.isSurge() || this.isLoon()) {
+        if (this.isSurge() && this.isNeedRewrite) {
+          opts.headers = opts.headers || {};
+          Object.assign(opts.headers, { "X-Surge-Skip-Scripting": false });
+        }
         $httpClient.post(opts, (err, resp, body) => {
           if (!err && resp) {
             resp.body = body;
             resp.statusCode = resp.status;
-            callback(err, resp, body);
           }
+          callback(err, resp, body);
         });
       } else if (this.isQuanX()) {
         opts.method = "POST";
+        if (this.isNeedRewrite) {
+          opts.opts = opts.opts || {};
+          Object.assign(opts.opts, { hints: false });
+        }
         $task.fetch(opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
         const { url, ..._opts } = opts;
         this.got.post(url, _opts).then(
-          resp => {
+          (resp) => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          err => callback(err)
+          (err) => {
+            const { message: error, response: resp } = err;
+            callback(error, resp, resp && resp.body);
+          }
         );
       }
+    }
+    /**
+     *
+     * 示例:$.time('yyyy-MM-dd qq HH:mm:ss.S')
+     *    :$.time('yyyyMMddHHmmssS')
+     *    y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
+     *    其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
+     * @param {*} fmt 格式化参数
+     *
+     */
+    time(fmt) {
+      let o = {
+        "M+": new Date().getMonth() + 1,
+        "d+": new Date().getDate(),
+        "H+": new Date().getHours(),
+        "m+": new Date().getMinutes(),
+        "s+": new Date().getSeconds(),
+        "q+": Math.floor((new Date().getMonth() + 3) / 3),
+        S: new Date().getMilliseconds(),
+      };
+      if (/(y+)/.test(fmt))
+        fmt = fmt.replace(
+          RegExp.$1,
+          (new Date().getFullYear() + "").substr(4 - RegExp.$1.length)
+        );
+      for (let k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            RegExp.$1.length == 1
+              ? o[k]
+              : ("00" + o[k]).substr(("" + o[k]).length)
+          );
+      return fmt;
     }
 
     /**
@@ -286,56 +436,66 @@ function Env(name, opts) {
      *
      */
     msg(title = name, subt = "", desc = "", opts) {
-      const toEnvOpts = rawopts => {
-        if (!rawopts || (!this.isLoon() && this.isSurge())) return rawopts;
+      const toEnvOpts = (rawopts) => {
+        if (!rawopts) return rawopts;
         if (typeof rawopts === "string") {
           if (this.isLoon()) return rawopts;
           else if (this.isQuanX()) return { "open-url": rawopts };
+          else if (this.isSurge()) return { url: rawopts };
           else return undefined;
-        } else if (
-          typeof rawopts === "object" &&
-          (rawopts["open-url"] || rawopts["media-url"])
-        ) {
-          if (this.isLoon()) return rawopts["open-url"];
-          else if (this.isQuanX()) return rawopts;
-          else undefined;
+        } else if (typeof rawopts === "object") {
+          if (this.isLoon()) {
+            let openUrl = rawopts.openUrl || rawopts.url || rawopts["open-url"];
+            let mediaUrl = rawopts.mediaUrl || rawopts["media-url"];
+            return { openUrl, mediaUrl };
+          } else if (this.isQuanX()) {
+            let openUrl = rawopts["open-url"] || rawopts.url || rawopts.openUrl;
+            let mediaUrl = rawopts["media-url"] || rawopts.mediaUrl;
+            return { "open-url": openUrl, "media-url": mediaUrl };
+          } else if (this.isSurge()) {
+            let openUrl = rawopts.url || rawopts.openUrl || rawopts["open-url"];
+            return { url: openUrl };
+          }
         } else {
           return undefined;
         }
       };
-      if (this.isSurge() || this.isLoon()) {
-        $notification.post(title, subt, desc, toEnvOpts(opts));
-      } else if (this.isQuanX()) {
-        $notify(title, subt, desc, toEnvOpts(opts));
+      if (!this.isMute) {
+        if (this.isSurge() || this.isLoon()) {
+          $notification.post(title, subt, desc, toEnvOpts(opts));
+        } else if (this.isQuanX()) {
+          $notify(title, subt, desc, toEnvOpts(opts));
+        }
       }
-      this.logs.push("", "==============📣系统通知📣==============");
-      this.logs.push(title);
-      subt ? this.logs.push(subt) : "";
-      desc ? this.logs.push(desc) : "";
+      let logs = ["", "==============📣系统通知📣=============="];
+      logs.push(title);
+      subt ? logs.push(subt) : "";
+      desc ? logs.push(desc) : "";
+      console.log(logs.join("\n"));
+      this.logs = this.logs.concat(logs);
     }
 
     log(...logs) {
       if (logs.length > 0) {
         this.logs = [...this.logs, ...logs];
-      } else {
-        console.log(this.logs.join(this.logSeparator));
       }
+      console.log(logs.join(this.logSeparator));
     }
 
     logErr(err, msg) {
       const isPrintSack = !this.isSurge() && !this.isQuanX() && !this.isLoon();
       if (!isPrintSack) {
-        $.log("", `❗️${this.name}, 错误!`, err.message);
+        this.log("", `❗️${this.name}, 错误!`, err);
       } else {
-        $.log("", `❗️${this.name}, 错误!`, err.stack);
+        this.log("", `❗️${this.name}, 错误!`, err.stack);
       }
     }
 
     wait(time) {
-      return new Promise(resolve => setTimeout(resolve, time));
+      return new Promise((resolve) => setTimeout(resolve, time));
     }
 
-    done(val = null) {
+    done(val = {}) {
       const endTime = new Date().getTime();
       const costTime = (endTime - this.startTime) / 1000;
       this.log("", `🔔${this.name}, 结束! 🕛 ${costTime} 秒`);
