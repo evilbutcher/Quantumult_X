@@ -47,7 +47,7 @@
         {
           "id": "wb_check_first",
           "name": "检查签到状态",
-          "val": true,
+          "val": false,
           "type": "boolean",
           "desc": "打开则先检查签到状态，再签到；否则将直接签到"
         }
