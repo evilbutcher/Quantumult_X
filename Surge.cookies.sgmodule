@@ -9,4 +9,4 @@ GLaDOS获取Cookie = type=http-request,pattern=https:\/\/glados\.rocks\/api\/use
 微博超话获取Cookie = type=http-request,pattern=^https?://m?api\.weibo\.c(n|om)\/2\/(cardlist|page\/button),script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.cookie.js
 
 [MITM]
-hostname = %INSERT%, h5.youzan.com, glados.rocks, api.weibo.cn
+hostname = %INSERT%, h5.youzan.com, glados.rocks, api.weibo.cn, mapi.weibo.com

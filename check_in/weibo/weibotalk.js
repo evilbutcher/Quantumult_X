@@ -61,7 +61,7 @@
 
 
   【All App MitM】
-  hostname = api.weibo.cn
+  hostname = api.weibo.cn, mapi.weibo.com
 
 *********/
 

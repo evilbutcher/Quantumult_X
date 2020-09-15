@@ -67,7 +67,7 @@
   5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js, tag=微博超话
 
   [MITM]
-  hostname = api.weibo.cn
+  hostname = api.weibo.cn, mapi.weibo.com
 
 *********/
 
