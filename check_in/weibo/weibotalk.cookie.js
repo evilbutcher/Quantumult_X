@@ -82,7 +82,7 @@ const tokencheckinheaders = "evil_tokencheckinheaders";
 if (
   $request &&
   $request.method != "OPTIONS" &&
-  $request.url.match(/\_\-\_myfollow\&need\_head\_cards/) &&
+  $request.url.match(/\_\-\_myfollow.*?need\_head\_cards/) &&
   $request.url.match(/cardlist/)
 ) {
   const listurl = $request.url;
