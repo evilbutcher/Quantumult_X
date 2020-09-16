@@ -187,7 +187,7 @@ function login(url, email, password, title) {
       loginPath +
       `?email=${email}&passwd=${password}&rumber-me=week`,
   };
-  console.log(loginPath);
+  console.log(loginPath + "保护隐私隐去登录信息");
   $.post(table, function (error, response, data) {
     if (error) {
       console.log(error);
