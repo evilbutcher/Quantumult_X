@@ -182,8 +182,10 @@ function login(url, email, password, title) {
   let loginPath =
     url.indexOf("auth/login") != -1 ? "auth/login" : "user/_login.php";
   let table = {
-    url: url.replace(/(auth|user)\/login(.php)*/g, "") + loginPath,
-    body: `email=${email}&passwd=${password}&rumber-me=week`,
+    url:
+      url.replace(/(auth|user)\/login(.php)*/g, "") +
+      loginPath +
+      `?email=${email}&passwd=${password}&rumber-me=week`,
   };
   console.log(loginPath);
   $.post(table, function (error, response, data) {
