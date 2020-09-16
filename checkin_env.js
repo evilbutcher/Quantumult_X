@@ -45,15 +45,15 @@ if (
   $.getdata("evil_checkintitle") != ""
 ) {
   var acc = $.getdata("evil_checkintitle");
-  accounts = acc.split("，");
+  accounts = acc.split("&");
 } else {
   if ($.isNode()) {
     if (
       process.env.TITLE &&
-      process.env.TITLE.split("，") &&
-      process.env.TITLE.split("，").length > 0
+      process.env.TITLE.split("&") &&
+      process.env.TITLE.split("&").length > 0
     ) {
-      accounts = process.env.TITLE.split("，");
+      accounts = process.env.TITLE.split("&");
       console.log(
         `\n==================脚本执行来自 github action=====================\n`
       );
@@ -81,15 +81,15 @@ if (
   $.getdata("evil_checkinlogin") != ""
 ) {
   var ur = $.getdata("evil_checkinlogin");
-  urls = ur.split("，");
+  urls = ur.split("&");
 } else {
   if ($.isNode()) {
     if (
       process.env.URL &&
-      process.env.URL.split("，") &&
-      process.env.URL.split("，").length > 0
+      process.env.URL.split("&") &&
+      process.env.URL.split("&").length > 0
     ) {
-      urls = process.env.URL.split("，");
+      urls = process.env.URL.split("&");
     } else {
       $.msg(
         "机场签到",
@@ -106,15 +106,15 @@ if (
   $.getdata("evil_checkinemail") != ""
 ) {
   var ema = $.getdata("evil_checkinemail");
-  emails = ema.split("，");
+  emails = ema.split("&");
 } else {
   if ($.isNode()) {
     if (
       process.env.EMAIL &&
-      process.env.EMAIL.split("，") &&
-      process.env.EMAIL.split("，").length > 0
+      process.env.EMAIL.split("&") &&
+      process.env.EMAIL.split("&").length > 0
     ) {
-      emails = process.env.EMAIL.split("，");
+      emails = process.env.EMAIL.split("&");
     } else {
       $.msg(
         "机场签到",
@@ -131,15 +131,15 @@ if (
   $.getdata("evil_checkinpwd") != ""
 ) {
   var pwd = $.getdata("evil_checkinpwd");
-  passwords = pwd.split("，");
+  passwords = pwd.split("&");
 } else {
   if ($.isNode()) {
     if (
       process.env.PASSWORD &&
-      process.env.PASSWORD.split("，") &&
-      process.env.PASSWORD.split("，").length > 0
+      process.env.PASSWORD.split("&") &&
+      process.env.PASSWORD.split("&").length > 0
     ) {
-      passwords = process.env.PASSWORD.split("，");
+      passwords = process.env.PASSWORD.split("&");
     } else {
       $.msg(
         "机场签到",
