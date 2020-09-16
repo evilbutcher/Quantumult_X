@@ -152,6 +152,7 @@ if (
 }
 
 $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
+launch();
 
 function launch() {
   for (var i in accounts) {
@@ -175,8 +176,6 @@ function launch() {
   }
   $.done();
 }
-
-launch();
 
 function login(url, email, password, title) {
   let loginPath =
