@@ -185,7 +185,7 @@ function login(url, email, password, title) {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + loginPath,
     body: `email=${email}&passwd=${password}&rumber-me=week`,
   };
-  console.log(table);
+  console.log(loginPath);
   $.post(table, function (error, response, data) {
     if (error) {
       console.log(error);
