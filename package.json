@@ -1,0 +1,30 @@
+{
+  "name": "evilbutcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jingxi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evilbutcher/Quantumult_X.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evilbutcher/Quantumult_X/issues"
+  },
+  "homepage": "https://github.com/evilbutcher/Quantumult_X#readme",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "got": "^11.5.1",
+    "http-server": "^0.12.3",
+    "node-schedule": "^1.3.2",
+    "tough-cookie": "^4.0.0",
+    "download": "^8.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  }
+}
