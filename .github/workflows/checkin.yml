@@ -32,4 +32,4 @@ jobs:
           TITLE: ${{ secrets.TITLE }}
           URL: ${{ secrets.URL }}
           EMAIL: ${{ secrets.EMAIL }}
-          PASSWORD: ${{ secrets.PASSWOIRD }}
+          PASSWORD: ${{ secrets.PASSWORD }}
