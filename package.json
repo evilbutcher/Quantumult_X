@@ -2,13 +2,13 @@
   "name": "evilbutcher",
   "version": "1.0.0",
   "description": "",
-  "main": "jingxi.js",
+  "main": "checkin_env.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evilbutcher/Quantumult_X.git"
+    "url": "https://github.com/evilbutcher/Quantumult_X.git"
   },
   "keywords": [],
   "author": "",
