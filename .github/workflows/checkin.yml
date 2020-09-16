@@ -5,10 +5,10 @@ name: checkin.js
 
 on:
   #push:
-    #branches: 
-     #- master 
+  #  branches:
+  #  - master
   schedule:
-     - cron: '0 12 * * *'
+    - cron: "0 1 * * *"
   watch:
     types: started
 
@@ -25,4 +25,11 @@ jobs:
       - name: npm install
         run: |
           npm install
-          
+      - name: "运行 【机场签到】"
+        run: |
+          node checkin_env.js
+        env:
+          TITLE: ${{ secrets.TITLE }}
+          URL: ${{ secrets.URL }}
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWOIRD }}
