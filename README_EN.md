@@ -43,6 +43,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 2. View traffic information.
 3. Support BoxJs.
 4. Checkin_env.js is modified from @Neurogram-R, adding multi-platform support.
+5. GitHub Action has been supported. First, Fork this repo, add CHECKIN_TITLE CHECKIN_URL CHECKIN_EMAIL CHECKIN_PASSWORD four data in the Secrets of the forked repo. Different accounts are separated by &. Both schedule and Star your repo, checkin can be run. Please refer to [pull](https://github.com/wei/pull/blob/master/README.md) on how to keep in sync.
 
 ### [Hotlist Monitor](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 

@@ -45,6 +45,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 2. 查看流量信息。
 3. 支持 BoxJs。
 4. checkin_env.js 修改自@Neurogram-R，增加了多平台支持。
+5. 已支持GitHub Action，首先Fork项目，在Fork的项目的Secrets中添加 CHECKIN_TITLE CHECKIN_URL CHECKIN_EMAIL CHECKIN_PASSWORD 四个数据，不同的账号以&分隔，定时和Star自己的项目均可运行。关于如何保持同步请参考[pull](https://github.com/wei/pull/blob/master/README.md)。
 
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 
