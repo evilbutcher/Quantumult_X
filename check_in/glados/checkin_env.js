@@ -38,7 +38,7 @@ Modified by evilbutcher
 
 */
 const $ = new Env("机场签到");
-$.autoLogout = true;
+$.autoLogout = false;
 
 if (
   $.getdata("evil_checkintitle") != undefined &&
@@ -185,7 +185,7 @@ function login(url, email, password, title) {
     url:
       url.replace(/(auth|user)\/login(.php)*/g, "") +
       loginPath +
-      `?email=${email}&passwd=${password}&rumber-me=week`,
+      `?email=${email}&passwd=${password}`,
   };
   console.log(loginPath + " 保护隐私隐去登录信息");
   $.post(table, function (error, response, data) {
