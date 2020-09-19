@@ -50,7 +50,7 @@
           "name": "检查签到状态",
           "val": false,
           "type": "boolean",
-          "desc": "打开则先检查签到状态，再签到；否则将直接签到"
+          "desc": "打开则先检查签到状态，再签到（超话数量不足20个请关闭）"
         }
       ],
       "author": "@toulanboy, @evilbutcher",
