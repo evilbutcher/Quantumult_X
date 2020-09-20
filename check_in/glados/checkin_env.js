@@ -611,11 +611,13 @@ function Env(name, opts) {
         this.got(opts)
           .on("redirect", (resp, nextOpts) => {
             try {
-              const ck = resp.headers["set-cookie"]
-                .map(this.cktough.Cookie.parse)
-                .toString();
-              this.ckjar.setCookieSync(ck, null);
-              nextOpts.cookieJar = this.ckjar;
+              if (resp.headers["set-cookie"]) {
+                const ck = resp.headers["set-cookie"]
+                  .map(this.cktough.Cookie.parse)
+                  .toString();
+                this.ckjar.setCookieSync(ck, null);
+                nextOpts.cookieJar = this.ckjar;
+              }
             } catch (e) {
               this.logErr(e);
             }
