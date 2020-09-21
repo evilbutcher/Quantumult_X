@@ -87,10 +87,8 @@ function signin() {
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      console.log(obj);
       if (obj.code == 0) {
         change = obj.list[0].change;
-        console.log(change);
         changeday = parseInt(change);
         msge = obj.message;
         if (msge == "Please Checkin Tomorrow") {
@@ -116,7 +114,6 @@ function status() {
     $.get(statusRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      console.log(obj);
       if (obj.code == 0) {
         account = obj.data.email;
         expday = obj.data.days;
