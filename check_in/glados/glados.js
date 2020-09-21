@@ -59,8 +59,9 @@ var expday;
 var remain;
 var remainday;
 var change;
+var changeday;
 var msge;
-var message = [];
+var message = "";
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -70,7 +71,7 @@ var message = [];
   await signin();
   await status();
 })()
-  .catch((e) => {
+  .catch(e => {
     $.log("", `❌失败! 原因: ${e}!`, "");
   })
   .finally(() => {
@@ -78,23 +79,28 @@ var message = [];
   });
 
 function signin() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const signinRequest = {
       url: "https://glados.rocks/api/user/checkin",
-      headers: { Cookie: sicookie },
+      headers: { Cookie: sicookie }
     };
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
+      console.log(obj);
       if (obj.code == 0) {
         change = obj.list[0].change;
+        console.log(change);
         changeday = parseInt(change);
         msge = obj.message;
         if (msge == "Please Checkin Tomorrow") {
-          message.push("今日已签到");
+          message += "今日已签到";
         } else {
-          message.push(`签到获得${changeday}天`);
+          message += `签到获得${changeday}天`;
         }
+      } else {
+        msge = obj.message;
+        message += msge;
       }
       resolve();
     });
@@ -102,20 +108,21 @@ function signin() {
 }
 
 function status() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const statusRequest = {
       url: "https://glados.rocks/api/user/status",
-      headers: { Cookie: sicookie },
+      headers: { Cookie: sicookie }
     };
     $.get(statusRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
+      console.log(obj);
       if (obj.code == 0) {
         account = obj.data.email;
         expday = obj.data.days;
         remain = obj.data.leftDays;
         remainday = parseInt(remain);
-        message.push(`已用${expday}天,剩余${remainday}天`);
+        message += `\n已用${expday}天,剩余${remainday}天`;
         $.msg("GLaDOS", `账户：${account}`, message);
       } else {
         $.log(response);
@@ -203,7 +210,7 @@ function Env(name, opts) {
     toObj(str, defaultValue = null) {
       try {
         return JSON.parse(str);
-      } catch {
+      } catch (e) {
         return defaultValue;
       }
     }
@@ -211,7 +218,7 @@ function Env(name, opts) {
     toStr(obj, defaultValue = null) {
       try {
         return JSON.stringify(obj);
-      } catch {
+      } catch (e) {
         return defaultValue;
       }
     }
@@ -222,7 +229,7 @@ function Env(name, opts) {
       if (val) {
         try {
           json = JSON.parse(this.getdata(key));
-        } catch {}
+        } catch (e) {}
       }
       return json;
     }
@@ -230,19 +237,19 @@ function Env(name, opts) {
     setjson(val, key) {
       try {
         return this.setdata(JSON.stringify(val), key);
-      } catch {
+      } catch (e) {
         return false;
       }
     }
 
     getScript(url) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         this.get({ url }, (err, resp, body) => resolve(body));
       });
     }
 
     runScript(script, runOpts) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         let httpapi = this.getdata("@chavy_boxjs_userCfgs.httpapi");
         httpapi = httpapi ? httpapi.replace(/\n/g, "").trim() : httpapi;
         let httpapi_timeout = this.getdata(
@@ -257,12 +264,12 @@ function Env(name, opts) {
           body: {
             script_text: script,
             mock_type: "cron",
-            timeout: httpapi_timeout,
+            timeout: httpapi_timeout
           },
-          headers: { "X-Key": key, Accept: "*/*" },
+          headers: { "X-Key": key, Accept: "*/*" }
         };
         this.post(opts, (err, resp, body) => resolve(body));
-      }).catch((e) => this.logErr(e));
+      }).catch(e => this.logErr(e));
     }
 
     loaddata() {
@@ -446,11 +453,11 @@ function Env(name, opts) {
           Object.assign(opts.opts, { hints: false });
         }
         $task.fetch(opts).then(
-          (resp) => {
+          resp => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          (err) => callback(err)
+          err => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
@@ -468,11 +475,11 @@ function Env(name, opts) {
             // this.ckjar.setCookieSync(resp.headers['set-cookie'].map(Cookie.parse).toString())
           })
           .then(
-            (resp) => {
+            resp => {
               const { statusCode: status, statusCode, headers, body } = resp;
               callback(null, { status, statusCode, headers, body }, body);
             },
-            (err) => {
+            err => {
               const { message: error, response: resp } = err;
               callback(error, resp, resp && resp.body);
             }
@@ -505,21 +512,21 @@ function Env(name, opts) {
           Object.assign(opts.opts, { hints: false });
         }
         $task.fetch(opts).then(
-          (resp) => {
+          resp => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          (err) => callback(err)
+          err => callback(err)
         );
       } else if (this.isNode()) {
         this.initGotEnv(opts);
         const { url, ..._opts } = opts;
         this.got.post(url, _opts).then(
-          (resp) => {
+          resp => {
             const { statusCode: status, statusCode, headers, body } = resp;
             callback(null, { status, statusCode, headers, body }, body);
           },
-          (err) => {
+          err => {
             const { message: error, response: resp } = err;
             callback(error, resp, resp && resp.body);
           }
@@ -543,7 +550,7 @@ function Env(name, opts) {
         "m+": new Date().getMinutes(),
         "s+": new Date().getSeconds(),
         "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds(),
+        S: new Date().getMilliseconds()
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
@@ -578,7 +585,7 @@ function Env(name, opts) {
      *
      */
     msg(title = name, subt = "", desc = "", opts) {
-      const toEnvOpts = (rawopts) => {
+      const toEnvOpts = rawopts => {
         if (!rawopts) return rawopts;
         if (typeof rawopts === "string") {
           if (this.isLoon()) return rawopts;
@@ -634,7 +641,7 @@ function Env(name, opts) {
     }
 
     wait(time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
+      return new Promise(resolve => setTimeout(resolve, time));
     }
 
     done(val = {}) {
