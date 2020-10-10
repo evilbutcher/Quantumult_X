@@ -51,7 +51,7 @@ $.random = [true, "true"].includes($.read("random")) || false;
     if (err instanceof ERR.ParseError) {
       $.notify("iDaily", "❌ 解析数据出现错误", err.message);
     } else {
-      $.notify("iDaily", "❌ 出现错误", err);
+      $.notify("iDaily", "❌ 出现错误", JSON.stringify(err, Object.getOwnPropertyNames(err)));
     }
   })
   .finally($.done());

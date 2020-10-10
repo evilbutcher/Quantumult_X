@@ -64,7 +64,7 @@ const translate = [true, "true"].includes($.read("translate")) || false;
     } else if (err instanceof ERR.TimeError) {
       $.notify("NASA - 暂无图片", "", err.message);
     } else {
-      $.notify("NASA", "❌ 出现错误", err);
+      $.notify("NASA", "❌ 出现错误", JSON.stringify(err, Object.getOwnPropertyNames(err)));
     }
   })
   .finally($.done());
