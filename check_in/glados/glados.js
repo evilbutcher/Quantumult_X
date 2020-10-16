@@ -106,7 +106,6 @@ function signin() {
         if (msge == "Please Checkin Tomorrow") {
           message += "今日已签到";
         } else {
-          change = obj.list[0].change;
           var date = new Date();
           var y = date.getFullYear();
           var m = date.getMonth() + 1;
@@ -116,7 +115,8 @@ function signin() {
           var time = y + "-" + m + "-" + d;
           var business = obj.list[0].business
           var sysdate = business.slice(-10)
-          if (time == obj.list[0].business) {
+          if (JSON.stringify(time) == JSON.stringify(sysdate)) {
+            change = obj.list[0].change;
             changeday = parseInt(change);
             message += `签到获得${changeday}天`;
           } else {
