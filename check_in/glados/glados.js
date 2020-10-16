@@ -114,6 +114,8 @@ function signin() {
           var d = date.getDate();
           if (d < 10) d = "0" + d;
           var time = y + "-" + m + "-" + d;
+          var business = obj.list[0].business
+          var sysdate = business.slice(-10)
           if (time == obj.list[0].business) {
             changeday = parseInt(change);
             message += `签到获得${changeday}天`;
