@@ -80,25 +80,47 @@ var message = "";
 
 function signin() {
   return new Promise(resolve => {
+    const header = {
+      Accept: `application/json, text/plain, */*`,
+      Origin: `https://glados.rocks`,
+      "Accept-Encoding": `gzip, deflate, br`,
+      Cookie: sicookie,
+      "Content-Type": `application/json;charset=utf-8`,
+      Host: `glados.rocks`,
+      Connection: `keep-alive`,
+      "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1`,
+      Referer: `https://glados.rocks/console/checkin`,
+      "Accept-Language": `zh-cn`
+    };
+    const body = `{ "token": "glados_network" }`;
     const signinRequest = {
       url: "https://glados.rocks/api/user/checkin",
-      headers: { Cookie: sicookie }
+      headers: header,
+      body: body
     };
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      if (obj.code == 0) {
-        change = obj.list[0].change;
-        changeday = parseInt(change);
+      if (obj.code == 1) {
         msge = obj.message;
         if (msge == "Please Checkin Tomorrow") {
           message += "今日已签到";
         } else {
-          message += `签到获得${changeday}天`;
+          change = obj.list[0].change;
+          var date = new Date();
+          var y = date.getFullYear();
+          var m = date.getMonth() + 1;
+          if (m < 10) m = "0" + m;
+          var d = date.getDate();
+          if (d < 10) d = "0" + d;
+          var time = y + "-" + m + "-" + d;
+          if (time == obj.list[0].business) {
+            changeday = parseInt(change);
+            message += `签到获得${changeday}天`;
+          } else {
+            message += `签到获得0天`;
+          }
         }
-      } else {
-        msge = obj.message;
-        message += msge;
       }
       resolve();
     });
@@ -134,7 +156,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/status/)
+    $request.url.match(/checkin/)
   ) {
     const sicookie = $request.headers["Cookie"];
     $.log(sicookie);
