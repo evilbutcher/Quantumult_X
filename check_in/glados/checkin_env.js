@@ -615,7 +615,9 @@ function Env(name, opts) {
                 const ck = resp.headers["set-cookie"]
                   .map(this.cktough.Cookie.parse)
                   .toString();
-                this.ckjar.setCookieSync(ck, null);
+                if (ck) {
+                  this.ckjar.setCookieSync(ck, null);
+                }
                 nextOpts.cookieJar = this.ckjar;
               }
             } catch (e) {
@@ -765,12 +767,14 @@ function Env(name, opts) {
           $notify(title, subt, desc, toEnvOpts(opts));
         }
       }
-      let logs = ["", "==============📣系统通知📣=============="];
-      logs.push(title);
-      subt ? logs.push(subt) : "";
-      desc ? logs.push(desc) : "";
-      console.log(logs.join("\n"));
-      this.logs = this.logs.concat(logs);
+      if (!this.isMuteLog) {
+        let logs = ["", "==============📣系统通知📣=============="];
+        logs.push(title);
+        subt ? logs.push(subt) : "";
+        desc ? logs.push(desc) : "";
+        console.log(logs.join("\n"));
+        this.logs = this.logs.concat(logs);
+      }
     }
 
     log(...logs) {
