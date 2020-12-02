@@ -64,7 +64,11 @@ const translate = [true, "true"].includes($.read("translate")) || false;
     } else if (err instanceof ERR.TimeError) {
       $.notify("NASA - 暂无图片", "", err.message);
     } else {
-      $.notify("NASA", "❌ 出现错误", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      $.notify(
+        "NASA",
+        "❌ 出现错误",
+        JSON.stringify(err, Object.getOwnPropertyNames(err))
+      );
     }
   })
   .finally($.done());
@@ -165,13 +169,17 @@ function ENV() {
   return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable };
 }
 
-function HTTP(baseURL, defaultOptions = {}) {
+function HTTP(defaultOptions = { baseURL: "" }) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
+  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options = typeof options === "string" ? { url: options } : options;
-    options.url = baseURL ? baseURL + options.url : options.url;
+    const baseURL = defaultOptions.baseURL;
+    if (baseURL && !URL_REGEX.test(options.url || "")) {
+      options.url = baseURL ? baseURL + options.url : options.url;
+    }
     options = { ...defaultOptions, ...options };
     const timeout = options.timeout;
     const events = {
@@ -283,8 +291,8 @@ function API(name = "untitled", debug = false) {
         });
       };
     }
-    // persistance
 
+    // persistence
     // initialize cache
     initCache() {
       if (isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}");
@@ -324,7 +332,7 @@ function API(name = "untitled", debug = false) {
 
     // store cache
     persistCache() {
-      const data = JSON.stringify(this.cache);
+      const data = JSON.stringify(this.cache, null, 2);
       if (isQX) $prefs.setValueForKey(data, this.name);
       if (isLoon || isSurge) $persistentStore.write(data, this.name);
       if (isNode) {
@@ -336,7 +344,7 @@ function API(name = "untitled", debug = false) {
         );
         this.node.fs.writeFileSync(
           "root.json",
-          JSON.stringify(this.root),
+          JSON.stringify(this.root, null, 2),
           { flag: "w" },
           (err) => console.log(err)
         );
@@ -347,11 +355,11 @@ function API(name = "untitled", debug = false) {
       this.log(`SET ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge & isLoon) {
-          $persistentStore.write(data, key);
+        if (isSurge || isLoon) {
+          return $persistentStore.write(data, key);
         }
         if (isQX) {
-          $prefs.setValueForKey(data, key);
+          return $prefs.setValueForKey(data, key);
         }
         if (isNode) {
           this.root[key] = data;
@@ -366,7 +374,7 @@ function API(name = "untitled", debug = false) {
       this.log(`READ ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge & isLoon) {
+        if (isSurge || isLoon) {
           return $persistentStore.read(key);
         }
         if (isQX) {
@@ -384,11 +392,11 @@ function API(name = "untitled", debug = false) {
       this.log(`DELETE ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge & isLoon) {
-          $persistentStore.write(null, key);
+        if (isSurge || isLoon) {
+          return $persistentStore.write(null, key);
         }
         if (isQX) {
-          $prefs.removeValueForKey(key);
+          return $prefs.removeValueForKey(key);
         }
         if (isNode) {
           delete this.root[key];
@@ -419,7 +427,7 @@ function API(name = "untitled", debug = false) {
         let opts = {};
         if (openURL) opts["openUrl"] = openURL;
         if (mediaURL) opts["mediaUrl"] = mediaURL;
-        if (JSON.stringify(opts) == "{}") {
+        if (JSON.stringify(opts) === "{}") {
           $notification.post(title, subtitle, content);
         } else {
           $notification.post(title, subtitle, content, opts);
@@ -444,15 +452,15 @@ function API(name = "untitled", debug = false) {
 
     // other helper functions
     log(msg) {
-      if (this.debug) console.log(msg);
+      if (this.debug) console.log(`[${this.name}] LOG: ${msg}`);
     }
 
     info(msg) {
-      console.log(msg);
+      console.log(`[${this.name}] INFO: ${msg}`);
     }
 
     error(msg) {
-      console.log("ERROR: " + msg);
+      console.log(`[${this.name}] ERROR: ${msg}`);
     }
 
     wait(millisec) {
