@@ -57,7 +57,7 @@ $.body = $.read("evil_jiumuBody");
   await checkin();
   showmsg();
 })()
-  .catch(err => {
+  .catch((err) => {
     if (err instanceof ERR.ParseError) {
       $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
     } else {
@@ -84,15 +84,15 @@ function checkin() {
     Referer: $.Referer,
     Host: `wxavip-up.ezrpro.cn`,
     "Accept-Language": `zh-cn`,
-    Accept: `*/*`
+    Accept: `*/*`,
   };
   const myRequest = {
     url: url,
     headers: headers,
-    body: $.body
+    body: $.body,
   };
 
-  return $.http.post(myRequest).then(response => {
+  return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
       $.data = obj;
@@ -117,7 +117,7 @@ function MYERR() {
     }
   }
   return {
-    ParseError
+    ParseError,
   };
 }
 
@@ -174,10 +174,10 @@ function HTTP(defaultOptions = { baseURL: "" }) {
     const events = {
       ...{
         onRequest: () => {},
-        onResponse: resp => resp,
-        onTimeout: () => {}
+        onResponse: (resp) => resp,
+        onTimeout: () => {},
       },
-      ...options.events
+      ...options.events,
     };
 
     events.onRequest(method, options);
@@ -194,7 +194,7 @@ function HTTP(defaultOptions = { baseURL: "" }) {
             resolve({
               statusCode: response.status || response.statusCode,
               headers: response.headers,
-              body
+              body,
             });
         });
       });
@@ -206,14 +206,14 @@ function HTTP(defaultOptions = { baseURL: "" }) {
       worker = new Promise((resolve, reject) => {
         request
           .loadString()
-          .then(body => {
+          .then((body) => {
             resolve({
               statusCode: request.response.statusCode,
               headers: request.response.headers,
-              body
+              body,
             });
           })
-          .catch(err => reject(err));
+          .catch((err) => reject(err));
       });
     }
 
@@ -230,17 +230,18 @@ function HTTP(defaultOptions = { baseURL: "" }) {
       : null;
 
     return (timer
-      ? Promise.race([timer, worker]).then(res => {
+      ? Promise.race([timer, worker]).then((res) => {
           clearTimeout(timeoutid);
           return res;
         })
       : worker
-    ).then(resp => events.onResponse(resp));
+    ).then((resp) => events.onResponse(resp));
   }
 
   const http = {};
   methods.forEach(
-    method => (http[method.toLowerCase()] = options => send(method, options))
+    (method) =>
+      (http[method.toLowerCase()] = (options) => send(method, options))
   );
   return http;
 }
@@ -260,7 +261,7 @@ function API(name = "untitled", debug = false) {
           const fs = require("fs");
 
           return {
-            fs
+            fs,
           };
         } else {
           return null;
@@ -295,7 +296,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            err => console.log(err)
+            (err) => console.log(err)
           );
         }
         this.root = {};
@@ -307,7 +308,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            err => console.log(err)
+            (err) => console.log(err)
           );
           this.cache = {};
         } else {
@@ -328,13 +329,13 @@ function API(name = "untitled", debug = false) {
           `${this.name}.json`,
           data,
           { flag: "w" },
-          err => console.log(err)
+          (err) => console.log(err)
         );
         this.node.fs.writeFileSync(
           "root.json",
           JSON.stringify(this.root, null, 2),
           { flag: "w" },
-          err => console.log(err)
+          (err) => console.log(err)
         );
       }
     }
@@ -407,7 +408,7 @@ function API(name = "untitled", debug = false) {
           subtitle,
           content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`,
           {
-            url: openURL
+            url: openURL,
           }
         );
       }
@@ -430,7 +431,7 @@ function API(name = "untitled", debug = false) {
           const push = require("push");
           push.schedule({
             title: title,
-            body: (subtitle ? subtitle + "\n" : "") + content_
+            body: (subtitle ? subtitle + "\n" : "") + content_,
           });
         } else {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -452,7 +453,7 @@ function API(name = "untitled", debug = false) {
     }
 
     wait(millisec) {
-      return new Promise(resolve => setTimeout(resolve, millisec));
+      return new Promise((resolve) => setTimeout(resolve, millisec));
     }
 
     done(value = {}) {
