@@ -18,14 +18,20 @@
 6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
 7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
 
+
+【使用说明】
+微信小程序-九木杂物社-社员中心-每日签到，手动签到获取Cookie即可使用。
+
 【Surge】
 -----------------
 [Script]
+九木杂物社获取Cookie = http-request https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, requires-body=true
 九木杂物社 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js
 
 【Loon】
 -----------------
 [Script]
+http-request https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=九木杂物社获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, requires-body=true
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, tag=九木杂物社
 
 【Quantumult X】
@@ -57,7 +63,7 @@ $.body = $.read("evil_jiumuBody");
   await checkin();
   showmsg();
 })()
-  .catch((err) => {
+  .catch(err => {
     if (err instanceof ERR.ParseError) {
       $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
     } else {
@@ -67,6 +73,7 @@ $.body = $.read("evil_jiumuBody");
         JSON.stringify(err, Object.getOwnPropertyNames(err))
       );
     }
+    $.done();
   })
   .finally();
 
@@ -84,18 +91,17 @@ function checkin() {
     Referer: $.Referer,
     Host: `wxavip-up.ezrpro.cn`,
     "Accept-Language": `zh-cn`,
-    Accept: `*/*`,
+    Accept: `*/*`
   };
   const myRequest = {
     url: url,
     headers: headers,
-    body: $.body,
+    body: $.body
   };
 
-  return $.http.post(myRequest).then((response) => {
+  return $.http.post(myRequest).then(response => {
     if (response.statusCode == 200) {
-      var obj = JSON.parse(response.body);
-      $.data = obj;
+      $.data = JSON.parse(response.body);
       console.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
@@ -105,7 +111,13 @@ function checkin() {
 }
 
 function showmsg() {
-  $.log($.data);
+  if ($.data.Result.hasOwnProperty("ErrMsg")) {
+    $.notify("九木杂物社", "", ${$.data.Result.ErrMsg});
+  } else {
+    var msg = $.data.Msg;
+    var bonus = $.data.Result.BonusValue;
+    $.notify("九木杂物社", msg, `本次签到获得${bonus}积分`);
+  }
   $.done();
 }
 
@@ -117,7 +129,7 @@ function MYERR() {
     }
   }
   return {
-    ParseError,
+    ParseError
   };
 }
 
@@ -174,10 +186,10 @@ function HTTP(defaultOptions = { baseURL: "" }) {
     const events = {
       ...{
         onRequest: () => {},
-        onResponse: (resp) => resp,
-        onTimeout: () => {},
+        onResponse: resp => resp,
+        onTimeout: () => {}
       },
-      ...options.events,
+      ...options.events
     };
 
     events.onRequest(method, options);
@@ -194,7 +206,7 @@ function HTTP(defaultOptions = { baseURL: "" }) {
             resolve({
               statusCode: response.status || response.statusCode,
               headers: response.headers,
-              body,
+              body
             });
         });
       });
@@ -206,14 +218,14 @@ function HTTP(defaultOptions = { baseURL: "" }) {
       worker = new Promise((resolve, reject) => {
         request
           .loadString()
-          .then((body) => {
+          .then(body => {
             resolve({
               statusCode: request.response.statusCode,
               headers: request.response.headers,
-              body,
+              body
             });
           })
-          .catch((err) => reject(err));
+          .catch(err => reject(err));
       });
     }
 
@@ -230,18 +242,17 @@ function HTTP(defaultOptions = { baseURL: "" }) {
       : null;
 
     return (timer
-      ? Promise.race([timer, worker]).then((res) => {
+      ? Promise.race([timer, worker]).then(res => {
           clearTimeout(timeoutid);
           return res;
         })
       : worker
-    ).then((resp) => events.onResponse(resp));
+    ).then(resp => events.onResponse(resp));
   }
 
   const http = {};
   methods.forEach(
-    (method) =>
-      (http[method.toLowerCase()] = (options) => send(method, options))
+    method => (http[method.toLowerCase()] = options => send(method, options))
   );
   return http;
 }
@@ -261,7 +272,7 @@ function API(name = "untitled", debug = false) {
           const fs = require("fs");
 
           return {
-            fs,
+            fs
           };
         } else {
           return null;
@@ -296,7 +307,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
         }
         this.root = {};
@@ -308,7 +319,7 @@ function API(name = "untitled", debug = false) {
             fpath,
             JSON.stringify({}),
             { flag: "wx" },
-            (err) => console.log(err)
+            err => console.log(err)
           );
           this.cache = {};
         } else {
@@ -329,13 +340,13 @@ function API(name = "untitled", debug = false) {
           `${this.name}.json`,
           data,
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
         this.node.fs.writeFileSync(
           "root.json",
           JSON.stringify(this.root, null, 2),
           { flag: "w" },
-          (err) => console.log(err)
+          err => console.log(err)
         );
       }
     }
@@ -408,7 +419,7 @@ function API(name = "untitled", debug = false) {
           subtitle,
           content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`,
           {
-            url: openURL,
+            url: openURL
           }
         );
       }
@@ -431,7 +442,7 @@ function API(name = "untitled", debug = false) {
           const push = require("push");
           push.schedule({
             title: title,
-            body: (subtitle ? subtitle + "\n" : "") + content_,
+            body: (subtitle ? subtitle + "\n" : "") + content_
           });
         } else {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -453,7 +464,7 @@ function API(name = "untitled", debug = false) {
     }
 
     wait(millisec) {
-      return new Promise((resolve) => setTimeout(resolve, millisec));
+      return new Promise(resolve => setTimeout(resolve, millisec));
     }
 
     done(value = {}) {
