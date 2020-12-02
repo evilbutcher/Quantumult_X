@@ -111,8 +111,8 @@ function checkin() {
 }
 
 function showmsg() {
-  if ($.data.Result.hasOwnProperty("ErrMsg")) {
-    $.notify("九木杂物社", "", ${$.data.Result.ErrMsg});
+  if ($.data.Result.ErrMsg != "null") {
+    $.notify("九木杂物社", "", $.data.Result.ErrMsg);
   } else {
     var msg = $.data.Msg;
     var bonus = $.data.Result.BonusValue;
