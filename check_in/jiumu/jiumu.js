@@ -125,7 +125,7 @@ function checkin() {
 }
 
 function showmsg() {
-  if ($.data.Result.ErrMsg != "null") {
+  if ($.data.Result.ErrMsg != null) {
     $.notify("九木杂物社", "", $.data.Result.ErrMsg);
   } else {
     var msg = $.data.Msg;
