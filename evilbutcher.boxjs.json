@@ -660,7 +660,7 @@
       "id": "idaily",
       "name": "iDaily",
       "descs_html": [
-        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/iDaily/iDaily.js\">脚本地址</a>】"
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js\">脚本地址</a>】"
       ],
       "keys": ["@iDaily.random"],
       "settings": [
@@ -679,6 +679,27 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js"
+    },
+    {
+      "id": "jiumu",
+      "name": "九木杂物社",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@Jiumu.evil_jiumuSignStr",
+        "@Jiumu.evil_jiumuReferer",
+        "@Jiumu.evil_jiumuVip",
+        "@Jiumu.evil_jiumuEncrypt",
+        "@Jiumu.evil_jiumuBody"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/jiumu",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js"
     },
     {
       "id": "funboat",

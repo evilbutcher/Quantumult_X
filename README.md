@@ -15,7 +15,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 ### 【Quantumult X】脚本订阅合集+自己写的去广告
 
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.rewrite.conf
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.conf （需要将内容复制到[task_local]）
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.json
 
 ### 【Surge】脚本订阅合集
 
@@ -99,13 +99,19 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 1. 喜欢 funko 可以关注该微信小程序。
 
+### [九木杂物社](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/jiumu/jiumu.js)
+
+#### 功能特点
+
+1. 九木杂物社自动签到。
+
 ## 规则类
 
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 
 #### 功能特点
 
-[readme](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad/README.md)
+[Readme](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad/README.md)
 
 ### 免责声明
 

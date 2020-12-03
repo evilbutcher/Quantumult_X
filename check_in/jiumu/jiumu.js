@@ -44,6 +44,10 @@ https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn url script-request-body ht
 
 【All App MitM】
 hostname = wxavip-up.ezrpro.cn
+
+【Icon】
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png
 */
 
 const $ = new API("Jiumu", true);
