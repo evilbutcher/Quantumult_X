@@ -155,6 +155,7 @@ $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
 launch();
 
 function launch() {
+  $.msg("机场签到", "", "目前存在问题，请等待修复，可暂时使用Github Action签到。很抱歉，谢谢理解。");
   for (var i in accounts) {
     let title = accounts[i];
     let url = urls[i];
