@@ -157,7 +157,11 @@ function MYERR() {
   };
 }
 
-//From Peng-YM's OpenAPI.js
+/**
+ * OpenAPI
+ * @author: Peng-YM
+ * https://github.com/Peng-YM/QuanX/blob/master/Tools/OpenAPI/README.md
+ */
 function ENV() {
   const isQX = typeof $task !== "undefined";
   const isLoon = typeof $loon !== "undefined";

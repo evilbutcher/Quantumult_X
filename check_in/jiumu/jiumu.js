@@ -77,19 +77,18 @@ $.body = $.read("evil_jiumuBody");
     $.notify("九木杂物社", "", "❌ 请先获取Cookie");
   }
   $.done();
-})()
-  .catch((err) => {
-    if (err instanceof ERR.ParseError) {
-      $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
-    } else {
-      $.notify(
-        "九木杂物社",
-        "❌ 出现错误",
-        JSON.stringify(err, Object.getOwnPropertyNames(err))
-      );
-    }
-    $.done();
-  })
+})().catch((err) => {
+  if (err instanceof ERR.ParseError) {
+    $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
+  } else {
+    $.notify(
+      "九木杂物社",
+      "❌ 出现错误",
+      JSON.stringify(err, Object.getOwnPropertyNames(err))
+    );
+  }
+  $.done();
+});
 
 function checkin() {
   const url = `https://wxavip-up.ezrpro.cn/Vip/SignIn/SignIn`;
@@ -172,7 +171,11 @@ function getCookie() {
   }
 }
 
-//From Peng-YM's OpenAPI.js
+/**
+ * OpenAPI
+ * @author: Peng-YM
+ * https://github.com/Peng-YM/QuanX/blob/master/Tools/OpenAPI/README.md
+ */
 function ENV() {
   const isQX = typeof $task !== "undefined";
   const isLoon = typeof $loon !== "undefined";
