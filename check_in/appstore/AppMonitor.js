@@ -95,7 +95,7 @@ async function post_data(d) {
       app_monitor = {};
     } else {
       app_monitor = JSON.parse(app_monitor);
-      console.log(app_monitor);
+      console.log(JSON.stringify(app_monitor));
     }
     let infos = {};
     await Promise.all(
@@ -151,9 +151,10 @@ async function post_data(d) {
     $.write(infos, "app_monitor");
     if (notifys.length > 0) {
       notify(notifys);
+      $.done();
     } else {
       console.log("APP监控：版本及价格无变化");
-      $.done;
+      $.done();
     }
   } catch (e) {
     console.log(e);
@@ -161,9 +162,8 @@ async function post_data(d) {
 }
 function notify(notifys) {
   notifys = notifys.join("\n");
-  console.log(notifys);
+  console.log(JSON.stringify(notifys));
   $.notify("APP监控", "", notifys);
-  $.done;
 }
 function flag(x) {
   var flags = new Map([

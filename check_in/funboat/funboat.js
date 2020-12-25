@@ -84,13 +84,13 @@ function checkin() {
     headers: { "Extra-Data": sicookie },
   };
   console.log("checkRequest");
-  console.log(checkRequest);
+  console.log(JSON.stringify(checkRequest));
   return new Promise((resolve) => {
     $.get(checkRequest, (error, response, data) => {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        console.log(obj);
+        console.log(body);
         if (obj.code == 0) {
           var prize = obj.data.prizes[0].points;
           var count = obj.data.times;
@@ -121,13 +121,13 @@ function getall() {
     headers: { "Extra-Data": stcookie },
   };
   console.log("\nallRequest");
-  console.log(allRequest);
+  console.log(JSON.stringify(allRequest));
   return new Promise((resolve) => {
     $.get(allRequest, (error, response, data) => {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        console.log(obj);
+        console.log(body);
         if (obj.code == 0) {
           var allpoints = obj.data.stats.points;
           all = "总积分 " + allpoints + "分 🎉";
