@@ -76,19 +76,19 @@ $.body = $.read("evil_jiumuBody");
   } else {
     $.notify("九木杂物社", "", "❌ 请先获取Cookie");
   }
-  $.done();
-})().catch((err) => {
-  if (err instanceof ERR.ParseError) {
-    $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
-  } else {
-    $.notify(
-      "九木杂物社",
-      "❌ 出现错误",
-      JSON.stringify(err, Object.getOwnPropertyNames(err))
-    );
-  }
-  $.done();
-});
+})()
+  .catch((err) => {
+    if (err instanceof ERR.ParseError) {
+      $.notify("九木杂物社", "❌ 解析数据出现错误", err.message);
+    } else {
+      $.notify(
+        "九木杂物社",
+        "❌ 出现错误",
+        JSON.stringify(err, Object.getOwnPropertyNames(err))
+      );
+    }
+  })
+  .finally(() => $.done());
 
 function checkin() {
   const url = `https://wxavip-up.ezrpro.cn/Vip/SignIn/SignIn`;
