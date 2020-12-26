@@ -73,7 +73,6 @@ function getcontent() {
     url: url,
     headers: headers,
   };
-
   return $.http.get(myRequest).then((response) => {
     $.log(response.body);
     if (response.statusCode == 200) {

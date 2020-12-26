@@ -71,7 +71,7 @@ const translate = [true, "true"].includes($.read("translate")) || false;
       );
     }
   })
-  .finally($.done());
+  .finally(() => $.done());
 
 function getpic() {
   const url = `https://api.nasa.gov/planetary/apod?api_key=${$.read(
@@ -82,7 +82,7 @@ function getpic() {
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
       $.data = obj;
-      $.info(obj);
+      $.info(response.body);
     } else if (response.statusCode == 404) {
       throw new ERR.TimeError(
         "❌ 暂无图片，内容在更新，请稍等呦～\n北京时间8:00-13:00为NASA更新时间段。"
