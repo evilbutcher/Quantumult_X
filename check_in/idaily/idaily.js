@@ -58,7 +58,7 @@ $.random = [true, "true"].includes($.read("random")) || false;
       );
     }
   })
-  .finally($.done());
+  .finally(() => $.done());
 
 function getcontent() {
   const url = `https://idaily-cdn.idailycdn.com/api/list/v3/iphone/zh-hans?page=1&ver=iphone&app_ver=122&app_timestamp=${$.time}`;
@@ -73,8 +73,9 @@ function getcontent() {
     url: url,
     headers: headers,
   };
+
   return $.http.get(myRequest).then((response) => {
-    $.log(JSON.parse(response.body));
+    $.log(response.body);
     if (response.statusCode == 200) {
       var obj = JSON.parse(response.body);
       $.data = obj;
