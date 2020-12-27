@@ -173,7 +173,7 @@ async function launch() {
       var logouturl = {
         url: url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath,
       };
-      console.log(logouturl);
+      console.log(JSON.stringify(logouturl));
       $.get(logouturl, function (error, response, data) {
         login(url, email, password, title);
       });
@@ -207,7 +207,7 @@ function login(url, email, password, title) {
   return new Promise((resolve) => {
     $.post(table, function (error, response, data) {
       if (error) {
-        console.log(error);
+        console.log(JSON.stringify(error));
         $.msg(title + "登录失败", JSON.stringify(error), "");
         resolve();
       } else {
@@ -239,7 +239,7 @@ function checkin(url, email, password, title) {
   return new Promise((resolve) => {
     $.post(checkinreqest, function (error, response, data) {
       if (error) {
-        console.log(error);
+        console.log(JSON.stringify(error));
         $.msg(title + "签到失败", JSON.stringify(error), "");
         resolve();
       } else {
@@ -262,7 +262,7 @@ function dataResults(url, checkinMsg, title) {
   var datarequest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + userPath,
   };
-  console.log(datarequest);
+  console.log(JSON.stringify(datarequest));
   return new Promise((resolve) => {
     $.get(datarequest, function (error, response, data) {
       let resultData = "";
