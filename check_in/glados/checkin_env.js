@@ -159,7 +159,6 @@ $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
   .catch((e) => {
     $.log("", `❌失败! 原因: ${e}!`, "");
   })
-  .finally(() => $.done());
 
 async function launch() {
   for (var i in accounts) {
@@ -192,6 +191,7 @@ async function launch() {
       }
     }
   }
+  $.done()
 }
 
 function login(url, email, password, title) {
