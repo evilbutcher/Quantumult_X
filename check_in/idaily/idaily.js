@@ -92,7 +92,7 @@ function showmsg() {
     } else {
       i = 0;
     }
-    $.info($.data[i]);
+    $.info(JSON.stringify($.data[i]));
     var content = $.data[i].content;
     var location = $.data[i].location;
     var cover = $.data[i]["cover_landscape_hd"];
