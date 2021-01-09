@@ -176,20 +176,17 @@ async function launch() {
         url: url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath,
       };
       console.log(JSON.stringify(logouturl));
-      $.get(logouturl, function (error, response, data) {
-        login(url, email, password, title);
-      });
+      $.get(logouturl);
+    }
+    await checkin(url, email, password, title);
+    if ($.checkinok == true) {
+      await dataResults(url, $.checkindatamsg, title);
     } else {
-      await checkin(url, email, password, title);
-      if ($.checkinok == true) {
-        await dataResults(url, $.checkindatamsg, title);
-      } else {
-        await login(url, email, password, title);
-        if ($.loginok == true) {
-          await checkin(url, email, password, title);
-          if ($.checkinok == true) {
-            await dataResults(url, $.checkindatamsg, title);
-          }
+      await login(url, email, password, title);
+      if ($.loginok == true) {
+        await checkin(url, email, password, title);
+        if ($.checkinok == true) {
+          await dataResults(url, $.checkindatamsg, title);
         }
       }
     }
