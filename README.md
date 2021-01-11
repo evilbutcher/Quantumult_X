@@ -6,8 +6,8 @@
 
 绝大多数代码都用到了@chavyleung 的 Env.js 和@Peng-YM 的 OpenAPI.js，感谢！
 
-如果能请杯奶茶，就很感谢啦！
-[赞赏码](https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/photo.jpeg)
+如果能请杯奶茶，就很感谢啦！  
+<img src="https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/photo.jpeg" height="40%" width="40%">
 
 ## 脚本合集
 
