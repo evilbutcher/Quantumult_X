@@ -47,33 +47,7 @@ if (
   var acc = $.getdata("evil_checkintitle");
   accounts = acc.split("，");
 } else {
-  if ($.isNode()) {
-    if (
-      process.env.TITLE &&
-      process.env.TITLE.split("&") &&
-      process.env.TITLE.split("&").length > 0
-    ) {
-      accounts = process.env.TITLE.split("&");
-      console.log(
-        `\n==================脚本执行来自 github action=====================\n`
-      );
-      console.log(
-        `==================脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}=====================\n`
-      );
-      console.log(
-        `==================脚本执行- 北京时间(UTC+8)：${new Date(
-          new Date().getTime() + 8 * 60 * 60 * 1000
-        ).toLocaleString()}=====================\n`
-      );
-    } else {
-      $.msg(
-        "机场签到",
-        "",
-        "请在 BoxJs/Secrets 检查标题填写是否正确",
-        "http://boxjs.com"
-      );
-    }
-  }
+  $.msg("机场签到", "", "请在 BoxJs 检查标题填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -83,22 +57,7 @@ if (
   var ur = $.getdata("evil_checkinlogin");
   urls = ur.split("，");
 } else {
-  if ($.isNode()) {
-    if (
-      process.env.URL &&
-      process.env.URL.split("&") &&
-      process.env.URL.split("&").length > 0
-    ) {
-      urls = process.env.URL.split("&");
-    } else {
-      $.msg(
-        "机场签到",
-        "",
-        "请在 BoxJs/Secrets 检查登陆链接填写是否正确",
-        "http://boxjs.com"
-      );
-    }
-  }
+  $.msg("机场签到", "", "请在 BoxJs 检查链接填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -108,22 +67,7 @@ if (
   var ema = $.getdata("evil_checkinemail");
   emails = ema.split("，");
 } else {
-  if ($.isNode()) {
-    if (
-      process.env.EMAIL &&
-      process.env.EMAIL.split("&") &&
-      process.env.EMAIL.split("&").length > 0
-    ) {
-      emails = process.env.EMAIL.split("&");
-    } else {
-      $.msg(
-        "机场签到",
-        "",
-        "请在 BoxJs/Secrets 检查邮箱填写是否正确",
-        "http://boxjs.com"
-      );
-    }
-  }
+  $.msg("机场签到", "", "请在 BoxJs 检查邮箱填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -133,22 +77,7 @@ if (
   var pwd = $.getdata("evil_checkinpwd");
   passwords = pwd.split("，");
 } else {
-  if ($.isNode()) {
-    if (
-      process.env.PASSWORD &&
-      process.env.PASSWORD.split("&") &&
-      process.env.PASSWORD.split("&").length > 0
-    ) {
-      passwords = process.env.PASSWORD.split("&");
-    } else {
-      $.msg(
-        "机场签到",
-        "",
-        "请在 BoxJs/Secrets 检查密码填写是否正确",
-        "http://boxjs.com"
-      );
-    }
-  }
+  $.msg("机场签到", "", "请在 BoxJs 检查密码填写是否正确", "http://boxjs.com");
 }
 
 $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
