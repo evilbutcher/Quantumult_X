@@ -521,7 +521,7 @@ function gethotsearch() {
         resolve();
       } catch (e) {
         $.log("获取微博热搜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -605,7 +605,7 @@ function gethotlist() {
         resolve();
       } catch (e) {
         $.log("获取知乎热榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -697,7 +697,7 @@ function getfylist() {
         resolve();
       } catch (e) {
         $.log("获取百度风云榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -785,7 +785,7 @@ function getbllist() {
         resolve();
       } catch (e) {
         $.log("获取B站日榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -885,7 +885,7 @@ function getdblist() {
         resolve();
       } catch (e) {
         $.log("获取豆瓣榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -947,7 +947,7 @@ function getdylist() {
         resolve();
       } catch (e) {
         $.log("获取抖音榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1008,7 +1008,7 @@ function getk36list() {
         resolve();
       } catch (e) {
         $.log("获取36氪榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1077,7 +1077,7 @@ function getamazonlist() {
         resolve();
       } catch (e) {
         $.log("获取Kindle图书榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1174,7 +1174,7 @@ function getzmzlist() {
         resolve();
       } catch (e) {
         $.log("获取人人影视榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1307,7 +1307,7 @@ function getrsslist(
         resolve();
       } catch (e) {
         $.log("获取RSS内容出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
