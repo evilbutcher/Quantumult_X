@@ -90,8 +90,8 @@ $.amazon = true; //是否开启相应榜单监控
 $.amznum = 6; //自定Kindle图书榜单数量
 $.rss = true; //是否开启相应榜单监控
 $.rssnum = 6; //自定rss订阅推送数量
-$.zmz = true; //是否开启相应榜单监控
-$.zmznum = 6; //自定人人影视推送数量
+/*$.zmz = true; //是否开启相应榜单监控
+$.zmznum = 6; //自定人人影视推送数量*/
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -110,8 +110,8 @@ $.splitpushamz = false; //是否分开推送Kindle图书榜单
 $.pushnewamz = false; //是否忽略关键词推送Kindle图书最新内容
 $.splitpushrss = false; //是否分开推送rss内容
 $.pushnewrss = false; //是否忽略关键词推送rss最新内容
-$.splitpushzmz = false; //是否分开推送人人影视内容
-$.pushnewzmz = false; //是否忽略关键词推送人人影视最新内容
+/*$.splitpushzmz = false; //是否分开推送人人影视内容
+$.pushnewzmz = false; //是否忽略关键词推送人人影视最新内容*/
 $.attachurl = false; //通知是否附带跳转链接
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
 $.rid = 0; //更改B站监控榜单
@@ -127,7 +127,7 @@ var itemsdy = [];
 var itemsk36 = [];
 var itemsamz = [];
 var itemsrss = [];
-var itemszmz = [];
+//var itemszmz = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
@@ -137,7 +137,7 @@ var urlsdy = [];
 var urlsk36 = [];
 var urlsamz = [];
 var urlsrss = [];
-var urlszmz = [];
+//var urlszmz = [];
 var coversbl = [];
 var coversdb = [];
 var coversamz = [];
@@ -151,7 +151,7 @@ var resultdy = [];
 var resultk36 = [];
 var resultamz = [];
 var resultrss = [];
-var resultzmz = [];
+//var resultzmz = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
@@ -161,7 +161,7 @@ var openurldy = [];
 var openurlk36 = [];
 var openurlamz = [];
 var openurlrss = [];
-var openurlzmz = [];
+//var openurlzmz = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 var mediaurlamz = [];
@@ -217,11 +217,11 @@ var checkrssresult = false;
     } else {
       $.log("Kindle图书榜单未获取😫");
     }
-    if ($.zmz == true) {
+    /*if ($.zmz == true) {
       await getzmzlist();
     } else {
       $.log("人人影视榜单未获取😫");
-    }
+    }*/
     if ($.rss == true) {
       if (haversslink()) {
         await Promise.all(
@@ -1658,7 +1658,7 @@ function last() {
     resultdy.length == 0 &&
     resultk36.length == 0 &&
     resultamz.length == 0 &&
-    resultzmz.length == 0 &&
+    //resultzmz.length == 0 &&
     checkrssresult == false
   ) {
     $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
@@ -1676,8 +1676,8 @@ function final() {
     $.douyin == false &&
     $.k36 == false &&
     $.amazon == false &&
-    $.rss == false &&
-    $.zmz == false
+    $.rss == false
+    //$.zmz == false
   ) {
     $.msg(
       "热门监控",
