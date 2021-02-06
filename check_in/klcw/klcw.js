@@ -31,8 +31,8 @@
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=九木杂物社获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
-cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=九木杂物社
+http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=酷乐潮玩获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
+cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩
 
 【Quantumult X】
 -----------------
@@ -40,7 +40,7 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
 
 [task_local]
-5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=九木杂物社
+5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩
 
 【All App MitM】
 hostname = wxavip-tp.ezrpro.cn
