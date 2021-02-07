@@ -131,10 +131,13 @@ function showmsg() {
     $.notify("酷乐潮玩", "", $.data.Result.ErrMsg);
   } else {
     var msg = $.data.Msg;
-    var bonus = $.data.Result.BonusValue;
-    $.notify("酷乐潮玩", msg, `本次签到获得${bonus}积分🎉`);
+    var bonus = $.data.Result.CouponName;
+    if (bonus != null) {
+      $.notify("酷乐潮玩", msg, `本次签到获得${bonus}🎉`);
+    } else {
+      $.notify("酷乐潮玩", msg, `本次签到暂未获得奖励`);
+    }
   }
-  $.done();
 }
 
 function MYERR() {
