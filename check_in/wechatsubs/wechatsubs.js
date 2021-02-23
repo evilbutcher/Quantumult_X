@@ -45,13 +45,12 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 const $ = new API("Wechatsubs", true);
 const ERR = MYERR();
 
-var keyword1 = ["北京八中"]; //👈本地关键词在这里设置。
-var keyword2 = ["招聘"];
+var keyword1 = []; //👈本地关键词在这里设置。
+var keyword2 = [];
 
 !(async () => {
   init();
   await checkall(keyword1, keyword2);
-  //showmsg();
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
@@ -84,7 +83,7 @@ function check(word1, word2) {
     Referer: `https://wx.sogou.com/`,
     "Accept-Encoding": `gzip, deflate, br`,
     Host: `wx.sogou.com`,
-    "User-Agent": `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
     "Accept-Language": `zh-cn`,
   };
   const myRequest = {
@@ -94,8 +93,26 @@ function check(word1, word2) {
   $.log(myRequest);
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      console.log(JSON.stringify(response));
-      //$.data = JSON.parse(response.body);
+      var geturl = /a\starget\=\\\"\_blank\\\"\shref\=\\\"\/.*?\\\"/;
+      var gettitle = /article\_title\_0\\\"\>.*?\<\/a/;
+      var getdescription = /summary\_0\\\"\>.*?\<\/p/;
+      $.data = JSON.stringify(response.body);
+      var pretitle = $.data.match(gettitle);
+      var preurl = $.data.match(geturl);
+      var predescription = $.data.match(getdescription);
+      var title = JSON.stringify(pretitle)
+        .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .slice(22, -5);
+      var description = JSON.stringify(predescription)
+        .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .slice(16, -5);
+      var url = "https://wx.sogou.com/" + JSON.stringify(preurl).slice(36, -6);
+      $.log(title);
+      $.log(description)
+      $.log(url);
+      $.notify("公众号监控", title, description, { "open-url": url });
       //console.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
