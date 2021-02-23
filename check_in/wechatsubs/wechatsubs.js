@@ -38,8 +38,8 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控
 
 【Icon】
-透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ .png
-彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ .png
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png
 */
 
 const $ = new API("Wechatsubs", true);

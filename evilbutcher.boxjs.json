@@ -702,6 +702,46 @@
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js"
     },
     {
+      "id": "wechatsubs",
+      "name": "公众号监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@Wechatsubs.wechatkeyword1",
+        "@Wechatsubs.wechatkeyword2"
+      ],
+      "settings": [
+        {
+          "id": "@Wechatsubs.wechatkeyword1",
+          "name": "关键词-1",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的第一组关键词，多个词用中文逗号“，”分隔。"
+        },
+        {
+          "id": "@Wechatsubs.wechatkeyword2",
+          "name": "关键词-2",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的第二组关键词，多个词用中文逗号“，”分隔。"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js"
+    },
+    {
       "id": "klcw",
       "name": "酷乐潮玩",
       "descs_html": [
