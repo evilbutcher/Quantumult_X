@@ -54,6 +54,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 #### 功能特点
 
 1. 设定关键词监控公众号推送。
+2. 可自定关键词推送间隔。
 
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 

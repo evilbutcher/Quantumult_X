@@ -45,6 +45,13 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 4. Checkin_env.js is modified from @Neurogram-R, adding multi-platform support.
 5. GitHub Action has been supported. First, Fork this repo, add CHECKIN_TITLE CHECKIN_URL CHECKIN_EMAIL CHECKIN_PASSWORD four data in the Secrets of the forked repo. Different accounts are separated by &. Both schedule and Star your repo, checkin can be run. Please refer to [pull](https://github.com/wei/pull/blob/master/README.md) on how to keep in sync.
 
+### [Wechatsubs](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/wechatsubs/wechatsubs.js)
+
+#### Features
+
+1. You can set keywords to monitor the push of Wechat Subscriptions.
+2. You can customize the keyword push interval.
+
 ### [Hotlist Monitor](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 
 #### Features
@@ -96,6 +103,18 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 #### Features
 
 1. Who like funko can follow the WeChat app.
+
+### [Jiumu](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/jiumu/jiumu.js)
+
+#### Features
+
+1. Automatic check-in.
+
+### [KuLeChaoWan](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw/klcw.js)
+
+#### Features
+
+1. Automatic check-in.
 
 ### Disclaimer
 
