@@ -45,7 +45,7 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 const $ = new API("Wechatsubs", true);
 const ERR = MYERR();
 
-var keyword1 = ["北京八中", "北京十二中"]; //👈本地关键词在这里设置。
+var keyword1 = ["北京八中"]; //👈本地关键词在这里设置。
 var keyword2 = ["招聘"];
 
 !(async () => {
@@ -66,10 +66,10 @@ var keyword2 = ["招聘"];
   })
   .finally(() => $.done());
 
-function checkall(group1, group2) {
+async function checkall(group1, group2) {
   for (var i = 0; i < group1.length; i++) {
     for (var j = 0; j < group2.length; j++) {
-      check(group1[i], group2[j]);
+      await check(group1[i], group2[j]);
     }
   }
 }
@@ -84,17 +84,17 @@ function check(word1, word2) {
     Referer: `https://wx.sogou.com/`,
     "Accept-Encoding": `gzip, deflate, br`,
     Host: `wx.sogou.com`,
-    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "User-Agent": `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36`,
     "Accept-Language": `zh-cn`,
   };
   const myRequest = {
     url: url,
     headers: headers,
   };
-
+  $.log(myRequest);
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      console.log(response);
+      console.log(JSON.stringify(response));
       //$.data = JSON.parse(response.body);
       //console.log(JSON.stringify($.data));
     } else {
@@ -111,9 +111,7 @@ function init() {
   if ($.read("wechatkeyword2") != "" && $.read("wechatkeyword2") != undefined) {
     keyword2 = $.read("wechatkeyword2").split("，");
   }
-  console.log("关键词如下：")
-  console.log(keyword1);
-  console.log(keyword2);
+  $.log(`关键词：${keyword1}和${keyword2}`);
 }
 
 function MYERR() {
