@@ -48,7 +48,7 @@ const ERR = MYERR();
 var keyword1 = [""]; //👈本地关键词在这里设置。
 var keyword2 = [""];
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
-var saveditem = [];
+$.saveditem = [];
 
 !(async () => {
   init();
@@ -70,12 +70,13 @@ var saveditem = [];
 async function checkall(group1, group2) {
   for (var i = 0; i < group1.length; i++) {
     for (var j = 0; j < group2.length; j++) {
-      await check(group1[i], group2[j]);
+      await check(group1[i], group2[j], $.saveditem);
     }
   }
+  $.write(JSON.stringify($.saveditem), "wechatsaveditem");
 }
 
-function check(word1, word2) {
+function check(word1, word2, saveditem) {
   const url = `https://wx.sogou.com/weixin?type=2&query=${encodeURIComponent(
     word1
   )}+${encodeURIComponent(word2)}`;
@@ -132,7 +133,6 @@ function init() {
   if ($.read("wechatkeyword2") != "" && $.read("wechatkeyword2") != undefined) {
     keyword2 = $.read("wechatkeyword2").split("，");
   }
-  $.log(`关键词：${keyword1}和${keyword2}`);
   $.nowtime = new Date().getTime();
   if (
     $.read("wechatsavedtime") != undefined &&
@@ -147,8 +147,9 @@ function init() {
   $.refreshtime = $.read("wechatrefreshtime") || $.refreshtime;
   var minus = $.nowtime - $.savedtime; //判断时间
   if (minus > $.refreshtime * 3600000) {
-    $.write("[]", "wechatsavedtime");
-    $.wrreadite(JSON.stringify($.nowtime), "wechatsavedtime");
+    $.info("达到设定时间清空本地记录并更新时间")
+    $.write(JSON.stringify($.nowtime), "wechatsavedtime");
+    $.write("[]", "wechatsaveditem");
   }
   if (
     $.read("wechatsaveditem") != undefined &&
@@ -159,7 +160,11 @@ function init() {
     storeitem = [];
   }
   for (var i = 0; i < storeitem.length; i++) {
-    saveditem.push(storeitem[i]);
+    $.saveditem.push(storeitem[i]);
+  }
+  $.info(`关键词：${keyword1}和${keyword2}`);
+  if ($.saveditem.length != 0) {
+    $.info("\n刷新时间内不再通知的内容👇\n" + $.saveditem + "\n");
   }
 }
 
