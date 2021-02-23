@@ -49,6 +49,12 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 3. 支持 BoxJs。
 4. checkin_env.js 修改自@Neurogram-R，增加了多平台支持。
 
+### [公众号监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/wechatsubs/wechatsubs.js)
+
+#### 功能特点
+
+1. 设定关键词监控公众号推送。
+
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 
 #### 功能特点
@@ -106,6 +112,12 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 #### 功能特点
 
 1. 九木杂物社自动签到。
+
+### [酷乐潮玩](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw/klcw.js)
+
+#### 功能特点
+
+1. 酷乐潮玩自动签到。
 
 ## 规则类
 
