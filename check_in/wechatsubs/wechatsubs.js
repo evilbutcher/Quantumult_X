@@ -45,8 +45,10 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 const $ = new API("Wechatsubs", true);
 const ERR = MYERR();
 
-var keyword1 = []; //👈本地关键词在这里设置。
-var keyword2 = [];
+var keyword1 = [""]; //👈本地关键词在这里设置。
+var keyword2 = [""];
+$.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
+var saveditem = [];
 
 !(async () => {
   init();
@@ -109,11 +111,13 @@ function check(word1, word2) {
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
         .slice(16, -5);
       var url = "https://wx.sogou.com/" + JSON.stringify(preurl).slice(36, -6);
-      $.log(title);
-      $.log(description)
+      $.info(title);
+      $.log(description);
       $.log(url);
-      $.notify("公众号监控", title, description, { "open-url": url });
-      //console.log(JSON.stringify($.data));
+      if (saveditem.indexOf(title) == -1) {
+        $.notify("公众号监控", title, description, { "open-url": url });
+        saveditem.push(title);
+      }
     } else {
       $.error(JSON.stringify(response));
       $.notify("公众号监控", "", "❌ 未知错误，请查看日志");
@@ -129,6 +133,34 @@ function init() {
     keyword2 = $.read("wechatkeyword2").split("，");
   }
   $.log(`关键词：${keyword1}和${keyword2}`);
+  $.nowtime = new Date().getTime();
+  if (
+    $.read("wechatsavedtime") != undefined &&
+    $.read("wechatsavedtime") != ""
+  ) {
+    $.savedtime = $.read("wechatsavedtime"); //读取保存时间
+  } else {
+    $.savedtime = new Date().getTime(); //保存时间为空时，保存时间=当前时间
+    $.write(JSON.stringify($.nowtime), "wechatsavedtime"); //写入时间记录
+    $.write("[]", "wechatsaveditem"); //写入本地记录
+  }
+  $.refreshtime = $.read("wechatrefreshtime") || $.refreshtime;
+  var minus = $.nowtime - $.savedtime; //判断时间
+  if (minus > $.refreshtime * 3600000) {
+    $.write("[]", "wechatsavedtime");
+    $.wrreadite(JSON.stringify($.nowtime), "wechatsavedtime");
+  }
+  if (
+    $.read("wechatsaveditem") != undefined &&
+    $.read("wechatsaveditem") != ""
+  ) {
+    var storeitem = JSON.parse($.read("wechatsaveditem"));
+  } else {
+    storeitem = [];
+  }
+  for (var i = 0; i < storeitem.length; i++) {
+    saveditem.push(storeitem[i]);
+  }
 }
 
 function MYERR() {

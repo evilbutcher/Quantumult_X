@@ -709,7 +709,10 @@
       ],
       "keys": [
         "@Wechatsubs.wechatkeyword1",
-        "@Wechatsubs.wechatkeyword2"
+        "@Wechatsubs.wechatkeyword2",
+        "@Wechatsubs.wechatsavedtime",
+        "@Wechatsubs.wechatrefreshtime",
+        "@Wechatsubs.wechatsaveditem"
       ],
       "settings": [
         {
@@ -731,6 +734,13 @@
           "autoGrow": true,
           "rows": 2,
           "desc": "请填入要监控的第二组关键词，多个词用中文逗号“，”分隔。"
+        },
+        {
+          "id": "@Wechatsubs.wechatrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
         }
       ],
       "author": "@evilbutcher",
