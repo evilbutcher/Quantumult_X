@@ -25,19 +25,19 @@
 【Surge】
 -----------------
 [Script]
-酷乐潮玩App获取Cookie = http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
+酷乐潮玩App获取Cookie = http-request https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
 酷乐潮玩App = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
 
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=酷乐潮玩App获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
+http-request https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway tag=酷乐潮玩App获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, tag=酷乐潮玩App
 
 【Quantumult X】
 -----------------
 [rewrite_local]
-https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
+https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
 
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, tag=酷乐潮玩App
@@ -52,8 +52,24 @@ hostname = app.klcw.net.cn
 
 const $ = new API("klcwapp", true);
 const ERR = MYERR();
-$.time = (new Date().getTime() / 1000).toFixed(0);
+var date = new Date();
+var year = date.getFullYear();
+var month = date.getMonth() + 1;
+if (month < 10) month = "0" + month;
+var day = date.getDate();
+if (day < 10) day = "0" + day;
+var hour = date.getHours();
+if (hour < 10) hour = "0" + hour;
+var minus = date.getMinutes();
+if (minus < 10) minus = "0" + minus;
+var second = date.getSeconds();
+if (second < 10) second = "0" + second;
+$.time = year + month + day + hour + minus + second;
 $.body = $.read("evil_klcwappBody");
+$.nowbody = JSON.stringify($.body)
+  .replace(/&timestamp=\d+/, `&timestamp=${$.time}`)
+  .slice(1, -1);
+$.log($.nowbody);
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -96,13 +112,13 @@ function checkin() {
   const myRequest = {
     url: url,
     headers: headers,
-    body: $.body,
+    body: $.nowbody,
   };
 
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body);
-      console.log(JSON.stringify($.data));
+      $.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
       $.notify("酷乐潮玩App", "", "❌ 未知错误，请查看日志");
@@ -111,16 +127,18 @@ function checkin() {
 }
 
 function showmsg() {
-  if ($.data.Result.ErrMsg != null) {
-    $.notify("酷乐潮玩App", "", $.data.Result.ErrMsg);
-  } else {
-    var msg = $.data.Msg;
-    var bonus = $.data.Result.CouponName;
-    if (bonus != null) {
-      $.notify("酷乐潮玩App", msg, `本次签到获得${bonus}🎉`);
-    } else {
-      $.notify("酷乐潮玩App", msg, `本次签到暂未获得奖励`);
-    }
+  if ($.data.code == 0) {
+    var continuousDays = $.data.data.continuesDays;
+    var totalDays = $.data.data.totalDays;
+    var continuousAward = $.data.data.continuousAward;
+    $.notify(
+      "酷乐潮玩App",
+      "签到成功🎉",
+      `本次签到获得${continuousAward}积分🎉\n当前签到已连续${continuousDays}天，总计${totalDays}天`
+    );
+  } else if ($.data.code == 10000001) {
+    var msg = $.data.message;
+    $.notify("酷乐潮玩App", "", msg);
   }
 }
 

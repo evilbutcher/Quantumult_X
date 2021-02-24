@@ -13,6 +13,7 @@
     "0 4 8 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js, tag=Funboat, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png, enabled=true",
     "25 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, tag=九木杂物社, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png, enabled=true",
     "30 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩小程序, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
+    "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, tag=酷乐潮玩App, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
     "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png"
   ]
 }
