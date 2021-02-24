@@ -71,8 +71,8 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 13. Monitor Tiktok keywords.
 14. Monitor 36Kr keywords.
 15. Monitor Kindle book keywords.
-16. Monitor RSSHub feeds, thanks to @api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json).  
-~~17. Monitor the latest uploads of RenRenTV, with shortcuts [magnetic offline](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209) can achieve magnetic download, unlocking a new way to catch up on dramas.~~
+16. Monitor RSSHub feeds, thanks to @api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json).
+17. ~~Monitor the latest uploads of RenRenTV, with shortcuts [magnetic offline](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209) can achieve magnetic download, unlocking a new way to catch up on dramas.~~
 18. You can customize the keyword push interval.
 
 ### [App Price Monitor](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)

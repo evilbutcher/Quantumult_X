@@ -75,8 +75,8 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 13. 监控抖音视频关键词。
 14. 监控 36 氪关键词。
 15. 监控 Kindle 图书关键词。
-16. 监控 RSSHub 订阅，感谢@api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json)。  
-~~17. 监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。~~
+16. 监控 RSSHub 订阅，感谢@api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json)。
+17. ~~监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。~~
 18. 可自定关键词推送间隔。
 
 ### [App 价格监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
@@ -118,7 +118,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 #### 功能特点
 
-1. 酷乐潮玩小程序、App自动签到。
+1. 酷乐潮玩小程序、App 自动签到。
 
 ## 规则类
 
