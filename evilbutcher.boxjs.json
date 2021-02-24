@@ -757,7 +757,7 @@
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js\">脚本地址</a>】"
       ],
-      "keys": ["@klcw.evil_klcwappBody"],
+      "keys": ["@klcwapp.evil_klcwappBody"],
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/klcw",
       "icons": [
