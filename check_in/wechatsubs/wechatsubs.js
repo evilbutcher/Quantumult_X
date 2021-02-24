@@ -106,10 +106,14 @@ function check(word1, word2, saveditem) {
       var title = JSON.stringify(pretitle)
         .replace(new RegExp(/\\n/, "gm"), "")
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .replace(new RegExp(/&ldquo;/, "gm"), "“")
+        .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .slice(22, -5);
       var description = JSON.stringify(predescription)
         .replace(new RegExp(/\\n/, "gm"), "")
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .replace(new RegExp(/&ldquo;/, "gm"), "“")
+        .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .slice(16, -5);
       var url = "https://wx.sogou.com/" + JSON.stringify(preurl).slice(36, -6);
       $.info(title);
