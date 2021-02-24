@@ -1,5 +1,5 @@
 /*
-【酷乐潮玩】@evilbutcher
+【酷乐潮玩小程序】@evilbutcher
 
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
@@ -25,14 +25,14 @@
 【Surge】
 -----------------
 [Script]
-酷乐潮玩获取Cookie = http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
-酷乐潮玩 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
+酷乐潮玩小程序获取Cookie = http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
+酷乐潮玩小程序 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
 
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=酷乐潮玩获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
-cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩
+http-request https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn tag=酷乐潮玩小程序获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
+cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩小程序
 
 【Quantumult X】
 -----------------
@@ -40,7 +40,7 @@ cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quant
 https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
 
 [task_local]
-5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩
+5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩小程序
 
 【All App MitM】
 hostname = wxavip-tp.ezrpro.cn
@@ -76,15 +76,15 @@ $.body = $.read("evil_klcwBody");
     await checkin();
     showmsg();
   } else {
-    $.notify("酷乐潮玩", "", "❌ 请先获取Cookie");
+    $.notify("酷乐潮玩小程序", "", "❌ 请先获取Cookie");
   }
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
-      $.notify("酷乐潮玩", "❌ 解析数据出现错误", err.message);
+      $.notify("酷乐潮玩小程序", "❌ 解析数据出现错误", err.message);
     } else {
       $.notify(
-        "酷乐潮玩",
+        "酷乐潮玩小程序",
         "❌ 出现错误",
         JSON.stringify(err, Object.getOwnPropertyNames(err))
       );
@@ -121,21 +121,21 @@ function checkin() {
       console.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
-      $.notify("酷乐潮玩", "", "❌ 未知错误，请查看日志");
+      $.notify("酷乐潮玩小程序", "", "❌ 未知错误，请查看日志");
     }
   });
 }
 
 function showmsg() {
   if ($.data.Result.ErrMsg != null) {
-    $.notify("酷乐潮玩", "", $.data.Result.ErrMsg);
+    $.notify("酷乐潮玩小程序", "", $.data.Result.ErrMsg);
   } else {
     var msg = $.data.Msg;
     var bonus = $.data.Result.CouponName;
     if (bonus != null) {
-      $.notify("酷乐潮玩", msg, `本次签到获得${bonus}🎉`);
+      $.notify("酷乐潮玩小程序", msg, `本次签到获得${bonus}🎉`);
     } else {
-      $.notify("酷乐潮玩", msg, `本次签到暂未获得奖励`);
+      $.notify("酷乐潮玩小程序", msg, `本次签到暂未获得奖励`);
     }
   }
 }
