@@ -110,7 +110,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 1. Automatic check-in.
 
-### [KuLeChaoWan](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw/klcw.js)
+### [KuLeChaoWan](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw)
 
 #### Features
 

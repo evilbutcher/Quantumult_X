@@ -114,11 +114,11 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 1. 九木杂物社自动签到。
 
-### [酷乐潮玩](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw/klcw.js)
+### [酷乐潮玩](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw)
 
 #### 功能特点
 
-1. 酷乐潮玩自动签到。
+1. 酷乐潮玩小程序、App自动签到。
 
 ## 规则类
 
