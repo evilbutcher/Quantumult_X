@@ -120,7 +120,9 @@ function check(word1, word2, saveditem) {
       $.log(description);
       $.log(url);
       if (saveditem.indexOf(title) == -1) {
-        $.notify("公众号监控", title, description, { "open-url": url });
+        $.notify("公众号监控", title, description + "\n" + url, {
+          "open-url": url,
+        });
         saveditem.push(title);
       }
     } else {
@@ -151,7 +153,7 @@ function init() {
   $.refreshtime = $.read("wechatrefreshtime") || $.refreshtime;
   var minus = $.nowtime - $.savedtime; //判断时间
   if (minus > $.refreshtime * 3600000) {
-    $.info("达到设定时间清空本地记录并更新时间")
+    $.info("达到设定时间清空本地记录并更新时间");
     $.write(JSON.stringify($.nowtime), "wechatsavedtime");
     $.write("[]", "wechatsaveditem");
   }
