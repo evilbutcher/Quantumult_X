@@ -128,13 +128,13 @@ function checkin() {
 
 function showmsg() {
   if ($.data.code == 0) {
-    var continuousDays = $.data.data.continuesDays;
+    var continuousDays = $.data.data.continuousDays;
     var totalDays = $.data.data.totalDays;
     var continuousAward = $.data.data.continuousAward;
     $.notify(
       "酷乐潮玩App",
       "签到成功🎉",
-      `本次签到获得${continuousAward}积分🎉\n当前签到已连续${continuousDays}天，总计${totalDays}天`
+      `本次签到获得${continuousAward}积分！\n当前签到已连续${continuousDays}天，总计${totalDays}天！`
     );
   } else if ($.data.code == 10000001) {
     var msg = $.data.message;
