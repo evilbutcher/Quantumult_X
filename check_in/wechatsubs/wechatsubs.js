@@ -105,24 +105,28 @@ function check(word1, word2, saveditem) {
       var predescription = $.data.match(getdescription);
       var title = JSON.stringify(pretitle)
         .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\s/, "gm"), "")
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .slice(22, -5);
       var description = JSON.stringify(predescription)
         .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\s/, "gm"), "")
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .slice(16, -5);
-      var url = "https://wx.sogou.com/" + JSON.stringify(preurl).slice(36, -6);
+      var url =
+        "https://wx.sogou.com/" +
+        JSON.stringify(preurl)
+          .slice(36, -6)
+          .replace(new RegExp(/\s/, "gm"), "");
       $.info(title);
       $.log(description);
       $.log(url);
       if (saveditem.indexOf(title) == -1) {
-        $.notify("公众号监控", title, description + "\n" + url, {
-          "open-url": url,
-        });
+        $.notify("公众号监控", title, description, { "open-url": url });
         saveditem.push(title);
       }
     } else {
