@@ -159,7 +159,8 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/mallgateway/)
+    $request.url.match(/mallgateway/) &&
+    $request.body.match(/signIn/)
   ) {
     const body = $request.body;
     $.log(body);
