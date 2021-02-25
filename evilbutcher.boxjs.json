@@ -758,6 +758,18 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js\">脚本地址</a>】"
       ],
       "keys": ["@klcwapp.evil_klcwappBody"],
+      "settings": [
+        {
+          "id": "@klcwapp.evil_klcwappBody",
+          "name": "Cookie",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "可自行抓包填入。"
+        }
+      ],
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/klcw",
       "icons": [
