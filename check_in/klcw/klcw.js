@@ -118,7 +118,7 @@ function checkin() {
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body);
-      console.log(JSON.stringify($.data));
+      $.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
       $.notify("酷乐潮玩小程序", "", "❌ 未知错误，请查看日志");
