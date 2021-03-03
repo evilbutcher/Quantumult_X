@@ -171,19 +171,29 @@ function checkcoupon() {
 
 function showmsg() {
   if ($.data.Result.ErrMsg == "今日已签到") {
-    $.notify("酷乐潮玩小程序", "", "今日已签到");
+    var bonus = [];
+    var coupon = $.datacoupon.Result.StepGiveInfo;
+    for (var i = 0; i < coupon.length; i++) {
+      if (coupon[i].IsFinished == true && coupon[i].IsGive == false) {
+        bonus.push(coupon[i].StepName);
+      }
+    }
+    bonus = bonus.join(" ");
+    $.notify("酷乐潮玩小程序", "今日已签到", `已获得 ${bonus}🎉\n请尽快领取～`);
   } else if ($.data.Result.ErrMsg != null) {
     throw new ERR.EventError(
       `签到错误，请检查日志，原因：${$.data.Result.ErrMsg}`
     );
   } else {
     var msg = $.data.Msg;
+    var bonus = [];
     var coupon = $.datacoupon.Result.StepGiveInfo;
     for (var i = 0; i < coupon.length; i++) {
       if (coupon[i].IsFinished == true && coupon[i].IsGive == false) {
-        var bonus = bonus.join(coupon[i].StepName + " ");
+        bonus.push(coupon[i].StepName);
       }
     }
+    bonus = bonus.join(" ");
     $.notify("酷乐潮玩小程序", msg, `已获得 ${bonus}🎉\n请尽快领取～`);
   }
 }
