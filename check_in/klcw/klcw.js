@@ -63,7 +63,6 @@ $.vip = $.read("evil_klcwVip");
 $.encrypt = $.read("evil_klcwEncrypt");
 $.body = $.read("evil_klcwBody");
 $.id2 = $.read("evil_klcwid2");
-$.SignStr2 = $.read("evil_klcwSignStr2");
 $.encrypt2 = $.read("evil_klcwEncrypt2");
 
 !(async () => {
@@ -75,7 +74,6 @@ $.encrypt2 = $.read("evil_klcwEncrypt2");
     $.id != undefined &&
     $.id2 != undefined &&
     $.SignStr != undefined &&
-    $.SignStr2 != undefined &&
     $.Referer != undefined &&
     $.vip != undefined &&
     $.encrypt != undefined &&
@@ -147,7 +145,7 @@ function checkcoupon() {
     "uber-trace-id": $.id2,
     "Content-Type": `application/json`,
     "ezr-v-ip": $.vip,
-    SignStr: $.SignStr2,
+    SignStr: $.SignStr,
     "ezr-encrypt": $.encrypt2,
     "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.2(0x18000226) NetType/WIFI Language/zh_CN`,
     Host: `wxavip-tp.ezrpro.cn`,
@@ -158,13 +156,12 @@ function checkcoupon() {
   const myRequest = {
     url: url,
     headers: headers,
-    body: $.body,
   };
 
-  return $.http.post(myRequest).then((response) => {
+  return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.datacoupon = JSON.parse(response.body);
-      $.log(JSON.stringify($.data));
+      $.log(JSON.stringify($.datacoupon));
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("查询优惠券数据解析错误，请检查日志");
@@ -240,9 +237,6 @@ function getCookie() {
     $request.method != "OPTIONS" &&
     $request.url.match(/GetSignInDtlInfo/)
   ) {
-    const str = $request.headers["SignStr"];
-    $.log(str);
-    $.write(str, "evil_klcwSignStr2");
     const id = $request.headers["uber-trace-id"];
     $.log(id);
     $.write(id, "evil_klcwid2");
