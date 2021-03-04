@@ -786,12 +786,10 @@
       ],
       "keys": [
         "@klcw.evil_klcwid",
-        "@klcw.evil_klcwid2",
         "@klcw.evil_klcwSignStr",
         "@klcw.evil_klcwReferer",
         "@klcw.evil_klcwVip",
         "@klcw.evil_klcwEncrypt",
-        "@klcw.evil_klcwEncrypt2",
         "@klcw.evil_klcwBody"
       ],
       "author": "@evilbutcher",
