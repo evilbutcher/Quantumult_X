@@ -109,6 +109,7 @@ function check(word1, word2, saveditem) {
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
+        .replace(new RegExp(/&middot;/, "gm"), "·")
         .slice(22, -5);
       var description = JSON.stringify(predescription)
         .replace(new RegExp(/\\n/, "gm"), "")
@@ -116,6 +117,7 @@ function check(word1, word2, saveditem) {
         .replace(new RegExp(/\<.*?\>/, "gm"), "")
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
+        .replace(new RegExp(/&middot;/, "gm"), "·")
         .slice(16, -5);
       var url =
         "https://wx.sogou.com/" +
