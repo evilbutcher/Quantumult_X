@@ -286,11 +286,12 @@ function getnumber() {
               "🚨获取超话页数出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
+            $.log(JSON.stringify(obj));
             $.pagenumber = 0;
             resolve();
             return;
           }
-          if (debugurl) console.log(obj);
+          if (debugurl) console.log(JSON.stringify(obj));
           allnumber = obj.cardlistInfo.total;
           console.log(
             "当前已关注超话" +
@@ -301,13 +302,13 @@ function getnumber() {
           resolve();
         } else {
           console.log("请将以下内容发送给作者\n");
-          console.log(response);
+          console.log(JSON.stringify(response));
           resolve();
         }
       });
     } catch (e) {
       console.log("请将以下内容发给作者\n");
-      console.log(e);
+      console.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -348,6 +349,7 @@ function geturl(i) {
               "🚨获取超话URL出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
+            $.log(JSON.stringify(obj));
             resolve();
             return;
           }
@@ -366,13 +368,13 @@ function geturl(i) {
           resolve();
         } else {
           console.log("请将以下内容发送给作者\n");
-          console.log(response);
+          console.log(JSON.stringify(response));
           resolve();
         }
       });
     } catch (e) {
       console.log("请将以下内容发给作者\n");
-      console.log(e);
+      console.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -409,6 +411,7 @@ function getSignStatus(i) {
               "🚨获取签到状态出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
+            $.log(JSON.stringify(obj));
             resolve();
             return;
           }
@@ -438,13 +441,13 @@ function getSignStatus(i) {
           resolve();
         } else {
           console.log("请将以下内容发送给作者\n");
-          console.log(response);
+          console.log(JSON.stringify(response));
           resolve();
         }
       });
     } catch (e) {
       console.log("请将以下内容发给作者\n");
-      console.log(e);
+      console.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -485,6 +488,7 @@ function getid(page) {
               "🚨获取超话ID出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
+            $.log(JSON.stringify(obj));
             resolve();
             return;
           }
@@ -503,13 +507,13 @@ function getid(page) {
           resolve();
         } else {
           console.log("请将以下内容发送给作者\n");
-          console.log(response);
+          console.log(JSON.stringify(response));
           resolve();
         }
       });
     } catch (e) {
       console.log("请将以下内容发给作者\n");
-      console.log(e);
+      console.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
@@ -540,7 +544,7 @@ function checkin(id, name, isSign = false) {
         if (error) {
           throw new Error(error);
         }
-        if (debugcheckin) console.log(response);
+        if (debugcheckin) console.log(JSON.stringify(response));
         if (response.statusCode == 418) {
           $.failNum += 1;
           $.message.push(`【${idname}】：太频繁啦，请稍后再试`);
@@ -567,12 +571,13 @@ function checkin(id, name, isSign = false) {
               "🚨签到出现错误或接口返回数据错误",
               `⚠️原因：${obj.errmsg}\n👨‍💻作者提示：若为登陆保护等问题可尝试重新获取Cookie。`
             );
+            $.log(JSON.stringify(obj));
             resolve();
             return;
           }
-          if (debugcheckin) console.log(obj);
+          if (debugcheckin) console.log(JSON.stringify(obj));
           var result = obj.result;
-          if (debugcheckin) console.log(result);
+          if (debugcheckin) console.log(JSON.stringify(result));
           if (result == 1 || result == 382004) {
             $.successNum += 1;
           } else {
@@ -602,24 +607,24 @@ function checkin(id, name, isSign = false) {
             console.log(
               `【${idname}】执行签到：签到失败，请重新签到获取Cookie⚠️\n${response}`
             );
-            if (debugcheckin) console.log(response);
+            if (debugcheckin) console.log(JSON.stringify(response));
           } else {
             $.message.push(`【${idname}】：未知错误⚠️`);
             console.log(`【${idname}】执行签到：未知错误⚠️`);
             console.log("请将以下内容发送给作者\n");
-            console.log(response);
+            console.log(JSON.stringify(response));
           }
           resolve();
         } else {
           $.failNum += 1;
           console.log("请将以下内容发送给作者\n");
-          console.log(response);
+          console.log(JSON.stringify(response));
           resolve();
         }
       });
     } catch (e) {
       console.log("请将以下内容发给作者\n");
-      console.log(e);
+      console.log(JSON.stringify(e));
       resolve();
     }
     setTimeout(() => {
