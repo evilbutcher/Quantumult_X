@@ -821,6 +821,45 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
+    },
+    {
+      "id": "sydwzp",
+      "name": "事业单位招聘监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@sydwzp.sydwarea",
+        "@sydwzp.sydwsavedtime",
+        "@sydwzp.sydwrefreshtime",
+        "@sydwzp.sydwsaveditem"
+      ],
+      "settings": [
+        {
+          "id": "@sydwzp.area",
+          "name": "地区",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的地区。"
+        },
+        {
+          "id": "@sydwzp.sydwrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js"
     }
   ]
 }
