@@ -52,6 +52,7 @@ $.saveditem = [];
 !(async () => {
   init();
   await check($.area, $.saveditem);
+  $.write(JSON.stringify($.saveditem), "sydwsaveditem");
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
