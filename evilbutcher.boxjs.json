@@ -856,8 +856,8 @@
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
       "icons": [
-        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png",
-        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png"
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wsydw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js"
     }

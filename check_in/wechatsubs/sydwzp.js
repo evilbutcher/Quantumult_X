@@ -20,26 +20,26 @@
 
 
 【使用说明】
-脚本或BoxJs填入要监控的关键词即可，以中文逗号“，”分隔。
+脚本或BoxJs填入要监控的地区即可。
 
 【Surge】
 -----------------
 [Script]
-事业单位招聘监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js
+事业单位招聘监控 = type=cron,cronexp=5 * * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js
 
 【Loon】
 -----------------
 [Script]
-cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=事业单位招聘监控
+cron "5 * * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控
 
 【Quantumult X】
 -----------------
 [task_local]
-5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=事业单位招聘监控
+5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控
 
 【Icon】
-透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png
-彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png
 */
 
 const $ = new API("sydwzp", true);
@@ -100,7 +100,9 @@ function check(area, saveditem) {
       var title = JSON.stringify(pretitle).slice(11, -3);
       var url =
         "https://www.qgsydw.com" +
-        JSON.stringify(preurl).slice(11, -6).replace(new RegExp(/\s/, "gm"), "");
+        JSON.stringify(preurl)
+          .slice(11, -6)
+          .replace(new RegExp(/\s/, "gm"), "");
       $.info(title);
       $.log(url);
       if (saveditem.indexOf(title) == -1) {
