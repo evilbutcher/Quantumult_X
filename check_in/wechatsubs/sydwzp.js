@@ -48,11 +48,12 @@ const ERR = MYERR();
 var area = "北京"; //👈本地关键词在这里设置。
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
 $.saveditem = [];
+$.url = "";
 
 !(async () => {
   init();
   await check($.area, $.saveditem);
-  $.write(JSON.stringify($.saveditem), "sydwsaveditem");
+  //await getdetail($.url);
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
@@ -105,13 +106,53 @@ function check(area, saveditem) {
           .replace(new RegExp(/\s/, "gm"), "");
       $.info(title);
       $.log(url);
+      $.url = url;
       if (saveditem.indexOf(title) == -1) {
         $.notify("事业单位招聘监控", title, "", { "open-url": url });
         saveditem.push(title);
       }
+      $.write(JSON.stringify($.saveditem), "sydwsaveditem");
     } else {
       $.error(JSON.stringify(response));
       $.notify("事业单位招聘监控", "", "❌ 未知错误，请查看日志");
+    }
+  });
+}
+
+function getdetail(url) {
+  const headers2 = {
+    "Accept-Encoding": `gzip, deflate, br`,
+    "Content-type": "text/html;charset=gb2312",
+    Connection: `keep-alive`,
+    Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
+    Host: `www.qgsydw.com`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+  };
+  const myRequest = {
+    url: $.url,
+    headers: headers2,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      var geturl = /href=\"\/qgsydw\/attachment/g;
+      var gettitle = /title\=\\\".*?\\/g;
+      $.data2 = response.body;
+      $.log($.data2);
+      var pretitle = $.data2.matchAll(gettitle);
+      var preurl = $.data2.matchAll(geturl);
+      //var title = JSON.stringify(pretitle).slice(11, -3);
+      //var url = "https://www.qgsydw.com" + JSON.stringify(preurl).slice(11, -6).replace(new RegExp(/\s/, "gm"), "");
+      $.log(JSON.stringify(pretitle));
+      $.log(JSON.stringify(preurl));
+    } else {
+      $.error(JSON.stringify(response));
+      $.notify(
+        "事业单位招聘监控",
+        "获取详情链接失败",
+        "❌ 未知错误，请查看日志"
+      );
     }
   });
 }
