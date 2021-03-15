@@ -53,7 +53,7 @@ $.url = "";
 !(async () => {
   init();
   await check($.area, $.saveditem);
-  //await getdetail($.url);
+  await getdetail($.url, $.saveditem);
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
@@ -119,10 +119,9 @@ function check(area, saveditem) {
   });
 }
 
-function getdetail(url) {
+function getdetail(url, saveditem) {
   const headers2 = {
     "Accept-Encoding": `gzip, deflate, br`,
-    "Content-type": "text/html;charset=gb2312",
     Connection: `keep-alive`,
     Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
     Host: `www.qgsydw.com`,
@@ -130,22 +129,30 @@ function getdetail(url) {
     "Accept-Language": `zh-cn`,
   };
   const myRequest = {
-    url: $.url,
+    url: url,
     headers: headers2,
   };
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      var geturl = /href=\"\/qgsydw\/attachment/g;
-      var gettitle = /title\=\\\".*?\\/g;
+      var getdurl = /qgsydw\/attachment.*?\"/g;
+      var getdtitle = /title\=\".*?\"/g;
       $.data2 = response.body;
-      $.log($.data2);
-      var pretitle = $.data2.matchAll(gettitle);
-      var preurl = $.data2.matchAll(geturl);
-      //var title = JSON.stringify(pretitle).slice(11, -3);
-      //var url = "https://www.qgsydw.com" + JSON.stringify(preurl).slice(11, -6).replace(new RegExp(/\s/, "gm"), "");
-      $.log(JSON.stringify(pretitle));
-      $.log(JSON.stringify(preurl));
+      var predtitle = $.data2.match(getdtitle);
+      var predurl = $.data2.match(getdurl);
+      for (var i = 0; i < predtitle.length; i++) {
+        var title = predtitle[i].slice(7, -1);
+        var url =
+          "https://www.qgsydw.com/" +
+          predurl[i].slice(0, -1).replace(new RegExp(/\s/, "gm"), "");
+        if (saveditem.indexOf(url) == -1) {
+          $.notify("招聘附件", "", "点击跳转", { "open-url": url });
+          saveditem.push(url);
+        }
+        $.write(JSON.stringify($.saveditem), "sydwsaveditem");
+        $.log(title);
+        $.log(url);
+      }
     } else {
       $.error(JSON.stringify(response));
       $.notify(
