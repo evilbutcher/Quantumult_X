@@ -153,8 +153,7 @@ function getdetail(url, saveditem) {
         $.log(title);
         $.log(url);
       }
-    }
-    if (response.statusCode == 404) {
+    } else if (response.statusCode == 404) {
       $.notify(
         "事业单位招聘监控",
         "详情不存在",
