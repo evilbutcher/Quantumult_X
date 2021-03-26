@@ -154,11 +154,7 @@ function getdetail(url, saveditem) {
         $.log(url);
       }
     } else if (response.statusCode == 404) {
-      $.notify(
-        "事业单位招聘监控",
-        "详情不存在",
-        "服务器错误❌ 请稍后再尝试获取"
-      );
+      $.log("详情不存在，原因：服务器错误，请稍后再尝试获取");
     } else {
       $.error(JSON.stringify(response));
       $.notify(
