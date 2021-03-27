@@ -1,5 +1,5 @@
 /*
-【公众号监控】@evilbutcher
+【高校人才网招聘监控】@evilbutcher
 
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
@@ -20,46 +20,43 @@
 
 
 【使用说明】
-脚本或BoxJs填入要监控的关键词即可，以中文逗号“，”分隔。
+
 
 【Surge】
 -----------------
 [Script]
-公众号监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js
+高校人才网招聘监控 = type=cron,cronexp=5 * * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js
 
 【Loon】
 -----------------
 [Script]
-cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控
+cron "5 * * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控
 
 【Quantumult X】
 -----------------
 [task_local]
-5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控
+5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控
 
 【Icon】
-透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png
-彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png
 */
 
-const $ = new API("Wechatsubs", true);
+const $ = new API("gxrcw", true);
 const ERR = MYERR();
-
-var keyword1 = [""]; //👈本地关键词在这里设置。
-var keyword2 = [""];
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
 $.saveditem = [];
 
 !(async () => {
   init();
-  await checkall(keyword1, keyword2);
+  await check($.saveditem);
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
-      $.notify("公众号监控", "❌ 解析数据出现错误", err.message);
+      $.notify("高校人才网招聘监控", "❌ 解析数据出现错误", err.message);
     } else {
       $.notify(
-        "公众号监控",
+        "高校人才网招聘监控",
         "❌ 出现错误",
         JSON.stringify(err, Object.getOwnPropertyNames(err))
       );
@@ -67,116 +64,71 @@ $.saveditem = [];
   })
   .finally(() => $.done());
 
-async function checkall(group1, group2) {
-  for (var i = 0; i < group1.length; i++) {
-    for (var j = 0; j < group2.length; j++) {
-      await check(group1[i], group2[j], $.saveditem);
-    }
-  }
-  $.write(JSON.stringify($.saveditem), "wechatsaveditem");
-}
-
-function check(word1, word2, saveditem) {
-  const url = `https://wx.sogou.com/weixin?type=2&query=${encodeURIComponent(
-    word1
-  )}+${encodeURIComponent(word2)}`;
+function check(saveditem) {
+  const url = `http://m.gaoxiaojob.com/list.php?tid=93`;
   const headers = {
     Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
+    "Accept-Encoding": `gzip, deflate`,
     Connection: `keep-alive`,
-    Referer: `https://wx.sogou.com/`,
-    "Accept-Encoding": `gzip, deflate, br`,
-    Host: `wx.sogou.com`,
-    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    Referer: `http://www.gaoxiaojob.com/zhaopin/diqu/beijing/`,
+    Host: `m.gaoxiaojob.com`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Upgrade-Insecure-Requests": `1`,
     "Accept-Language": `zh-cn`,
   };
+
   const myRequest = {
     url: url,
     headers: headers,
   };
-  $.log(myRequest);
-  return $.http.get(myRequest).then((response) => {
+
+  return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      var geturl = /a\starget\=\\\"\_blank\\\"\shref\=\\\"\/.*?\\\"/;
-      var gettitle = /article\_title\_0\\\"\>.*?\<\/a/;
-      var getdescription = /summary\_0\\\"\>.*?\<\/p/;
-      $.data = JSON.stringify(response.body);
-      var pretitle = $.data.match(gettitle);
-      var preurl = $.data.match(geturl);
-      var predescription = $.data.match(getdescription);
-      var title = JSON.stringify(pretitle)
-        .replace(new RegExp(/\\n/, "gm"), "")
-        .replace(new RegExp(/\s/, "gm"), "")
-        .replace(new RegExp(/\<.*?\>/, "gm"), "")
-        .replace(new RegExp(/&ldquo;/, "gm"), "“")
-        .replace(new RegExp(/&rdquo;/, "gm"), "”")
-        .replace(new RegExp(/&middot;/, "gm"), "·")
-        .replace(new RegExp(/&mdash;/, "gm"), "—")
-        .slice(22, -5);
-      var description = JSON.stringify(predescription)
-        .replace(new RegExp(/\\n/, "gm"), "")
-        .replace(new RegExp(/\s/, "gm"), "")
-        .replace(new RegExp(/\<.*?\>/, "gm"), "")
-        .replace(new RegExp(/&ldquo;/, "gm"), "“")
-        .replace(new RegExp(/&rdquo;/, "gm"), "”")
-        .replace(new RegExp(/&middot;/, "gm"), "·")
-        .replace(new RegExp(/&mdash;/, "gm"), "—")
-        .slice(16, -5);
-      var url =
-        "https://wx.sogou.com/" +
-        JSON.stringify(preurl)
-          .slice(36, -6)
-          .replace(new RegExp(/\s/, "gm"), "");
-      $.info(title);
-      $.log(description);
-      $.log(url);
-      if (saveditem.indexOf(title) == -1) {
-        $.notify("公众号监控", title, description, { "open-url": url });
-        saveditem.push(title);
+      $.data = response.body;
+      var getitem = /href=\"view.*?\<\/a/g;
+      var geturl = /view.*?\\/;
+      var gettitle = /\>.*?\</;
+      var allitem = $.data.match(getitem);
+      for (var i = 0; i < allitem.length; i++) {
+        var preurl = JSON.stringify(allitem[i]).match(geturl);
+        var url =
+          "http://m.gaoxiaojob.com/" + JSON.stringify(preurl).slice(2, -4);
+        var pretitle = JSON.stringify(allitem[i]).match(gettitle);
+        var title = JSON.stringify(pretitle).slice(3, -3);
+        if (saveditem.indexOf(title) == -1) {
+          $.notify("高校人才网招聘监控", title, "", { "open-url": url });
+          saveditem.push(title);
+        }
       }
-    } else {
-      $.error(JSON.stringify(response));
-      $.notify("公众号监控", "", "❌ 未知错误，请查看日志");
+      $.write(JSON.stringify(saveditem), "wechatsaveditem");
     }
   });
 }
 
 function init() {
-  if ($.read("wechatkeyword1") != "" && $.read("wechatkeyword1") != undefined) {
-    keyword1 = $.read("wechatkeyword1").split("，");
-  }
-  if ($.read("wechatkeyword2") != "" && $.read("wechatkeyword2") != undefined) {
-    keyword2 = $.read("wechatkeyword2").split("，");
-  }
   $.nowtime = new Date().getTime();
-  if (
-    $.read("wechatsavedtime") != undefined &&
-    $.read("wechatsavedtime") != ""
-  ) {
-    $.savedtime = $.read("wechatsavedtime"); //读取保存时间
+  if ($.read("gxrcwsavedtime") != undefined && $.read("gxrcwsavedtime") != "") {
+    $.savedtime = $.read("gxrcwsavedtime"); //读取保存时间
   } else {
     $.savedtime = new Date().getTime(); //保存时间为空时，保存时间=当前时间
-    $.write(JSON.stringify($.nowtime), "wechatsavedtime"); //写入时间记录
-    $.write("[]", "wechatsaveditem"); //写入本地记录
+    $.write(JSON.stringify($.nowtime), "gxrcwsavedtime"); //写入时间记录
+    $.write("[]", "gxrcwsaveditem"); //写入本地记录
   }
-  $.refreshtime = $.read("wechatrefreshtime") || $.refreshtime;
+  $.refreshtime = $.read("gxrcwrefreshtime") || $.refreshtime;
   var minus = $.nowtime - $.savedtime; //判断时间
   if (minus > $.refreshtime * 3600000) {
     $.info("达到设定时间清空本地记录并更新时间");
-    $.write(JSON.stringify($.nowtime), "wechatsavedtime");
-    $.write("[]", "wechatsaveditem");
+    $.write(JSON.stringify($.nowtime), "gxrcwsavedtime");
+    $.write("[]", "gxrcwsaveditem");
   }
-  if (
-    $.read("wechatsaveditem") != undefined &&
-    $.read("wechatsaveditem") != ""
-  ) {
-    var storeitem = JSON.parse($.read("wechatsaveditem"));
+  if ($.read("gxrcwsaveditem") != undefined && $.read("gxrcwsaveditem") != "") {
+    var storeitem = JSON.parse($.read("gxrcwsaveditem"));
   } else {
     storeitem = [];
   }
   for (var i = 0; i < storeitem.length; i++) {
     $.saveditem.push(storeitem[i]);
   }
-  $.info(`关键词：${keyword1}和${keyword2}`);
   if ($.saveditem.length != 0) {
     $.info("\n刷新时间内不再通知的内容👇\n" + $.saveditem + "\n");
   }
