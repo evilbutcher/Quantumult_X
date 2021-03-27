@@ -20,7 +20,7 @@
 
 
 【使用说明】
-
+添加任务即可使用
 
 【Surge】
 -----------------
@@ -100,7 +100,7 @@ function check(saveditem) {
           saveditem.push(title);
         }
       }
-      $.write(JSON.stringify(saveditem), "wechatsaveditem");
+      $.write(JSON.stringify(saveditem), "gxrcwsaveditem");
     }
   });
 }
