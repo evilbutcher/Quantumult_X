@@ -846,6 +846,13 @@
           "desc": "请填入要监控的地区。"
         },
         {
+          "id": "@sydwzp.sydwdetailsetting",
+          "name": "获取附件链接",
+          "val": true,
+          "type": "boolean",
+          "desc": "是否获取附件链接"
+        },
+        {
           "id": "@sydwzp.sydwrefreshtime",
           "name": "刷新时间（时）",
           "val": 6,
