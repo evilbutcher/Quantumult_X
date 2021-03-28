@@ -832,7 +832,8 @@
         "@sydwzp.sydwarea",
         "@sydwzp.sydwsavedtime",
         "@sydwzp.sydwrefreshtime",
-        "@sydwzp.sydwsaveditem"
+        "@sydwzp.sydwsaveditem",
+        "@sydwzp.sydwdetailsetting"
       ],
       "settings": [
         {

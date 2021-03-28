@@ -46,6 +46,7 @@ const $ = new API("sydwzp", true);
 const ERR = MYERR();
 
 var area = "北京"; //👈本地关键词在这里设置。
+var ifgetdetail = true; //是否获取附件链接
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
 $.saveditem = [];
 $.url = "";
@@ -53,8 +54,15 @@ $.url = "";
 !(async () => {
   init();
   await check($.area, $.saveditem);
-  await getdetail($.url, $.saveditem);
-  await getsecondaddress($.saveditem);
+  if ($.ifgetdetail == true || $.ifgetdetail == "true") {
+    await getdetail($.url, $.saveditem);
+  }
+  if ($.area == "北京") {
+    await getsecondaddress($.saveditem);
+    if ($.ifgetdetail == true || $.ifgetdetail == "true") {
+      await getseconddetail($.url2, $.saveditem);
+    }
+  }
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
@@ -99,18 +107,18 @@ function check(area, saveditem) {
       $.data = response.body;
       var pretitle = $.data.match(gettitle);
       var preurl = $.data.match(geturl);
-      var title = JSON.stringify(pretitle).slice(11, -3);
+      $.firsttitle = JSON.stringify(pretitle).slice(11, -3);
       var url =
         "https://www.qgsydw.com" +
         JSON.stringify(preurl)
           .slice(11, -6)
           .replace(new RegExp(/\s/, "gm"), "");
-      $.info(title);
+      $.info($.firsttitle);
       $.log(url);
       $.url = url;
-      if (saveditem.indexOf(title) == -1) {
-        $.notify("事业单位招聘监控", title, "", { "open-url": url });
-        saveditem.push(title);
+      if (saveditem.indexOf($.firsttitle) == -1) {
+        $.notify("事业单位招聘监控", $.firsttitle, "", { "open-url": url });
+        saveditem.push($.firsttitle);
       }
     } else {
       $.error(JSON.stringify(response));
@@ -146,7 +154,9 @@ function getdetail(url, saveditem) {
           "https://www.qgsydw.com/" +
           predurl[i].slice(0, -1).replace(new RegExp(/\s/, "gm"), "");
         if (saveditem.indexOf(url) == -1) {
-          $.notify("招聘附件", "", "点击跳转", { "open-url": url });
+          $.notify("事业单位招聘监控", $.firsttitle, "招聘附件", {
+            "open-url": url,
+          });
           saveditem.push(url);
         }
         $.log(title);
@@ -187,23 +197,22 @@ function getsecondaddress(saveditem) {
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
       var getitem = /i\>\<a\shref=\"\.\/.*?\/a/;
-      var geturl = /href\=\".*?html/;
-      var gettitle = /title\=\".*?\"/;
+      var geturl = /href\=\\\".*?html/;
+      var gettitle = /title\=\\\".*?\"/;
       $.data3 = response.body;
       var preitem = $.data3.match(getitem);
-      var preurl = preitem.match(geturl);
-      var url =
+      var preurl = JSON.stringify(preitem).match(geturl);
+      $.url2 =
         "http://rsj.beijing.gov.cn/xxgk/gkzp" +
-        JSON.stringify(preurl).slice(10, -2);
-      var pretitle = preitem.match(gettitle);
-      var title = JSON.stringify(pretitle).slice(10, -4);
-      $.log(title);
-      $.log(url);
-      if (saveditem.indexOf(title) == -1) {
-        $.notify("事业单位招聘监控", title, "", { "open-url": url });
-        saveditem.push(title);
+        JSON.stringify(preurl).slice(12, -2);
+      var pretitle = JSON.stringify(preitem).match(gettitle);
+      $.secondtitle = JSON.stringify(pretitle).slice(12, -6);
+      $.log($.secondtitle);
+      $.log($.url2);
+      if (saveditem.indexOf($.secondtitle) == -1) {
+        $.notify("事业单位招聘监控", $.secondtitle, "", { "open-url": $.url2 });
+        saveditem.push($.secondtitle);
       }
-      $.write(JSON.stringify(saveditem), "sydwsaveditem");
     } else if (response.statusCode == 404) {
       $.log("内容不存在，原因：服务器错误，请稍后再尝试获取");
     } else {
@@ -213,8 +222,60 @@ function getsecondaddress(saveditem) {
   });
 }
 
+function getseconddetail(url, saveditem) {
+  const url4 = url;
+  const headers4 = {
+    "Accept-Encoding": `gzip, deflate`,
+    Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
+    Connection: `keep-alive`,
+    Host: `rsj.beijing.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Upgrade-Insecure-Requests": `1`,
+    "Accept-Language": `zh-cn`,
+  };
+  const myRequest4 = {
+    url: url4,
+    headers: headers4,
+  };
+  return $.http.get(myRequest4).then((response) => {
+    if (response.statusCode == 200) {
+      $.data4 = response.body;
+      var getitem = /\.\&nbsp\;\<a\shref\=\"\..*?\<\/a/g;
+      var geturl = /href\=\".*?\"/;
+      var gettitle = /\"\>.*?\</;
+      var item = $.data4.match(getitem);
+      for (var i = 0; i < item.length; i++) {
+        var preurl = item[i].match(geturl);
+        var posturl = JSON.stringify(preurl).slice(11, -4);
+        var finalurl = url.replace(new RegExp(/t\d+.*/), posturl);
+        var pretitle = item[i].match(gettitle);
+        var title = JSON.stringify(pretitle).slice(5, -3);
+        $.log(title);
+        $.log(finalurl);
+        if (saveditem.indexOf(title) == -1) {
+          $.notify("事业单位招聘监控", $.secondtitle, title, {
+            "open-url": finalurl,
+          });
+          saveditem.push(title);
+        }
+      }
+      $.write(JSON.stringify(saveditem), "sydwsaveditem");
+    } else if (response.statusCode == 404) {
+      $.log("内容不存在，原因：服务器错误，请稍后再尝试获取");
+    } else {
+      $.error(JSON.stringify(response));
+      $.notify(
+        "事业单位招聘监控",
+        "获取新内容附件失败",
+        "❌ 未知错误，请查看日志"
+      );
+    }
+  });
+}
+
 function init() {
   $.area = $.read("sydwarea") || area;
+  $.ifgetdetail = $.read("sydwdetailsetting") || ifgetdetail;
   $.nowtime = new Date().getTime();
   if ($.read("sydwsavedtime") != undefined && $.read("sydwsavedtime") != "") {
     $.savedtime = $.read("sydwsavedtime"); //读取保存时间
@@ -238,7 +299,7 @@ function init() {
   for (var i = 0; i < storeitem.length; i++) {
     $.saveditem.push(storeitem[i]);
   }
-  $.info(`地区：${area}`);
+  $.info(`地区：${$.area}    是否获取附件链接：${$.ifgetdetail}`);
   if ($.saveditem.length != 0) {
     $.info("\n刷新时间内不再通知的内容👇\n" + $.saveditem + "\n");
   }
