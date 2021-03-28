@@ -856,10 +856,39 @@
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
       "icons": [
-        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wsydw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw_tran.png",
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js"
+    },
+    {
+      "id": "gxrcw",
+      "name": "高校人才网招聘监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@gxrcw.sydwarea",
+        "@gxrcw.sydwsavedtime",
+        "@gxrcw.sydwrefreshtime",
+        "@gxrcw.sydwsaveditem"
+      ],
+      "settings": [
+        {
+          "id": "@gxrcw.sydwrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js"
     }
   ]
 }

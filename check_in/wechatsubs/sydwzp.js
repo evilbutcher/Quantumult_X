@@ -54,6 +54,7 @@ $.url = "";
   init();
   await check($.area, $.saveditem);
   await getdetail($.url, $.saveditem);
+  await getsecondaddress($.saveditem);
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
@@ -111,7 +112,6 @@ function check(area, saveditem) {
         $.notify("事业单位招聘监控", title, "", { "open-url": url });
         saveditem.push(title);
       }
-      $.write(JSON.stringify($.saveditem), "sydwsaveditem");
     } else {
       $.error(JSON.stringify(response));
       $.notify("事业单位招聘监控", "", "❌ 未知错误，请查看日志");
@@ -149,7 +149,6 @@ function getdetail(url, saveditem) {
           $.notify("招聘附件", "", "点击跳转", { "open-url": url });
           saveditem.push(url);
         }
-        $.write(JSON.stringify($.saveditem), "sydwsaveditem");
         $.log(title);
         $.log(url);
       }
@@ -162,6 +161,54 @@ function getdetail(url, saveditem) {
         "获取详情链接失败",
         "❌ 未知错误，请查看日志"
       );
+    }
+  });
+}
+
+function getsecondaddress(saveditem) {
+  const url3 = `http://rsj.beijing.gov.cn/xxgk/gkzp/`;
+  const headers3 = {
+    Cookie: `_trs_uv=kmptt6qp_365_b34g; _va_id=abd539f901538d62.1616734221.2.1616822850.1616822846.; _va_ses=*; _trs_ua_s_1=kmrakrqg_365_4qmq; _va_ref=%5B%22%22%2C%22%22%2C1616822846%2C%22https%3A%2F%2Fwww.google.com%22%5D; __jsluid_h=e7d128e54b27dd1b720e63bd9908c3f1`,
+    Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
+    Connection: `keep-alive`,
+    Referer: `http://rsj.beijing.gov.cn/xxgk/tzgg/`,
+    "Accept-Encoding": `gzip, deflate`,
+    Host: `rsj.beijing.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Upgrade-Insecure-Requests": `1`,
+    "Accept-Language": `zh-cn`,
+  };
+
+  const myRequest3 = {
+    url: url3,
+    headers: headers3,
+  };
+
+  return $.http.get(myRequest3).then((response) => {
+    if (response.statusCode == 200) {
+      var getitem = /i\>\<a\shref=\"\.\/.*?\/a/;
+      var geturl = /href\=\".*?html/;
+      var gettitle = /title\=\".*?\"/;
+      $.data3 = response.body;
+      var preitem = $.data3.match(getitem);
+      var preurl = preitem.match(geturl);
+      var url =
+        "http://rsj.beijing.gov.cn/xxgk/gkzp" +
+        JSON.stringify(preurl).slice(10, -2);
+      var pretitle = preitem.match(gettitle);
+      var title = JSON.stringify(pretitle).slice(10, -4);
+      $.log(title);
+      $.log(url);
+      if (saveditem.indexOf(title) == -1) {
+        $.notify("事业单位招聘监控", title, "", { "open-url": url });
+        saveditem.push(title);
+      }
+      $.write(JSON.stringify(saveditem), "sydwsaveditem");
+    } else if (response.statusCode == 404) {
+      $.log("内容不存在，原因：服务器错误，请稍后再尝试获取");
+    } else {
+      $.error(JSON.stringify(response));
+      $.notify("事业单位招聘监控", "获取新内容失败", "❌ 未知错误，请查看日志");
     }
   });
 }
