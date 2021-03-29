@@ -15,6 +15,7 @@
     "30 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩小程序, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
     "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, tag=酷乐潮玩App, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
     "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png",
-    "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png"
+    "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png",
+    "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png"
   ]
 }
