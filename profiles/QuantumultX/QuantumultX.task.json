@@ -1,0 +1,39 @@
+{
+  "name": "@evilbutcher 脚本集合",
+  "description": "Quantumult X Task Galllery by evilbutcher",
+  "task": [
+    "0 0 6 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js, tag=NASA每日一图, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/nasa.png, enabled=true",
+    "0 0 6 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js, tag=iDaily每日环球视野, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily.png, enabled=true",
+    "30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控, img-url=https://raw.githubusercontent.com/Orz-3/Task/master/appstore.png, enabled=true",
+    "30 0 8-22/2 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js, tag=热门监控, img-url=https://raw.githubusercontent.com/58xinian/icon/master/hot.png, enabled=true",
+    {
+      "config": "45 3 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js, tag=微博超话, img-url=https://raw.githubusercontent.com/Orz-3/Task/master/weibo.png, enabled=true",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/weibo.conf, tag = 微博超话获取Cookie"
+    },
+    {
+      "config": "25 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js, tag=GLaDOS, img-url=https://raw.githubusercontent.com/58xinian/icon/master/glados1.png, enabled=true",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/glados.conf, tag = GLaDOS获取Cookie"
+    },
+    "45 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js, tag=机场签到, img-url=https://raw.githubusercontent.com/Orz-3/Task/master/airport.png, enabled=true",
+    "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master//check_in/glados/checkincookie_env.js, tag=机场签到Cookie版, img-url=https://raw.githubusercontent.com/58xinian/icon/master/glados.png, enabled=true",
+    {
+      "config": "0 4 8 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js, tag=Funboat, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png, enabled=true",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/funboat.conf, tag = Funboat获取Cookie"
+    },
+    {
+      "config": "25 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, tag=九木杂物社, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png, enabled=true",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/jiumu.conf, tag = 九木杂物社获取Cookie"
+    },
+    {
+      "config": "30 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, tag=酷乐潮玩小程序, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/klcw.conf, tag = 酷乐潮玩小程序获取Cookie"
+    },
+    {
+      "config": "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, tag=酷乐潮玩App, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/klcw-app.conf, tag = 酷乐潮玩App获取Cookie"
+    },
+    "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png",
+    "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png",
+    "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png"
+  ]
+}
