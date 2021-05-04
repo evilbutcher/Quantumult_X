@@ -35,6 +35,6 @@
     "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png",
     "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png",
     "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png",
-    "0 30 21 0 0 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq.png"
+    "0 30 21 * * 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq.png"
   ]
 }

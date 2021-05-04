@@ -25,17 +25,17 @@
 【Surge】
 -----------------
 [Script]
-双色球 = type=cron,cronexp=0 30 21 0 0 2,4,7 ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
+双色球 = type=cron,cronexp=0 30 21 * * 2,4,7 ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
 
 【Loon】
 -----------------
 [Script]
-cron "0 30 21 0 0 2,4,7 " script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
+cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
 
 【Quantumult X】
 -----------------
 [task_local]
-0 30 21 0 0 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
+0 30 21 * * 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
 
 【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png
