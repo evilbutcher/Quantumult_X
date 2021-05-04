@@ -2,7 +2,6 @@ const $ = new API("ssq", true);
 const ERR = MYERR();
 
 !(async () => {
-  //init();
   await check();
 })()
   .catch((err) => {
@@ -38,7 +37,13 @@ function check() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      $.data = response.body;
+      $.data = JSON.parse(response.body).result[0];
+      //var name = $.data.name;
+      var date = $.data.date;
+      var red = $.data.red;
+      var blue = $.data.blue;
+      var detail = "红球：" + red + "\n蓝球：" + blue;
+      $.notify("双色球", date, detail);
       $.log($.data);
     }
   });
