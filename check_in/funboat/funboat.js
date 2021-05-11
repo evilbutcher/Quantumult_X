@@ -50,12 +50,10 @@ hostname = h5.youzan.com
 */
 const $ = new Env("Funboat");
 const signurl = "evil_funkourl";
-const signcookie = "evil_funkocookie";
 const statusurl = "evil_funkostatusurl";
 const statuscookie = "evil_funkostatuscookie";
 
 var siurl = $.getdata(signurl);
-var sicookie = $.getdata(signcookie);
 var sturl = $.getdata(statusurl);
 var stcookie = $.getdata(statuscookie);
 
@@ -81,7 +79,7 @@ var all;
 function checkin() {
   const checkRequest = {
     url: siurl,
-    headers: { "Extra-Data": sicookie },
+    headers: { "Extra-Data": stcookie },
   };
   console.log("checkRequest");
   console.log(JSON.stringify(checkRequest));
@@ -163,11 +161,8 @@ function getCookie() {
   ) {
     const siurl = $request.url;
     $.log(siurl);
-    const sicookie = $request.headers["Extra-Data"];
-    $.log(sicookie);
     $.setdata(siurl, signurl);
-    $.setdata(sicookie, signcookie);
-    $.msg("Funboat", "", "获取签到Cookie成功🎉");
+    $.msg("Funboat", "", "获取签到链接成功🎉");
   }
   if (
     $request &&
