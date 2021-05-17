@@ -110,6 +110,7 @@ function check(word1, word2, saveditem) {
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .replace(new RegExp(/&middot;/, "gm"), "·")
+        .replace(new RegExp(/&bull;/, "gm"), "•")
         .replace(new RegExp(/&mdash;/, "gm"), "—")
         .slice(22, -5);
       var description = JSON.stringify(predescription)
@@ -119,6 +120,7 @@ function check(word1, word2, saveditem) {
         .replace(new RegExp(/&ldquo;/, "gm"), "“")
         .replace(new RegExp(/&rdquo;/, "gm"), "”")
         .replace(new RegExp(/&middot;/, "gm"), "·")
+        .replace(new RegExp(/&bull;/, "gm"), "•")
         .replace(new RegExp(/&mdash;/, "gm"), "—")
         .slice(16, -5);
       var url =
@@ -225,7 +227,8 @@ function HTTP(
 ) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
-  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  const URL_REGEX =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options =
@@ -304,12 +307,13 @@ function HTTP(
         })
       : null;
 
-    return (timer
-      ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid);
-          return res;
-        })
-      : worker
+    return (
+      timer
+        ? Promise.race([timer, worker]).then((res) => {
+            clearTimeout(timeoutid);
+            return res;
+          })
+        : worker
     ).then((resp) => events.onResponse(resp));
   }
 
