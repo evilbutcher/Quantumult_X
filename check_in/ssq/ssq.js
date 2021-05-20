@@ -47,7 +47,7 @@ or 0 30 21 * * 1,3,6
 */
 const $ = new API("ssq", true);
 const ERR = MYERR();
-const type = $.read("ssq");
+const type = $.read("ssq") || 1; //默认查询双色球
 
 !(async () => {
   if (type == "1") {
