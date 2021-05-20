@@ -81,13 +81,22 @@ function check() {
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body).result[0];
-      //var name = $.data.name;
+      var poolmoney = ($.data.poolmoney / 10000).toFixed(2);
+      var content = $.data.content;
       var date = $.data.date;
       var red = $.data.red;
       var blue = $.data.blue;
-      var detail = "红球：" + red + "\n蓝球：" + blue;
+      var detail =
+        "红球：" +
+        red +
+        "\n蓝球：" +
+        blue +
+        "\n奖池：" +
+        JSON.stringify(poolmoney).slice(1, -1) +
+        "万元\n一等奖 " +
+        content;
       $.notify("双色球", date, detail);
-      $.log($.data);
+      $.log(detail);
     }
   });
 }
@@ -135,7 +144,8 @@ function HTTP(
 ) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
-  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  const URL_REGEX =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options =
@@ -214,12 +224,13 @@ function HTTP(
         })
       : null;
 
-    return (timer
-      ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid);
-          return res;
-        })
-      : worker
+    return (
+      timer
+        ? Promise.race([timer, worker]).then((res) => {
+            clearTimeout(timeoutid);
+            return res;
+          })
+        : worker
     ).then((resp) => events.onResponse(resp));
   }
 
