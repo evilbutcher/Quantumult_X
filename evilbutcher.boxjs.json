@@ -896,6 +896,39 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js"
+    },
+    {
+      "id": "ssq",
+      "name": "彩票结果查询",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js\">脚本地址</a>】"
+      ],
+      "settings": [
+        {
+          "id": "@ssq.ssq",
+          "name": "类型选择",
+          "val": "1",
+          "type": "radios",
+          "desc": "选择要查询的彩票",
+          "items": [
+            {
+              "key": "1",
+              "label": "双色球"
+            },
+            {
+              "key": "2",
+              "label": "大乐透"
+            }
+          ]
+        }
+      ],
+      "author": "@evilbutcher, @Phantom",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/ssq",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js"
     }
   ]
 }

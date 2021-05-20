@@ -1,7 +1,8 @@
 /*
-【双色球】@evilbutcher
+【彩票查询】@evilbutcher, @Phantom
 
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
+           https://github.com/sjzcook/phantom（欢迎star🌟）
 
 【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
@@ -25,17 +26,17 @@
 【Surge】
 -----------------
 [Script]
-双色球 = type=cron,cronexp=0 30 21 * * 2,4,7 ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
+彩票查询 = type=cron,cronexp=0 30 21 * * 2,4,7 ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
 
 【Loon】
 -----------------
 [Script]
-cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
+cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
 
 【Quantumult X】
 -----------------
 [task_local]
-0 30 21 * * 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=双色球
+0 30 21 * * 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
 
 【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png
@@ -45,14 +46,20 @@ const $ = new API("ssq", true);
 const ERR = MYERR();
 
 !(async () => {
-  await check();
+  if ($.read("ssq") == "1") {
+    $.log("查询双色球");
+    await checkssq();
+  } else if ($.read("ssq") == "2") {
+    $.log("查询大乐透");
+    await checkdlt();
+  }
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
-      $.notify("双色球", "❌ 解析数据出现错误", err.message);
+      $.notify("彩票查询", "❌ 解析数据出现错误", err.message);
     } else {
       $.notify(
-        "双色球",
+        "彩票查询",
         "❌ 出现错误",
         JSON.stringify(err, Object.getOwnPropertyNames(err))
       );
@@ -60,7 +67,7 @@ const ERR = MYERR();
   })
   .finally(() => $.done());
 
-function check() {
+function checkssq() {
   const url = `http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=ssq&issueCount=5`;
   const headers = {
     "Accept-Encoding": `gzip, deflate`,
@@ -92,7 +99,8 @@ function check() {
         var detail = "红球：" + red + "\n蓝球：" + blue + "\n奖池信息暂未更新";
       } else {
         var detail =
-          "红球：" +
+          date +
+          "\n红球：" +
           red +
           "\n蓝球：" +
           blue +
@@ -101,8 +109,46 @@ function check() {
           "万元\n一等奖 " +
           content;
       }
-      $.notify("双色球", date, detail);
+      $.notify("彩票查询", "双色球", detail);
       $.log(detail);
+    }
+  });
+}
+
+function checkdlt() {
+  const url = `https://webapi.sporttery.cn/gateway/lottery/getDigitalDrawInfoV1.qry?isVerify=1&param=85%2C0%3B35%2C0%3B350133%2C0%3B04%2C0%3B20%2C23%3B03%2C32%3B06%2C33%3B19%2C33%3B18%2C35%3B19%2C35%3B190001%2C35%3B72%2C35%3B55%2C46`;
+  const headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `https://www.lottery.gov.cn/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body);
+      var dltmp = $.data.value.dlt.lotteryDrawResult.split(/\s+/);
+      var redArr = [];
+      var blueArr = [];
+      for (var i = 0; i < dltmp.length; i++) {
+        if (i < 5) {
+          redArr.push(dltmp[i]);
+        } else {
+          blueArr.push(dltmp[i]);
+        }
+      }
+      var date = $.data.value.dlt.lotterySaleEndtime.split(/\s+/)[0];
+      var detail =
+        date + "\n红球：" + redArr.join(",") + "\n蓝球：" + blueArr.join(",");
+      $.notify("彩票查询", date, detail);
+      $.log($.data);
     }
   });
 }
