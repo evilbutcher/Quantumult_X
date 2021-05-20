@@ -27,16 +27,19 @@
 -----------------
 [Script]
 彩票查询 = type=cron,cronexp=0 30 21 * * 2,4,7 ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
+or 0 30 21 * * 1,3,6
 
 【Loon】
 -----------------
 [Script]
 cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
+or 0 30 21 * * 1,3,6
 
 【Quantumult X】
 -----------------
 [task_local]
 0 30 21 * * 2,4,7  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
+or 0 30 21 * * 1,3,6
 
 【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png
@@ -44,12 +47,13 @@ cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutch
 */
 const $ = new API("ssq", true);
 const ERR = MYERR();
+const type = $.read("ssq");
 
 !(async () => {
-  if ($.read("ssq") == "1") {
+  if (type == "1") {
     $.log("查询双色球");
     await checkssq();
-  } else if ($.read("ssq") == "2") {
+  } else if (type == "2") {
     $.log("查询大乐透");
     await checkdlt();
   }
@@ -133,8 +137,8 @@ function checkdlt() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      $.data = JSON.parse(response.body);
-      var dltmp = $.data.value.dlt.lotteryDrawResult.split(/\s+/);
+      $.data = JSON.parse(response.body).value.dlt;
+      var dltmp = $.data.lotteryDrawResult.split(/\s+/);
       var redArr = [];
       var blueArr = [];
       for (var i = 0; i < dltmp.length; i++) {
@@ -144,11 +148,11 @@ function checkdlt() {
           blueArr.push(dltmp[i]);
         }
       }
-      var date = $.data.value.dlt.lotterySaleEndtime.split(/\s+/)[0];
+      var date = $.data.lotterySaleEndtime.split(/\s+/)[0];
       var detail =
         date + "\n红球：" + redArr.join(",") + "\n蓝球：" + blueArr.join(",");
-      $.notify("彩票查询", date, detail);
-      $.log($.data);
+      $.notify("彩票查询", "大乐透", detail);
+      $.log(detail);
     }
   });
 }
