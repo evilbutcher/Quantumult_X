@@ -39,7 +39,7 @@ cron "0 30 21 * * 2,4,7" script-path=https://raw.githubusercontent.com/evilbutch
 
 【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png
-彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq.png
+彩色：https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png
 */
 const $ = new API("ssq", true);
 const ERR = MYERR();
