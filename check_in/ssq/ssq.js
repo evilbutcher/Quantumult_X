@@ -81,20 +81,26 @@ function check() {
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body).result[0];
-      var poolmoney = ($.data.poolmoney / 10000).toFixed(2);
+      var poolmoney = JSON.stringify(
+        ($.data.poolmoney / 10000).toFixed(2)
+      ).slice(1, -1);
       var content = $.data.content;
       var date = $.data.date;
       var red = $.data.red;
       var blue = $.data.blue;
-      var detail =
-        "红球：" +
-        red +
-        "\n蓝球：" +
-        blue +
-        "\n奖池：" +
-        JSON.stringify(poolmoney).slice(1, -1) +
-        "万元\n一等奖 " +
-        content;
+      if (poolmoney == "NaN") {
+        var detail = "红球：" + red + "\n蓝球：" + blue + "\n奖池信息暂未更新";
+      } else {
+        var detail =
+          "红球：" +
+          red +
+          "\n蓝球：" +
+          blue +
+          "\n奖池：" +
+          poolmoney +
+          "万元\n一等奖 " +
+          content;
+      }
       $.notify("双色球", date, detail);
       $.log(detail);
     }
