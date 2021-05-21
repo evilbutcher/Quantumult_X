@@ -906,24 +906,24 @@
       "settings": [
         {
           "id": "@ssq.ssq",
-          "name": "类型选择",
-          "val": "1",
-          "type": "radios",
-          "desc": "选择要查询的彩票",
-          "items": [
-            {
-              "key": "1",
-              "label": "双色球"
-            },
-            {
-              "key": "2",
-              "label": "大乐透"
-            },
-            {
-              "key": "3",
-              "label": "福彩3D"
-            }
-          ]
+          "name": "双色球",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询双色球开奖结果"
+        },
+        {
+          "id": "@ssq.dlt",
+          "name": "大乐透",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询大乐透开奖结果"
+        },
+        {
+          "id": "@ssq.3d",
+          "name": "福彩3D",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询福彩3D开奖结果"
         }
       ],
       "author": "@evilbutcher, @Phantom",
