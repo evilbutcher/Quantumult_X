@@ -50,15 +50,33 @@ const ERR = MYERR();
 const ssq = $.read("ssq") || true; //默认查询
 const dlt = $.read("dlt") || true; //默认查询
 const fc3d = $.read("3d") || true; //默认查询
+const findlatest = $.read("new") || true; //默认仅查询当日开奖的彩票
 
 !(async () => {
+  var week = new Date().getDay();
   if (ssq == true || ssq == "true") {
-    $.log("查询双色球");
-    await checkssq();
+    if (findlatest == true || findlatest == "true") {
+      if (week == 2 || week == 4 || week == 0) {
+        $.log("查询双色球");
+        await checkssq();
+      } else {
+        $.log("双色球今日未开奖");
+      }
+    } else {
+      await checkssq();
+    }
   }
   if (dlt == true || dlt == "true") {
-    $.log("查询大乐透");
-    await checkdlt();
+    if (findlatest == true || findlatest == "true") {
+      if (week == 1 || week == 3 || week == 6) {
+        $.log("查询大乐透");
+        await checkdlt();
+      } else {
+        $.log("大乐透今日未开奖");
+      }
+    } else {
+      await checkdlt();
+    }
   }
   if (fc3d == true || fc3d == "true") {
     $.log("查询福彩3D");

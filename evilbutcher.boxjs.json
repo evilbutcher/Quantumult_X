@@ -924,7 +924,13 @@
           "val": true,
           "type": "boolean",
           "desc": "打开即可查询福彩3D开奖结果"
-        }
+        },
+        {
+          "id": "@ssq.new",
+          "name": "仅查询当日开奖",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开则会只查询今日开奖的彩票"}
       ],
       "author": "@evilbutcher, @Phantom",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/ssq",
