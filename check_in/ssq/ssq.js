@@ -56,6 +56,9 @@ const type = $.read("ssq") || 1; //默认查询双色球
   } else if (type == "2") {
     $.log("查询大乐透");
     await checkdlt();
+  } else if (type == "3") {
+    $.log("查询福彩3D");
+    await check3d();
   }
 })()
   .catch((err) => {
@@ -152,6 +155,50 @@ function checkdlt() {
       var detail =
         date + "\n红球：" + redArr.join(",") + "\n蓝球：" + blueArr.join(",");
       $.notify("彩票查询", "大乐透", detail);
+      $.log(detail);
+    }
+  });
+}
+
+function check3d() {
+  const url = `http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=3d&issueCount=30`;
+  const headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `http://www.cwl.gov.cn/kjxx/fc3d/kjgg/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    Host: `www.cwl.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+    "X-Requested-With": `XMLHttpRequest`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body).result[0];
+      var poolmoney = JSON.stringify(
+        ($.data.poolmoney / 10000).toFixed(2)
+      ).slice(1, -1);
+      var date = $.data.date;
+      var red = $.data.red;
+      if (poolmoney == "NaN") {
+        var detail = "红球：" + red + "\n奖池信息暂未更新";
+      } else {
+        var detail =
+          date +
+          "\n红球：" +
+          red +
+          "\n奖池：" +
+          poolmoney +
+          "万元\n一等奖 " +
+          content;
+      }
+      $.notify("彩票查询", "福彩3D", detail);
       $.log(detail);
     }
   });
