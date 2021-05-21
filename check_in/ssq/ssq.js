@@ -52,15 +52,15 @@ const dlt = $.read("dlt") || true; //默认查询
 const fc3d = $.read("3d") || true; //默认查询
 
 !(async () => {
-  if (type == "1") {
+  if (ssq == true) {
     $.log("查询双色球");
     await checkssq();
   }
-  if (type == "2") {
+  if (dlt == true) {
     $.log("查询大乐透");
     await checkdlt();
   }
-  if (type == "3") {
+  if (fc3d == true) {
     $.log("查询福彩3D");
     await check3d();
   }
