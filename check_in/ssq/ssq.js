@@ -134,7 +134,7 @@ function checkssq() {
       var name = $.data.name;
       var red = $.data.red;
       var blue = $.data.blue;
-      if (poolmoney == "NaN") {
+      if (content == undefined) {
         var detail = "红球：" + red + "\n蓝球：" + blue + "\n奖池信息暂未更新";
       } else {
         var detail =
@@ -149,7 +149,7 @@ function checkssq() {
           content;
       }
       $.notify("彩票查询", name, detail);
-      $.log(detail);
+      $.log(name + "\n" + detail);
     }
   });
 }
@@ -187,7 +187,7 @@ function checkdlt() {
       var detail =
         date + "\n红球：" + redArr.join(",") + "\n蓝球：" + blueArr.join(",");
       $.notify("彩票查询", "大乐透", detail);
-      $.log(detail);
+      $.log("大乐透" + "\n" + detail);
     }
   });
 }
@@ -238,7 +238,7 @@ function check3d() {
           "万元";
       }
       $.notify("彩票查询", name, detail);
-      $.log(detail);
+      $.log(name + "\n" + detail);
     }
   });
 }
@@ -276,7 +276,7 @@ function checkqlc() {
           date + "\n红球：" + red + "\n蓝球：" + blue + "\n一等奖 " + content;
       }
       $.notify("彩票查询", name, detail);
-      $.log(detail);
+      $.log(name + "\n" + detail);
     }
   });
 }
