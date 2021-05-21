@@ -186,17 +186,23 @@ function check3d() {
       ).slice(1, -1);
       var date = $.data.date;
       var red = $.data.red;
+      var num = red.split(",");
+      var all = 0;
+      for (var i = 0; i < num.length; i++) {
+        all = all + parseInt(num[i]);
+      }
       if (poolmoney == "NaN") {
-        var detail = "红球：" + red + "\n奖池信息暂未更新";
+        var detail = "结果：" + red + "\n和值：" + all + "\n奖池信息暂未更新";
       } else {
         var detail =
           date +
-          "\n红球：" +
+          "\n结果：" +
           red +
+          "\n和值：" +
+          all +
           "\n奖池：" +
           poolmoney +
-          "万元\n一等奖 " +
-          content;
+          "万元";
       }
       $.notify("彩票查询", "福彩3D", detail);
       $.log(detail);
