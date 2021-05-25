@@ -185,7 +185,7 @@ function checkdlt() {
       }
       var date = $.data.lotterySaleEndtime.split(/\s+/)[0];
       var detail =
-        date + "\n红球：" + redArr.join(",") + "\n蓝球：" + blueArr.join(",");
+        date + "\n前区：" + redArr.join(",") + "\n后区：" + blueArr.join(",");
       $.notify("彩票查询", "大乐透", detail);
       $.log("大乐透" + "\n" + detail);
     }
