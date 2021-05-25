@@ -134,7 +134,7 @@ function checkssq() {
       var name = $.data.name;
       var red = $.data.red;
       var blue = $.data.blue;
-      if (content == undefined) {
+      if (content == "") {
         var detail = "红球：" + red + "\n蓝球：" + blue + "\n奖池信息暂未更新";
       } else {
         var detail =
