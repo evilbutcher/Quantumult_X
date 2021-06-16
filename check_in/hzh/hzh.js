@@ -60,9 +60,9 @@ $.fp = $.read("evil_hzhfp");
     getCookie();
     return;
   }
-  if ($.body != undefined) {
+  if ($.body != undefined || $.fp != undefined) {
     await checkin();
-    showmsg();
+    //showmsg();
   } else {
     $.notify("华住会", "", "❌ 请先获取Cookie");
   }
@@ -128,8 +128,15 @@ function MYERR() {
       this.name = "ParseError";
     }
   }
+  class EventError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "EventError";
+    }
+  }
   return {
     ParseError,
+    EventError,
   };
 }
 
@@ -137,12 +144,12 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.body.match(/pointStor\/signIn/)
+    $request.url.match(/pointStore\/signIn/)
   ) {
     const body = $request.body;
     $.log(body);
     $.write(body, "evil_hzhBody");
-    const fp = $request.headers[fp];
+    const fp = $request.headers["fp"];
     $.log(fp);
     $.write(fp, "evil_hzhfp");
     $.notify("华住会", "", "获取签到Cookie成功🎉");
