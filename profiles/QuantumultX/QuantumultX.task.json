@@ -35,6 +35,10 @@
     "0 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png",
     "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js, tag=事业单位招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png",
     "0 5 * * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js, tag=高校人才网招聘监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png",
-    "0 30 21 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票监控, img-url=https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png"
+    "0 30 21 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票监控, img-url=https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png",
+    {
+      "config": "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh.png",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/hzh.conf, tag = 华住会获取签到Cookie"
+    }
   ]
 }

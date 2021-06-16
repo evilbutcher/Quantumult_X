@@ -111,7 +111,6 @@ function checkin() {
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body).data;
-      $.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("签到错误，请检查日志");
@@ -127,7 +126,7 @@ function checkinfo() {
     Accept: `application/json, text/plain, */*`,
     Connection: `keep-alive`,
     "Content-Type": `application/x-www-form-urlencoded`,
-    fp: `28ace611-e152-45b9-bdfc-2dcdfc5dae43`,
+    fp: $.fp,
     Host: `newactivity.huazhu.com`,
     "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
     Referer: `https://campaign.huazhu.com/pointsShop/`,
@@ -141,7 +140,6 @@ function checkinfo() {
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
       $.datainfo = JSON.parse(response.body).data;
-      $.log(JSON.stringify($.datainfo));
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("查询签到错误，请检查日志");
@@ -151,12 +149,15 @@ function checkinfo() {
 
 function showmsg() {
   var count = $.datainfo.signInCount;
-  if ($.data.isSign == true) {
+  if ($.data.isSign != null && $.data.isSign == true) {
+    $.log($.data);
+    $.log($.datainfo);
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
   } else {
     point = $.data.point;
     $.log($.data);
-    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天`);
+    $.log($.datainfo);
+    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
   }
 }
 
