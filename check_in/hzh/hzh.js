@@ -90,7 +90,6 @@ function checkin() {
     strDate = "0" + strDate;
   }
   var bodycontent = $.body.replace(/day=\d+/, `day=${strDate}`);
-  $.log(bodycontent);
   const url = `https://newactivity.huazhu.com/v1/pointStore/signIn`;
   const headers = {
     Origin: `https://campaign.huazhu.com`,
@@ -109,7 +108,6 @@ function checkin() {
     headers: headers,
     body: bodycontent,
   };
-  /*
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body).data;
@@ -118,14 +116,12 @@ function checkin() {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("签到错误，请检查日志");
     }
-  });*/
+  });
 }
 
 function checkinfo() {
-  var sk = $.body.exec(/sk=.*?/);
-  $.log(sk);
+  var sk = $.body.replace(/.*?sk\=/, "");
   const url2 = `https://newactivity.huazhu.com/v1/pointStore/singInIndex?sk=${sk}`;
-  $.log(url2);
   const headers2 = {
     Origin: `https://campaign.huazhu.com`,
     Accept: `application/json, text/plain, */*`,
@@ -142,7 +138,7 @@ function checkinfo() {
     url: url2,
     headers: headers2,
   };
-  /*return $.http.get(myRequest2).then((response) => {
+  return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
       $.datainfo = JSON.parse(response.body).data;
       $.log(JSON.stringify($.datainfo));
@@ -150,16 +146,17 @@ function checkinfo() {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("查询签到错误，请检查日志");
     }
-  });*/
+  });
 }
 
 function showmsg() {
+  var count = $.datainfo.signInCount;
   if ($.data.isSign == true) {
-    $.notify("华住会", "", `今日已签到🎉`);
+    $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
   } else {
     point = $.data.point;
     $.log($.data);
-    $.notify("华住会", "签到成功🎉", `获得${point}积分`);
+    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天`);
   }
 }
 
