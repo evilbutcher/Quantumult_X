@@ -111,7 +111,6 @@ function checkin() {
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
       $.data = JSON.parse(response.body).data;
-      $.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("签到错误，请检查日志");
@@ -141,7 +140,6 @@ function checkinfo() {
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
       $.datainfo = JSON.parse(response.body).data;
-      $.log(JSON.stringify($.datainfo));
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("查询签到错误，请检查日志");
