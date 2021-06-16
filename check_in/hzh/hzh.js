@@ -62,7 +62,8 @@ $.fp = $.read("evil_hzhfp");
   }
   if ($.body != undefined && $.fp != undefined) {
     await checkin();
-    //showmsg();
+    await checkinfo();
+    showmsg();
   } else {
     $.notify("华住会", "", "❌ 请先获取Cookie");
   }
@@ -89,6 +90,7 @@ function checkin() {
     strDate = "0" + strDate;
   }
   var bodycontent = $.body.replace(/day=\d+/, `day=${strDate}`);
+  $.log(bodycontent);
   const url = `https://newactivity.huazhu.com/v1/pointStore/signIn`;
   const headers = {
     Origin: `https://campaign.huazhu.com`,
@@ -107,16 +109,58 @@ function checkin() {
     headers: headers,
     body: bodycontent,
   };
-
+  /*
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      $.data = JSON.parse(response.body);
+      $.data = JSON.parse(response.body).data;
       $.log(JSON.stringify($.data));
     } else {
       $.error(JSON.stringify(response));
-      throw new ERR.ParseError("签到数据解析错误，请检查日志");
+      throw new ERR.ParseError("签到错误，请检查日志");
     }
-  });
+  });*/
+}
+
+function checkinfo() {
+  var sk = $.body.exec(/sk=.*?/);
+  $.log(sk);
+  const url2 = `https://newactivity.huazhu.com/v1/pointStore/singInIndex?sk=${sk}`;
+  $.log(url2);
+  const headers2 = {
+    Origin: `https://campaign.huazhu.com`,
+    Accept: `application/json, text/plain, */*`,
+    Connection: `keep-alive`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    fp: `28ace611-e152-45b9-bdfc-2dcdfc5dae43`,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+  };
+  const myRequest2 = {
+    url: url2,
+    headers: headers2,
+  };
+  /*return $.http.get(myRequest2).then((response) => {
+    if (response.statusCode == 200) {
+      $.datainfo = JSON.parse(response.body).data;
+      $.log(JSON.stringify($.datainfo));
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("查询签到错误，请检查日志");
+    }
+  });*/
+}
+
+function showmsg() {
+  if ($.data.isSign == true) {
+    $.notify("华住会", "", `今日已签到🎉`);
+  } else {
+    point = $.data.point;
+    $.log($.data);
+    $.notify("华住会", "签到成功🎉", `获得${point}积分`);
+  }
 }
 
 function MYERR() {
