@@ -126,7 +126,7 @@ function checkinfo() {
     Accept: `application/json, text/plain, */*`,
     Connection: `keep-alive`,
     "Content-Type": `application/x-www-form-urlencoded`,
-    fp: `28ace611-e152-45b9-bdfc-2dcdfc5dae43`,
+    fp: $.fp,
     Host: `newactivity.huazhu.com`,
     "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
     Referer: `https://campaign.huazhu.com/pointsShop/`,
