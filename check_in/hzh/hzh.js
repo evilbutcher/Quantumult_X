@@ -60,7 +60,7 @@ $.fp = $.read("evil_hzhfp");
     getCookie();
     return;
   }
-  if ($.body != undefined || $.fp != undefined) {
+  if ($.body != undefined && $.fp != undefined) {
     await checkin();
     //showmsg();
   } else {
@@ -102,12 +102,10 @@ function checkin() {
     Referer: `https://campaign.huazhu.com/pointsShop/`,
     "Accept-Language": `zh-cn`,
   };
-  const body = bodycontent;
-
   const myRequest = {
     url: url,
     headers: headers,
-    body: body,
+    body: bodycontent,
   };
 
   return $.http.post(myRequest).then((response) => {
