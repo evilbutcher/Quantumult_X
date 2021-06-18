@@ -184,7 +184,8 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/pointStore\/signIn/)
+    $request.url.match(/pointStore\/signIn/) &&
+    $request.body != undefined
   ) {
     const body = $request.body;
     $.log(body);
