@@ -25,7 +25,7 @@
 【Surge】
 -----------------
 [Script]
-酷乐潮玩App获取Cookie = http-request https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
+酷乐潮玩App获取Cookie = http-request, pattern = https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
 酷乐潮玩App = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
 
 【Loon】

@@ -25,7 +25,7 @@
 【Surge】
 -----------------
 [Script]
-九木杂物社获取Cookie = http-request https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, requires-body=true
+九木杂物社获取Cookie = http-request, pattern = https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, requires-body=true
 九木杂物社 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js
 
 【Loon】
