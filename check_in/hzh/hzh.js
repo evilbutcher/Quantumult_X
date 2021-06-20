@@ -149,7 +149,7 @@ function checkinfo() {
 
 function showmsg() {
   var count = $.datainfo.signInCount;
-  if ($.data.isSign == true) {
+  if ($.data.isSign != null && $.data.isSign == true) {
     $.log($.data);
     $.log($.datainfo);
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
@@ -157,7 +157,7 @@ function showmsg() {
     point = $.data.point;
     $.log($.data);
     $.log($.datainfo);
-    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天`);
+    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
   }
 }
 
@@ -184,7 +184,8 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/pointStore\/signIn/)
+    $request.url.match(/pointStore\/signIn/) &&
+    $request.body != undefined
   ) {
     const body = $request.body;
     $.log(body);
@@ -240,6 +241,9 @@ function HTTP(
     const baseURL = defaultOptions.baseURL;
     if (baseURL && !URL_REGEX.test(options.url || "")) {
       options.url = baseURL ? baseURL + options.url : options.url;
+    }
+    if (options.body && options.headers && !options.headers["Content-Type"]) {
+      options.headers["Content-Type"] = "application/x-www-form-urlencoded";
     }
     options = {
       ...defaultOptions,
