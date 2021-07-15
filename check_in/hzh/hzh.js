@@ -184,7 +184,7 @@ function checkprize(num) {
   };
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).data.buttonInfo == "立即领取") {
+      if (JSON.parse(response.body).data.buttonInfo != null && JSON.parse(response.body).data.buttonInfo == "立即领取") {
         var id = JSON.parse(response.body).data.taskRecordId;
         $.prizeid.push(id);
       }
