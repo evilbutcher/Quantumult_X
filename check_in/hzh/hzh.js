@@ -54,6 +54,7 @@ const $ = new API("hzh", true);
 const ERR = MYERR();
 $.body = $.read("evil_hzhBody");
 $.fp = $.read("evil_hzhfp");
+$.prizeid = [];
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -63,6 +64,14 @@ $.fp = $.read("evil_hzhfp");
   if ($.body != undefined && $.fp != undefined) {
     await checkin();
     await checkinfo();
+    /*for (var i = 1; i < 4; i++) {
+      await checkprize(i);
+    }
+    //not finish
+    for (var j = 0; i < $.prizeid.length; j++) {
+      $.log($.prizeid[j])
+      await getprize($.prizeid[j]);
+    }*/
     showmsg();
   } else {
     $.notify("华住会", "", "❌ 请先获取Cookie");
@@ -110,7 +119,11 @@ function checkin() {
   };
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      $.data = JSON.parse(response.body).data;
+      if (JSON.parse(response.body).msg == "fail") {
+        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
+      } else {
+        $.data = JSON.parse(response.body).data;
+      }
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("签到错误，请检查日志");
@@ -139,7 +152,11 @@ function checkinfo() {
   };
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
-      $.datainfo = JSON.parse(response.body).data;
+      if (JSON.parse(response.body).msg == "fail") {
+        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
+      } else {
+        $.datainfo = JSON.parse(response.body).data;
+      }
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("查询签到错误，请检查日志");
@@ -147,17 +164,94 @@ function checkinfo() {
   });
 }
 
+function checkprize(num) {
+  var sk = $.body.replace(/.*?sk\=/, "");
+  const url3 = `https://newactivity.huazhu.com/v1/pointStore/taskInfo?taskId=${num}&sk=${sk}`;
+  const headers3 = {
+    Origin: `https://campaign.huazhu.com`,
+    Accept: `application/json, text/plain, */*`,
+    Connection: `keep-alive`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    fp: $.fp,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+  };
+  const myRequest3 = {
+    url: url3,
+    headers: headers3,
+  };
+  return $.http.get(myRequest3).then((response) => {
+    if (response.statusCode == 200) {
+      if (JSON.parse(response.body).code == "200") {
+        var id = JSON.parse(response.body).data.taskRecordId;
+        $.prizeid.push(id);
+      }
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("查询奖励错误，请检查日志");
+    }
+  });
+}
+
+function getprize(id) {
+  var sk = $.body.replace(/.*?sk\=/, "");
+  const url4 = `https://newactivity.huazhu.com/v1/pointStore/sendPrize?taskRecordId=${id}&sk=${sk}`;
+  const headers4 = {
+    Origin: `https://campaign.huazhu.com`,
+    Accept: `application/json, text/plain, */*`,
+    Connection: `keep-alive`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    fp: $.fp,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+  };
+  const myRequest4 = {
+    url: url4,
+    headers: headers4,
+  };
+  return $.http.get(myRequest4).then((response) => {
+    if (response.statusCode == 200) {
+      $.log(JSON.parse(response.body));
+      if (JSON.parse(response.body).success == true) {
+        $.log(JSON.parse(response.body));
+        var prize = JSON.parse(response.body).data;
+        $.getprize = "";
+        for (var i = 0; i < prize.length; i++) {
+          $.getprize = $.getprize + prize[i].prizeInfo;
+        }
+      }
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("领取奖励错误，请检查日志");
+    }
+  });
+}
+
 function showmsg() {
   var count = $.datainfo.signInCount;
   if ($.data.isSign != null && $.data.isSign == true) {
-    $.log($.data);
-    $.log($.datainfo);
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
   } else {
     point = $.data.point;
-    $.log($.data);
-    $.log($.datainfo);
-    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
+    if ($.getprize != "") {
+      $.notify(
+        "华住会",
+        "签到成功🎉",
+        `获得${point}积分，累计签到${count}天！获得奖励：${$.getprize}`
+      );
+    } else {
+      $.notify(
+        "华住会",
+        "签到成功🎉",
+        `获得${point}积分，累计签到${count}天！`
+      );
+    }
   }
 }
 
