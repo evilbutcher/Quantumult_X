@@ -55,6 +55,7 @@ const ERR = MYERR();
 $.body = $.read("evil_hzhBody");
 $.fp = $.read("evil_hzhfp");
 $.prizeid = [];
+$.getprize = "";
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -64,14 +65,12 @@ $.prizeid = [];
   if ($.body != undefined && $.fp != undefined) {
     await checkin();
     await checkinfo();
-    /*for (var i = 1; i < 4; i++) {
+    for (var i = 1; i < 4; i++) {
       await checkprize(i);
     }
-    //not finish
-    for (var j = 0; i < $.prizeid.length; j++) {
-      $.log($.prizeid[j])
+    for (var j = 0; j < $.prizeid.length; j++) {
       await getprize($.prizeid[j]);
-    }*/
+    }
     showmsg();
   } else {
     $.notify("华住会", "", "❌ 请先获取Cookie");
@@ -185,7 +184,7 @@ function checkprize(num) {
   };
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).code == "200") {
+      if (JSON.parse(response.body).data.buttonInfo == "立即领取") {
         var id = JSON.parse(response.body).data.taskRecordId;
         $.prizeid.push(id);
       }
@@ -196,7 +195,7 @@ function checkprize(num) {
   });
 }
 
-function getprize(id) {
+async function getprize(id) {
   var sk = $.body.replace(/.*?sk\=/, "");
   const url4 = `https://newactivity.huazhu.com/v1/pointStore/sendPrize?taskRecordId=${id}&sk=${sk}`;
   const headers4 = {
@@ -211,17 +210,33 @@ function getprize(id) {
     "Accept-Language": `zh-cn`,
     "Accept-Encoding": `gzip, deflate, br`,
   };
+  const headers5 = {
+    'Origin' : `https://campaign.huazhu.com`,
+    'Access-Control-Request-Headers' : `fp`,
+    'Connection' : `keep-alive`,
+    'Accept' : `*/*`,
+    'Referer' : `https://campaign.huazhu.com/`,
+    'Host' : `newactivity.huazhu.com`,
+    'User-Agent' : `HUAZHU/ios/iPhone12,1/14.6/8.0.60/HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    'Accept-Language' : `zh-cn`,
+    'Accept-Encoding' : `gzip, deflate, br`,
+    'Access-Control-Request-Method' : `GET`
+};
   const myRequest4 = {
     url: url4,
     headers: headers4,
   };
+  const myRequest5= {
+    url: url4,
+    headers: headers5,
+  };
+  await $.http.options(myRequest5).then((response) => {$.log("尝试领取完成")})
   return $.http.get(myRequest4).then((response) => {
     if (response.statusCode == 200) {
       $.log(JSON.parse(response.body));
       if (JSON.parse(response.body).success == true) {
         $.log(JSON.parse(response.body));
         var prize = JSON.parse(response.body).data;
-        $.getprize = "";
         for (var i = 0; i < prize.length; i++) {
           $.getprize = $.getprize + prize[i].prizeInfo;
         }
