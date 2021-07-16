@@ -68,8 +68,10 @@ $.getprize = "";
     for (var i = 1; i < 4; i++) {
       await checkprize(i);
     }
-    for (var j = 0; j < $.prizeid.length; j++) {
-      await getprize($.prizeid[j]);
+    if ($.prizeid.length != 0) {
+      for (var j = 0; j < $.prizeid.length; j++) {
+        await getprize($.prizeid[j]);
+      }
     }
     showmsg();
   } else {
@@ -184,7 +186,12 @@ function checkprize(num) {
   };
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
-      var list = JSON.parse(response.body).data.taskPrizes;
+      if (JSON.parse(response.body).data.taskPrizes != null) {
+        var list = JSON.parse(response.body).data.taskPrizes;
+      } else {
+        $.log("查询奖励失败")
+        return
+      }
       var info = JSON.parse(response.body).data.buttonInfo;
       var name = "";
       for (var i = 0; i < list.length; i++) {
