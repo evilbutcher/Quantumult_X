@@ -184,9 +184,22 @@ function checkprize(num) {
   };
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).data.buttonInfo != null && JSON.parse(response.body).data.buttonInfo == "立即领取") {
+      var list = JSON.parse(response.body).data.taskPrizes;
+      var info = JSON.parse(response.body).data.buttonInfo;
+      var name = "";
+      for (var i = 0; i < list.length; i++) {
+        name = name + list[i].prizeInfo + " ";
+      }
+      if (info != null && info == "已领取") {
+        $.log(info + "：" + name);
+      }
+      if (info != null && info == "去完成") {
+        $.log("请继续签到以获得：" + name);
+      }
+      if (info != null && info == "立即领取") {
         var id = JSON.parse(response.body).data.taskRecordId;
         $.prizeid.push(id);
+        $.log("准备尝试领取：" + name);
       }
     } else {
       $.error(JSON.stringify(response));
@@ -211,32 +224,35 @@ async function getprize(id) {
     "Accept-Encoding": `gzip, deflate, br`,
   };
   const headers5 = {
-    'Origin' : `https://campaign.huazhu.com`,
-    'Access-Control-Request-Headers' : `fp`,
-    'Connection' : `keep-alive`,
-    'Accept' : `*/*`,
-    'Referer' : `https://campaign.huazhu.com/`,
-    'Host' : `newactivity.huazhu.com`,
-    'User-Agent' : `HUAZHU/ios/iPhone12,1/14.6/8.0.60/HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    'Accept-Language' : `zh-cn`,
-    'Accept-Encoding' : `gzip, deflate, br`,
-    'Access-Control-Request-Method' : `GET`
-};
+    Origin: `https://campaign.huazhu.com`,
+    "Access-Control-Request-Headers": `fp`,
+    Connection: `keep-alive`,
+    Accept: `*/*`,
+    Referer: `https://campaign.huazhu.com/`,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+    "Access-Control-Request-Method": `GET`,
+  };
   const myRequest4 = {
     url: url4,
     headers: headers4,
   };
-  const myRequest5= {
+  const myRequest5 = {
     url: url4,
     headers: headers5,
   };
-  await $.http.options(myRequest5).then((response) => {$.log("尝试领取完成")})
+  await $.http.options(myRequest5).then((response) => {
+    $.log(response);
+    $.log("尝试领取完成");
+  });
   return $.http.get(myRequest4).then((response) => {
+    var body = JSON.parse(response.body);
     if (response.statusCode == 200) {
-      $.log(JSON.parse(response.body));
-      if (JSON.parse(response.body).success == true) {
-        $.log(JSON.parse(response.body));
-        var prize = JSON.parse(response.body).data;
+      $.log(body);
+      if (body.success == true) {
+        var prize = body.data;
         for (var i = 0; i < prize.length; i++) {
           $.getprize = $.getprize + prize[i].prizeInfo;
         }
