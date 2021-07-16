@@ -192,14 +192,14 @@ function checkprize(num) {
       }
       if (info != null && info == "已领取") {
         $.log(info + "：" + name);
-      }
-      if (info != null && info == "去完成") {
+      } else if (info != null && info == "去完成") {
         $.log("请继续签到以获得：" + name);
-      }
-      if (info != null && info == "立即领取") {
+      } else if (info != null && info == "立即领取") {
         var id = JSON.parse(response.body).data.taskRecordId;
         $.prizeid.push(id);
         $.log("准备尝试领取：" + name);
+      } else {
+        $.log(JSON.parse(response.body).data);
       }
     } else {
       $.error(JSON.stringify(response));
