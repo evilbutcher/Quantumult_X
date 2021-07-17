@@ -188,25 +188,25 @@ function checkprize(num) {
     if (response.statusCode == 200) {
       if (JSON.parse(response.body).code == 200) {
         var list = JSON.parse(response.body).data.taskPrizes;
+        var info = JSON.parse(response.body).data.buttonInfo;
+        var name = "";
+        for (var i = 0; i < list.length; i++) {
+          name = name + list[i].prizeInfo + " ";
+        }
+        if (info != null && info == "已领取") {
+          $.log(info + "：" + name);
+        } else if (info != null && info == "去完成") {
+          $.log("请继续签到以获得：" + name);
+        } else if (info != null && info == "立即领取") {
+          var id = JSON.parse(response.body).data.taskRecordId;
+          $.prizeid.push(id);
+          $.log("准备尝试领取：" + name);
+        } else {
+          $.log(JSON.parse(response.body).data);
+        }
       } else {
-        $.log("查询奖励失败，原因：" + JSON.parse(response.body).msg)
-        return
-      }
-      var info = JSON.parse(response.body).data.buttonInfo;
-      var name = "";
-      for (var i = 0; i < list.length; i++) {
-        name = name + list[i].prizeInfo + " ";
-      }
-      if (info != null && info == "已领取") {
-        $.log(info + "：" + name);
-      } else if (info != null && info == "去完成") {
-        $.log("请继续签到以获得：" + name);
-      } else if (info != null && info == "立即领取") {
-        var id = JSON.parse(response.body).data.taskRecordId;
-        $.prizeid.push(id);
-        $.log("准备尝试领取：" + name);
-      } else {
-        $.log(JSON.parse(response.body).data);
+        $.log("查询奖励失败，原因：" + JSON.parse(response.body).msg);
+        return;
       }
     } else {
       $.error(JSON.stringify(response));
@@ -257,7 +257,6 @@ async function getprize(id) {
   return $.http.get(myRequest4).then((response) => {
     var body = JSON.parse(response.body);
     if (response.statusCode == 200) {
-      $.log(body);
       if (body.success == true) {
         var prize = body.data;
         for (var i = 0; i < prize.length; i++) {
