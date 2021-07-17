@@ -186,10 +186,10 @@ function checkprize(num) {
   };
   return $.http.get(myRequest3).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).data.taskPrizes != null) {
+      if (JSON.parse(response.body).code == 200) {
         var list = JSON.parse(response.body).data.taskPrizes;
       } else {
-        $.log("查询奖励失败")
+        $.log("查询奖励失败，原因：" + JSON.parse(response.body).msg)
         return
       }
       var info = JSON.parse(response.body).data.buttonInfo;
