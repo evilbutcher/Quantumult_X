@@ -127,7 +127,7 @@ function checkin() {
       }
     } else {
       $.error(JSON.stringify(response));
-      throw new ERR.ParseError("签到错误，请检查日志");
+      throw new ERR.ParseError("签到错误，请检查日志，稍后再试");
     }
   });
 }
@@ -160,7 +160,7 @@ function checkinfo() {
       }
     } else {
       $.error(JSON.stringify(response));
-      throw new ERR.ParseError("查询签到错误，请检查日志");
+      throw new ERR.ParseError("查询签到错误，请检查日志，稍后再试");
     }
   });
 }
@@ -210,7 +210,7 @@ function checkprize(num) {
       }
     } else {
       $.error(JSON.stringify(response));
-      throw new ERR.ParseError("查询奖励错误，请检查日志");
+      throw new ERR.ParseError("查询奖励错误，请检查日志，稍后再试");
     }
   });
 }
@@ -265,7 +265,7 @@ async function getprize(id) {
       }
     } else {
       $.error(JSON.stringify(response));
-      throw new ERR.ParseError("领取奖励错误，请检查日志");
+      throw new ERR.ParseError("领取奖励错误，请检查日志，稍后再试");
     }
   });
 }
