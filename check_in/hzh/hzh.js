@@ -64,10 +64,10 @@ $.getprize = "";
   }
   if ($.body != undefined && $.fp != undefined) {
     await checkin();
-    await checkinfo();
-    for (var i = 1; i < 4; i++) {
+    //await checkinfo();
+    /*for (var i = 1; i < 4; i++) {
       await checkprize(i);
-    }
+    }*/
     if ($.prizeid.length != 0) {
       for (var j = 0; j < $.prizeid.length; j++) {
         await getprize($.prizeid[j]);
@@ -124,6 +124,7 @@ function checkin() {
         throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
       } else {
         $.data = JSON.parse(response.body).data;
+        $.log($.data);
       }
     } else {
       $.error(JSON.stringify(response));
@@ -134,19 +135,21 @@ function checkin() {
 
 function checkinfo() {
   var sk = $.body.replace(/.*?sk\=/, "");
-  const url2 = `https://newactivity.huazhu.com/v1/pointStore/singInIndex?sk=${sk}`;
+  const url2 = `https://hweb-mbf.huazhu.com/api/singInIndex`;
   const headers2 = {
     Origin: `https://campaign.huazhu.com`,
-    Accept: `application/json, text/plain, */*`,
+    Cookie: `SK=${sk}`,
+    "Client-Platform": `APP-IOS`,
     Connection: `keep-alive`,
-    "Content-Type": `application/x-www-form-urlencoded`,
-    fp: $.fp,
-    Host: `newactivity.huazhu.com`,
-    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    Accept: `application/json, text/plain, */*`,
+    "User-Token": `37a6fca2c75b48108c164d4562dbbdcc261154922`,
+    Host: `hweb-mbf.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/points-shop/`,
     "Accept-Language": `zh-cn`,
     "Accept-Encoding": `gzip, deflate, br`,
   };
+
   const myRequest2 = {
     url: url2,
     headers: headers2,
@@ -157,6 +160,7 @@ function checkinfo() {
         throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
       } else {
         $.datainfo = JSON.parse(response.body).data;
+        $.log($.datainfo);
       }
     } else {
       $.error(JSON.stringify(response));
@@ -165,130 +169,14 @@ function checkinfo() {
   });
 }
 
-function checkprize(num) {
-  var sk = $.body.replace(/.*?sk\=/, "");
-  const url3 = `https://newactivity.huazhu.com/v1/pointStore/taskInfo?taskId=${num}&sk=${sk}`;
-  const headers3 = {
-    Origin: `https://campaign.huazhu.com`,
-    Accept: `application/json, text/plain, */*`,
-    Connection: `keep-alive`,
-    "Content-Type": `application/x-www-form-urlencoded`,
-    fp: $.fp,
-    Host: `newactivity.huazhu.com`,
-    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    Referer: `https://campaign.huazhu.com/pointsShop/`,
-    "Accept-Language": `zh-cn`,
-    "Accept-Encoding": `gzip, deflate, br`,
-  };
-  const myRequest3 = {
-    url: url3,
-    headers: headers3,
-  };
-  return $.http.get(myRequest3).then((response) => {
-    if (response.statusCode == 200) {
-      if (JSON.parse(response.body).code == 200) {
-        var list = JSON.parse(response.body).data.taskPrizes;
-        var info = JSON.parse(response.body).data.buttonInfo;
-        var name = "";
-        for (var i = 0; i < list.length; i++) {
-          name = name + list[i].prizeInfo + " ";
-        }
-        if (info != null && info == "已领取") {
-          $.log(info + "：" + name);
-        } else if (info != null && info == "去完成") {
-          $.log("请继续签到以获得：" + name);
-        } else if (info != null && info == "立即领取") {
-          var id = JSON.parse(response.body).data.taskRecordId;
-          $.prizeid.push(id);
-          $.log("准备尝试领取：" + name);
-        } else {
-          $.log(JSON.parse(response.body).data);
-        }
-      } else {
-        $.log("查询奖励失败，原因：" + JSON.parse(response.body).msg);
-        return;
-      }
-    } else {
-      $.error(JSON.stringify(response));
-      throw new ERR.ParseError("查询奖励错误，请检查日志，稍后再试");
-    }
-  });
-}
-
-async function getprize(id) {
-  var sk = $.body.replace(/.*?sk\=/, "");
-  const url4 = `https://newactivity.huazhu.com/v1/pointStore/sendPrize?taskRecordId=${id}&sk=${sk}`;
-  const headers4 = {
-    Origin: `https://campaign.huazhu.com`,
-    Accept: `application/json, text/plain, */*`,
-    Connection: `keep-alive`,
-    "Content-Type": `application/x-www-form-urlencoded`,
-    fp: $.fp,
-    Host: `newactivity.huazhu.com`,
-    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    Referer: `https://campaign.huazhu.com/pointsShop/`,
-    "Accept-Language": `zh-cn`,
-    "Accept-Encoding": `gzip, deflate, br`,
-  };
-  const headers5 = {
-    Origin: `https://campaign.huazhu.com`,
-    "Access-Control-Request-Headers": `fp`,
-    Connection: `keep-alive`,
-    Accept: `*/*`,
-    Referer: `https://campaign.huazhu.com/`,
-    Host: `newactivity.huazhu.com`,
-    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    "Accept-Language": `zh-cn`,
-    "Accept-Encoding": `gzip, deflate, br`,
-    "Access-Control-Request-Method": `GET`,
-  };
-  const myRequest4 = {
-    url: url4,
-    headers: headers4,
-  };
-  const myRequest5 = {
-    url: url4,
-    headers: headers5,
-  };
-  await $.http.options(myRequest5).then((response) => {
-    $.log(response);
-    $.log("尝试领取完成");
-  });
-  return $.http.get(myRequest4).then((response) => {
-    var body = JSON.parse(response.body);
-    if (response.statusCode == 200) {
-      if (body.success == true) {
-        var prize = body.data;
-        for (var i = 0; i < prize.length; i++) {
-          $.getprize = $.getprize + prize[i].prizeInfo;
-        }
-      }
-    } else {
-      $.error(JSON.stringify(response));
-      throw new ERR.ParseError("领取奖励错误，请检查日志，稍后再试");
-    }
-  });
-}
-
 function showmsg() {
-  var count = $.datainfo.signInCount;
+  count = $.datainfo.content.signInCount
   if ($.data.isSign != null && $.data.isSign == true) {
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
-  } else {
+  } else if ($.data.isSign != null && $.data.isSign == false) {
     point = $.data.point;
-    if ($.getprize != "") {
-      $.notify(
-        "华住会",
-        "签到成功🎉",
-        `获得${point}积分，累计签到${count}天！获得奖励：${$.getprize}`
-      );
-    } else {
-      $.notify(
-        "华住会",
-        "签到成功🎉",
-        `获得${point}积分，累计签到${count}天！`
-      );
-    }
+    count = $.datainfo.content.signInCount
+    $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
   }
 }
 
@@ -702,3 +590,109 @@ function API(name = "untitled", debug = false) {
     }
   })(name, debug);
 }
+
+//以下代码已失效
+/*function checkprize(num) {
+  var sk = $.body.replace(/.*?sk\=/, "");
+  const url3 = `https://newactivity.huazhu.com/v1/pointStore/taskInfo?taskId=${num}&sk=${sk}`;
+  const headers3 = {
+    Origin: `https://campaign.huazhu.com`,
+    Accept: `application/json, text/plain, * /*`,
+    Connection: `keep-alive`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    fp: $.fp,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+  };
+  const myRequest3 = {
+    url: url3,
+    headers: headers3,
+  };
+  return $.http.get(myRequest3).then((response) => {
+    if (response.statusCode == 200) {
+      if (JSON.parse(response.body).code == 200) {
+        var list = JSON.parse(response.body).data.taskPrizes;
+        var info = JSON.parse(response.body).data.buttonInfo;
+        var name = "";
+        for (var i = 0; i < list.length; i++) {
+          name = name + list[i].prizeInfo + " ";
+        }
+        if (info != null && info == "已领取") {
+          $.log(info + "：" + name);
+        } else if (info != null && info == "去完成") {
+          $.log("请继续签到以获得：" + name);
+        } else if (info != null && info == "立即领取") {
+          var id = JSON.parse(response.body).data.taskRecordId;
+          $.prizeid.push(id);
+          $.log("准备尝试领取：" + name);
+        } else {
+          $.log(JSON.parse(response.body).data);
+        }
+      } else {
+        $.log("查询奖励失败，原因：" + JSON.parse(response.body).msg);
+        return;
+      }
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("查询奖励错误，请检查日志，稍后再试");
+    }
+  });
+}
+
+async function getprize(id) {
+  var sk = $.body.replace(/.*?sk\=/, "");
+  const url4 = `https://newactivity.huazhu.com/v1/pointStore/sendPrize?taskRecordId=${id}&sk=${sk}`;
+  const headers4 = {
+    Origin: `https://campaign.huazhu.com`,
+    Accept: `application/json, text/plain, * /*`,
+    Connection: `keep-alive`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    fp: $.fp,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    Referer: `https://campaign.huazhu.com/pointsShop/`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+  };
+  const headers5 = {
+    Origin: `https://campaign.huazhu.com`,
+    "Access-Control-Request-Headers": `fp`,
+    Connection: `keep-alive`,
+    Accept: `* /*`,
+    Referer: `https://campaign.huazhu.com/`,
+    Host: `newactivity.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.60/HUAZHU/ios/iPhone12,1/14.6/8.0.60/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    "Accept-Language": `zh-cn`,
+    "Accept-Encoding": `gzip, deflate, br`,
+    "Access-Control-Request-Method": `GET`,
+  };
+  const myRequest4 = {
+    url: url4,
+    headers: headers4,
+  };
+  const myRequest5 = {
+    url: url4,
+    headers: headers5,
+  };
+  await $.http.options(myRequest5).then((response) => {
+    $.log(response);
+    $.log("尝试领取完成");
+  });
+  return $.http.get(myRequest4).then((response) => {
+    var body = JSON.parse(response.body);
+    if (response.statusCode == 200) {
+      if (body.success == true) {
+        var prize = body.data;
+        for (var i = 0; i < prize.length; i++) {
+          $.getprize = $.getprize + prize[i].prizeInfo;
+        }
+      }
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("领取奖励错误，请检查日志，稍后再试");
+    }
+  });
+} */
