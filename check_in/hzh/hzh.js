@@ -64,7 +64,7 @@ $.getprize = "";
   }
   if ($.body != undefined && $.fp != undefined) {
     await checkin();
-    //await checkinfo();
+    await checkinfo();
     /*for (var i = 1; i < 4; i++) {
       await checkprize(i);
     }*/
@@ -159,7 +159,7 @@ function checkinfo() {
       if (JSON.parse(response.body).msg == "fail") {
         throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
       } else {
-        $.datainfo = JSON.parse(response.body).data;
+        $.datainfo = JSON.parse(response.body);
         $.log($.datainfo);
       }
     } else {
