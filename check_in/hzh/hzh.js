@@ -25,25 +25,25 @@
 【Surge】
 -----------------
 [Script]
-华住会获取签到Cookie = http-request, pattern = https:\/\/newactivity\.huazhu\.com\/v1\/pointStore\/signIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
+华住会获取签到Cookie = http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
 华住会 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
 
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/newactivity\.huazhu\.com\/v1\/pointStore\/signIn tag=华住会获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
+http-request https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex tag=华住会获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会
 
 【Quantumult X】
 -----------------
 [rewrite_local]
-https:\/\/newactivity\.huazhu\.com\/v1\/pointStore\/signIn url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
+https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
 
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会
 
 【All App MitM】
-hostname = newactivity.huazhu.com
+hostname = hweb-mbf.huazhu.com
 
 【Icon】
 透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh_tran.png
@@ -52,10 +52,8 @@ hostname = newactivity.huazhu.com
 
 const $ = new API("hzh", true);
 const ERR = MYERR();
-$.body = $.read("evil_hzhBody");
-$.fp = $.read("evil_hzhfp");
-$.prizeid = [];
-$.getprize = "";
+$.cookie = $.read("evil_hzhCookie");
+$.usertoken = $.read("evil_hzhUserToken");
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -99,19 +97,21 @@ function checkin() {
   if (strDate >= 0 && strDate <= 9) {
     strDate = "0" + strDate;
   }
-  var bodycontent = $.body.replace(/day=\d+/, `day=${strDate}`);
-  const url = `https://newactivity.huazhu.com/v1/pointStore/signIn`;
+  var body = `state=1&day=${strDate}`;
+  const url = `https://hweb-mbf.huazhu.com/api/signIn`;
   const headers = {
-    Origin: `https://campaign.huazhu.com`,
-    "Accept-Encoding": `gzip, deflate, br`,
-    Connection: `keep-alive`,
-    "Content-Type": `application/x-www-form-urlencoded`,
-    fp: $.fp,
-    Host: `newactivity.huazhu.com`,
-    Accept: `application/json, text/plain, */*`,
-    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/HUAZHU/ios/iPhone12,1/14.6/8.0.5/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-    Referer: `https://campaign.huazhu.com/pointsShop/`,
-    "Accept-Language": `zh-cn`,
+    'Connection' : `keep-alive`,
+'Accept-Encoding' : `gzip, deflate, br`,
+'Client-Platform' : `APP-IOS`,
+'Content-Type' : `application/x-www-form-urlencoded`,
+'Origin' : `https://campaign.huazhu.com`,
+'User-Agent' : `HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+'User-Token' : $.usertoken,
+'Cookie' : $.cookie,
+'Host' : `hweb-mbf.huazhu.com`,
+'Referer' : `https://campaign.huazhu.com/points-shop/`,
+'Accept-Language' : `zh-cn`,
+'Accept' : `application/json, text/plain, */*`
   };
   const myRequest = {
     url: url,
@@ -138,11 +138,11 @@ function checkinfo() {
   const url2 = `https://hweb-mbf.huazhu.com/api/singInIndex`;
   const headers2 = {
     Origin: `https://campaign.huazhu.com`,
-    Cookie: `SK=${sk}`,
+    Cookie: $.cookie,
     "Client-Platform": `APP-IOS`,
     Connection: `keep-alive`,
     Accept: `application/json, text/plain, */*`,
-    "User-Token": `37a6fca2c75b48108c164d4562dbbdcc261154922`,
+    "User-Token": $.usertoken,
     Host: `hweb-mbf.huazhu.com`,
     "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
     Referer: `https://campaign.huazhu.com/points-shop/`,
@@ -203,15 +203,14 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/pointStore\/signIn/) &&
-    $request.body != undefined
+    $request.url.match(/api\/singInIndex/)
   ) {
-    const body = $request.body;
-    $.log(body);
-    $.write(body, "evil_hzhBody");
-    const fp = $request.headers["fp"];
-    $.log(fp);
-    $.write(fp, "evil_hzhfp");
+    const cookie = $request.headers[cookie];
+    $.log(cookie);
+    $.write(cookie, "evil_hzhCookie");
+    const usertoken = $request.headers["User-Token"];
+    $.log(usertoken);
+    $.write(usertoken, "evil_hzhUserToken");
     $.notify("华住会", "", "获取签到Cookie成功🎉");
   }
 }
