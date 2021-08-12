@@ -25,19 +25,19 @@
 【Surge】
 -----------------
 [Script]
-华住会获取签到Cookie = http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
+华住会获取签到Cookie = http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/taskDetail, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
 华住会 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
 
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex tag=华住会获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
+http-request https:\/\/hweb-mbf\.huazhu\.com\/api\/taskDetail tag=华住会获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=true
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会
 
 【Quantumult X】
 -----------------
 [rewrite_local]
-https:\/\/hweb-mbf\.huazhu\.com\/api\/singInIndex url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
+https:\/\/hweb-mbf\.huazhu\.com\/api\/taskDetail url script-request-body https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
 
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会
@@ -203,7 +203,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/api\/singInIndex/)
+    $request.url.match(/api\/taskDetail/)
   ) {
     const cookie = $request.headers[cookie];
     $.log(cookie);
