@@ -100,18 +100,18 @@ function checkin() {
   var body = `state=1&day=${strDate}`;
   const url = `https://hweb-mbf.huazhu.com/api/signIn`;
   const headers = {
-    'Connection' : `keep-alive`,
-'Accept-Encoding' : `gzip, deflate, br`,
-'Client-Platform' : `APP-IOS`,
-'Content-Type' : `application/x-www-form-urlencoded`,
-'Origin' : `https://campaign.huazhu.com`,
-'User-Agent' : `HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-'User-Token' : $.usertoken,
-'Cookie' : $.cookie,
-'Host' : `hweb-mbf.huazhu.com`,
-'Referer' : `https://campaign.huazhu.com/points-shop/`,
-'Accept-Language' : `zh-cn`,
-'Accept' : `application/json, text/plain, */*`
+    Connection: `keep-alive`,
+    "Accept-Encoding": `gzip, deflate, br`,
+    "Client-Platform": `APP-IOS`,
+    "Content-Type": `application/x-www-form-urlencoded`,
+    Origin: `https://campaign.huazhu.com`,
+    "User-Agent": `HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/HUAZHU/ios/iPhone12,1/14.6/8.0.70/Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+    "User-Token": $.usertoken,
+    Cookie: $.cookie,
+    Host: `hweb-mbf.huazhu.com`,
+    Referer: `https://campaign.huazhu.com/points-shop/`,
+    "Accept-Language": `zh-cn`,
+    Accept: `application/json, text/plain, */*`,
   };
   const myRequest = {
     url: url,
@@ -170,12 +170,12 @@ function checkinfo() {
 }
 
 function showmsg() {
-  count = $.datainfo.content.signInCount
+  count = $.datainfo.content.signInCount;
   if ($.data.isSign != null && $.data.isSign == true) {
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
   } else if ($.data.isSign != null && $.data.isSign == false) {
     point = $.data.point;
-    count = $.datainfo.content.signInCount
+    count = $.datainfo.content.signInCount;
     $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
   }
 }
