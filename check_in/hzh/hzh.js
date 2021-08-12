@@ -120,13 +120,10 @@ function checkin() {
   };
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      if (
-        JSON.parse(response.body).msg == "fail" ||
-        JSON.parse(response.body).data == undefined
-      ) {
-        throw new ERR.EventError(
-          "服务器返回数据错误，请重新获取Cookie或稍后再试"
-        );
+      if (JSON.parse(response.body).msg == "fail") {
+        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
+      } else if (JSON.parse(response.body).data == undefined) {
+        throw new ERR.EventError("服务器返回数据错误，请稍后再试");
       } else {
         $.data = JSON.parse(response.body).data;
         $.log($.data);
@@ -160,13 +157,12 @@ function checkinfo() {
   };
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
-      if (
-        JSON.parse(response.body).msg == "fail" ||
-        JSON.parse(response.body) == undefined
-      ) {
+      if (JSON.parse(response.body).msg == "fail") {
         throw new ERR.EventError(
-          "服务器返回数据错误，请重新获取Cookie或稍后再试"
+          "服务器返回数据错误，请重新获取Cookie"
         );
+      } else if (JSON.parse(response.body) == undefined) {
+        throw new ERR.EventError("服务器返回数据错误，请稍后再试");
       } else {
         $.datainfo = JSON.parse(response.body);
         $.log($.datainfo);
