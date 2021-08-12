@@ -60,17 +60,17 @@ $.usertoken = $.read("evil_hzhUserToken");
     getCookie();
     return;
   }
-  if ($.body != undefined && $.fp != undefined) {
+  if ($.cookie != undefined && $.usertoken != undefined) {
     await checkin();
     await checkinfo();
     /*for (var i = 1; i < 4; i++) {
       await checkprize(i);
-    }*/
+    }
     if ($.prizeid.length != 0) {
       for (var j = 0; j < $.prizeid.length; j++) {
         await getprize($.prizeid[j]);
       }
-    }
+    }*/
     showmsg();
   } else {
     $.notify("华住会", "", "❌ 请先获取Cookie");
@@ -116,12 +116,17 @@ function checkin() {
   const myRequest = {
     url: url,
     headers: headers,
-    body: bodycontent,
+    body: body,
   };
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).msg == "fail") {
-        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
+      if (
+        JSON.parse(response.body).msg == "fail" ||
+        JSON.parse(response.body).data == undefined
+      ) {
+        throw new ERR.EventError(
+          "服务器返回数据错误，请重新获取Cookie或稍后再试"
+        );
       } else {
         $.data = JSON.parse(response.body).data;
         $.log($.data);
@@ -134,7 +139,6 @@ function checkin() {
 }
 
 function checkinfo() {
-  var sk = $.body.replace(/.*?sk\=/, "");
   const url2 = `https://hweb-mbf.huazhu.com/api/singInIndex`;
   const headers2 = {
     Origin: `https://campaign.huazhu.com`,
@@ -156,8 +160,13 @@ function checkinfo() {
   };
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).msg == "fail") {
-        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
+      if (
+        JSON.parse(response.body).msg == "fail" ||
+        JSON.parse(response.body) == undefined
+      ) {
+        throw new ERR.EventError(
+          "服务器返回数据错误，请重新获取Cookie或稍后再试"
+        );
       } else {
         $.datainfo = JSON.parse(response.body);
         $.log($.datainfo);
@@ -203,8 +212,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/api\/taskDetail/) &&
-    $request.body != undefined
+    $request.url.match(/api\/taskDetail/)
   ) {
     const cookie = $request.headers["Cookie"];
     $.log(cookie);
