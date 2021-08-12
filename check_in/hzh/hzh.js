@@ -203,7 +203,8 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/api\/taskDetail/)
+    $request.url.match(/api\/taskDetail/) &&
+    $request.body != undefined
   ) {
     const cookie = $request.headers["Cookie"];
     $.log(cookie);
