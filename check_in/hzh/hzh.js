@@ -205,7 +205,7 @@ function getCookie() {
     $request.method != "OPTIONS" &&
     $request.url.match(/api\/taskDetail/)
   ) {
-    const cookie = $request.headers[cookie];
+    const cookie = $request.headers["Cookie"];
     $.log(cookie);
     $.write(cookie, "evil_hzhCookie");
     const usertoken = $request.headers["User-Token"];
