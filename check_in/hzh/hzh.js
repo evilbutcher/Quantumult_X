@@ -120,12 +120,10 @@ function checkin() {
   };
   return $.http.post(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).msg == "fail") {
+      if (JSON.parse(response.body).message == "fail") {
         throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
-      } else if (JSON.parse(response.body).data == undefined) {
-        throw new ERR.EventError("服务器返回数据错误，请稍后再试");
       } else {
-        $.data = JSON.parse(response.body).data;
+        $.data = JSON.parse(response.body).content;
         $.log($.data);
       }
     } else {
@@ -157,14 +155,10 @@ function checkinfo() {
   };
   return $.http.get(myRequest2).then((response) => {
     if (response.statusCode == 200) {
-      if (JSON.parse(response.body).msg == "fail") {
-        throw new ERR.EventError(
-          "服务器返回数据错误，请重新获取Cookie"
-        );
-      } else if (JSON.parse(response.body) == undefined) {
-        throw new ERR.EventError("服务器返回数据错误，请稍后再试");
+      if (JSON.parse(response.body).message == "fail") {
+        throw new ERR.EventError("服务器返回数据错误，请重新获取Cookie");
       } else {
-        $.datainfo = JSON.parse(response.body);
+        $.datainfo = JSON.parse(response.body).content;
         $.log($.datainfo);
       }
     } else {
@@ -175,12 +169,11 @@ function checkinfo() {
 }
 
 function showmsg() {
-  count = $.datainfo.content.signInCount;
+  count = $.datainfo.signInCount;
   if ($.data.isSign != null && $.data.isSign == true) {
     $.notify("华住会", "今日已签到🎉", `累计签到${count}天！`);
   } else if ($.data.isSign != null && $.data.isSign == false) {
     point = $.data.point;
-    count = $.datainfo.content.signInCount;
     $.notify("华住会", "签到成功🎉", `获得${point}积分，累计签到${count}天！`);
   }
 }
