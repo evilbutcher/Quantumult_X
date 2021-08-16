@@ -21,6 +21,10 @@
       "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/funboat.conf, tag = Funboat获取Cookie"
     },
     {
+      "config": "0 4 8 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/timepop.png, enabled=true",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/timepop.conf, tag = Timepop获取Cookie"
+    },
+    {
       "config": "25 4 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, tag=九木杂物社, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png, enabled=true",
       "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/jiumu.conf, tag = 九木杂物社获取Cookie"
     },

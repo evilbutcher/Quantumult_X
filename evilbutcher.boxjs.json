@@ -823,6 +823,28 @@
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
     },
     {
+      "id": "timepop",
+      "name": "Timepop",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js\">脚本地址</a>】",
+        "微信小程序搜索 Timepop，按照脚本提示获取Cookie。",
+        "⚠️其他基于有赞的小程序也可能触发获取Cookie，请获取完后及时禁用获取Cookie重写/脚本。"
+      ],
+      "keys": [
+        "evil_timepopurl",
+        "evil_timepopcookie",
+        "evil_timepopstatusurl",
+        "evil_timepopstatuscookie"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/timepop",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/timepop_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/timepop.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js"
+    },
+    {
       "id": "sydwzp",
       "name": "事业单位招聘监控",
       "descs_html": [
@@ -954,7 +976,7 @@
       "descs_html": [
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js\">脚本地址</a>】"
       ],
-      "keys": ["@hzh.evil_hzhfp", "@hzh.evil_hzhBody", "@hzh.evil_hzhCookie", "@hzh.evil_hzhUserToken"],
+      "keys": ["@hzh.evil_hzhCookie", "@hzh.evil_hzhUserToken"],
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hzh",
       "icons": [

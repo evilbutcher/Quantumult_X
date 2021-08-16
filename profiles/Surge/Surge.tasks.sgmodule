@@ -12,6 +12,7 @@ GLaDOS签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercon
 机场签到 = type=cron,cronexp=0 1 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
 机场签到Cookie = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
 Funboat签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Timepop签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
 九木杂物社 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js
 酷乐潮玩小程序 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
 酷乐潮玩App = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
