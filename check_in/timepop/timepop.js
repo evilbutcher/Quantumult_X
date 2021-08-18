@@ -92,13 +92,13 @@ function checkin() {
         var obj = JSON.parse(body);
         console.log(body);
         if (obj.code == 0) {
-          var prize = obj.data.prizes[0].points;
           var success = obj.data.is_successful;
           if (success == true) {
             detail = "签到成功🎉";
           }
+          var prize = obj.data.prizes[0]
           if (prize != null) {
-            detail = detail + " 本次获得" + prize + "分";
+            detail = detail + " 本次获得" + prize.point + "分";
           }
           console.log(detail);
         } else {
