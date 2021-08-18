@@ -24,8 +24,8 @@
 【Quantumult X】
 ————————————————
 [rewrite_local]
-https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
-https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx4a1af22a88a99386 url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx4a1af22a88a99386 url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
 
 [task_local]
 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
@@ -34,15 +34,15 @@ https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-heade
 ————————————————
 [Script]
 Timepop签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
-Timepop获取签到Cookie = http-request,pattern=https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
-Timepop获取积分Cookie = http-request,pattern=https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+Timepop获取签到Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx4a1af22a88a99386,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+Timepop获取积分Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx4a1af22a88a99386,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
 
 【Loon】
 ————————————————
 [Script]
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop签到
-http-request https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop获取签到Cookie
-http-request https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop获取积分Cookie
+^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx4a1af22a88a99386, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop获取签到Cookie
+^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx4a1af22a88a99386, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js, tag=Timepop获取积分Cookie
 
 【All App MitM】
 hostname = h5.youzan.com
