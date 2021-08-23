@@ -94,11 +94,15 @@ function checkin() {
         if (obj.code == 0) {
           var success = obj.data.is_successful;
           if (success == true) {
-            detail = "签到成功🎉";
+            detail = "签到成功🎉\n";
           }
-          var prize = obj.data.prizes[0]
-          if (prize != null) {
-            detail = detail + " 本次获得" + prize.point + "分";
+          var prize = obj.data.prizes[0];
+          if (prize != null || prize != undefined) {
+            var value = 0;
+            for (var i = 0; i < prize.length; i++) {
+              value = value + prize[i].points;
+            }
+            detail = detail + " 本次获得" + value + "分";
           }
           console.log(detail);
         } else {
