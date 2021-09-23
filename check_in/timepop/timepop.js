@@ -96,13 +96,16 @@ function checkin() {
           if (success == true) {
             detail = "签到成功🎉\n";
           }
-          var prize = obj.data.prizes[0];
+          var prize = obj.data.prizes;
+          var count = obj.data.times
           if (prize != null || prize != undefined) {
             var value = 0;
             for (var i = 0; i < prize.length; i++) {
               value = value + prize[i].points;
             }
-            detail = detail + " 本次获得" + value + "分";
+            detail = detail + "本次获得" + value + "积分\n当前周期连签天数 " +
+            count +
+            "天 ✅";
           }
           console.log(detail);
         } else {
