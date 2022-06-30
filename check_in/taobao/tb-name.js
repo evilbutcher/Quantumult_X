@@ -63,15 +63,15 @@ $.url = $.read("evil_tbnameurl");
   if ($.url != undefined && $.cookie != undefined) {
     await checkin();
   } else {
-    $.notify("淘宝监控", "", "❌ 请先获取Cookie");
+    $.notify("淘宝监控-标题版", "", "❌ 请先获取Cookie");
   }
 })()
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
-      $.notify("淘宝监控", "❌ 解析数据出现错误", err.message);
+      $.notify("淘宝监控-标题版", "❌ 解析数据出现错误", err.message);
     } else {
       $.notify(
-        "淘宝监控",
+        "淘宝监控-标题版",
         "❌ 出现错误",
         JSON.stringify(err, Object.getOwnPropertyNames(err))
       );
@@ -99,14 +99,12 @@ function checkin() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      var getid = /id%22%3A%22\d+%22/;
-      var preid = $.url.match(getid);
-      var id = JSON.stringify(preid).slice(13, -5);
-      var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
+      var getid = /itemId\"\:\"\d+\"/;
+      //var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
       var body = response.body.slice(11, -1);
       var obj = JSON.parse(body);
-      var data = obj.data.itemProperties;
-      $.log(data)
+      $.log(body)
+      //var data = obj.data.itemProperties;
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("数据解析错误，请检查日志");
@@ -118,7 +116,7 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/mtop.taobao.detail.getdesc/)
+    $request.url.match(/mtop.taobao.detail.getdetail/)
   ) {
     const cookie = $request.headers["Cookie"];
     $.log(cookie);
