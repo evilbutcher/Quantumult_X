@@ -25,19 +25,19 @@
 【Surge】
 -----------------
 [Script]
-淘宝监控获取Cookie = http-request, pattern = https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, requires-body=false
+淘宝监控获取Cookie = http-request, pattern = https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdetail, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, requires-body=false
 淘宝监控-标题版 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js
 
 【Loon】
 -----------------
 [Script]
-http-request https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc tag=淘宝监控获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, requires-body=false
+http-request https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdetail tag=淘宝监控获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, requires-body=false
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/taobao/tb-name.js, tag=淘宝监控-标题版
 
 【Quantumult X】
 -----------------
 [rewrite_local]
-https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js
+https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdetail url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js
 
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, tag=淘宝监控-标题版
