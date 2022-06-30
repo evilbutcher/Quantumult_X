@@ -49,16 +49,15 @@ hostname =h5api.m.taobao.com
 
 */
 
-const $ = new API("taobao");
+const $ = new API("taobao", true);
 const ERR = MYERR();
 $.cookie = $.read("evil_tbcookie");
 $.url = $.read("evil_tburl");
 
 !(async () => {
+  $.log("here");
   if (typeof $request != "undefined") {
-    $.log(done)
-getCookie();
-    
+    getCookie();
     return;
   }
   if ($.url != undefined && $.cookie != undefined) {
@@ -70,8 +69,6 @@ getCookie();
   .catch((err) => {
     if (err instanceof ERR.ParseError) {
       $.notify("淘宝监控", "❌ 解析数据出现错误", err.message);
-    } else if (err instanceof ERR.EventError) {
-      $.notify("淘宝监控", "❌ 请尝试重新获取Cookie", err.message);
     } else {
       $.notify(
         "淘宝监控",
@@ -117,22 +114,6 @@ function checkin() {
   });
 }
 
-function getCookie() {
-  if (
-    $request &&
-    $request.method != "OPTIONS" &&
-    $request.url.match(/mtop.taobao.detail.getdesc/)
-  ) {
-    const cookie = $request.headers["Cookie"];
-    $.log(cookie);
-    $.write(cookie, "evil_tbcookie");
-    const url = $request.url;
-    $.log(url);
-    $.write(url, "evil_tburl");
-    $.notify("淘宝监控", "", "获取Cookie成功🎉");
-  }
-}
-
 function MYERR() {
   class ParseError extends Error {
     constructor(message) {
@@ -145,24 +126,43 @@ function MYERR() {
   };
 }
 
+function getCookie() {
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/mtop.taobao.detail.getdesc/)
+  ) {
+    const cookie = $request.headers["Cookie"];
+    $.log(cookie);
+    $.write(cookie, "evil_tbcookie");
+    /*const url = $request.url;
+      $.log(url);
+      $.write(url, "evil_tburl");*/
+    $.notify("淘宝监控", "", "获取Cookie成功🎉");
+  }
+}
+
 /**
  * OpenAPI
  * @author: Peng-YM
  * https://github.com/Peng-YM/QuanX/blob/master/Tools/OpenAPI/README.md
  */
-
 function ENV() {
+  const isQX = typeof $task !== "undefined";
+  const isLoon = typeof $loon !== "undefined";
+  const isSurge = typeof $httpClient !== "undefined" && !isLoon;
   const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
+  const isNode = typeof require == "function" && !isJSBox;
+  const isRequest = typeof $request !== "undefined";
+  const isScriptable = typeof importModule !== "undefined";
   return {
-    isQX: typeof $task !== "undefined",
-    isLoon: typeof $loon !== "undefined",
-    isSurge:
-      typeof $httpClient !== "undefined" && typeof $utils !== "undefined",
-    isBrowser: typeof document !== "undefined",
-    isNode: typeof require == "function" && !isJSBox,
+    isQX,
+    isLoon,
+    isSurge,
+    isNode,
     isJSBox,
-    isRequest: typeof $request !== "undefined",
-    isScriptable: typeof importModule !== "undefined",
+    isRequest,
+    isScriptable,
   };
 }
 
@@ -171,7 +171,7 @@ function HTTP(
     baseURL: "",
   }
 ) {
-  const { isQX, isLoon, isSurge, isScriptable, isNode, isBrowser } = ENV();
+  const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
   const URL_REGEX =
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -241,23 +241,6 @@ function HTTP(
             });
           })
           .catch((err) => reject(err));
-      });
-    } else if (isBrowser) {
-      worker = new Promise((resolve, reject) => {
-        fetch(options.url, {
-          method,
-          headers: options.headers,
-          body: options.body,
-        })
-          .then((response) => response.json())
-          .then((response) =>
-            resolve({
-              statusCode: response.status,
-              headers: response.headers,
-              body: response.data,
-            })
-          )
-          .catch(reject);
       });
     }
 
