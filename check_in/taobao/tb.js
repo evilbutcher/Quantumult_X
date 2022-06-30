@@ -100,7 +100,10 @@ function checkin() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      $.log($.url);
+      var getid = /id%22%3A%22\d+%22/;
+      var preid = $.url.match(getid);
+      var id = JSON.stringify(preid).slice(13, -5);
+      var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
       var body = response.body.slice(11, -1);
       var obj = JSON.parse(body);
       var data = obj.data.itemProperties;
@@ -114,7 +117,7 @@ function checkin() {
       for (j = 0; j < item.length; j++) {
         if ($.record.indexOf(item[j]) == -1) {
           $.record.push(item[j]);
-          $.notify("淘宝监控", "", "新增" + item[j]);
+          $.notify("淘宝监控", "", "新增" + item[j], { "open-url": link });
         }
       }
       $.write($.record, "evil_tbrecord");
