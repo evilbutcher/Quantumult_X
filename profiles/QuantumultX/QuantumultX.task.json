@@ -43,6 +43,14 @@
     {
       "config": "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, tag=华住会, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh.png",
       "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/hzh.conf, tag = 华住会获取签到Cookie"
+    },
+    {
+      "config": "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, tag=淘宝监控-标题版, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/taobao.conf, tag = 淘宝监控获取Cookie"
+    },
+    {
+      "config": "5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, tag=淘宝监控, img-url=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png",
+      "addons": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/profiles/QuantumultX/addons/taobao.conf, tag = 淘宝监控获取Cookie"
     }
   ]
 }
