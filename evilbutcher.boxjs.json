@@ -984,6 +984,21 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js"
+    },
+    {
+      "id": "taobao",
+      "name": "淘宝监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js\">脚本地址</a>】"
+      ],
+      "keys": ["@taobao.evil_tbcookie", "@taobao.evil_tburl", "@taobao.evil_tbrecord"],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/taobao",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js"
     }
   ]
 }
