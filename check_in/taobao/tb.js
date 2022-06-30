@@ -41,6 +41,7 @@ https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc url script-request-
 
 [task_local]
 5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, tag=淘宝监控
+
 【All App MitM】
 hostname =h5api.m.taobao.com
 
@@ -50,12 +51,14 @@ hostname =h5api.m.taobao.com
 
 const $ = new API("taobao");
 const ERR = MYERR();
-$.cookie = $.read("evil_tbCookie");
+$.cookie = $.read("evil_tbcookie");
 $.url = $.read("evil_tburl");
 
 !(async () => {
   if (typeof $request != "undefined") {
-    getCookie();
+    $.log(done)
+getCookie();
+    
     return;
   }
   if ($.url != undefined && $.cookie != undefined) {
@@ -81,7 +84,6 @@ $.url = $.read("evil_tburl");
 
 function checkin() {
   const url = $.url;
-  //`https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?jsv=2.6.2&appKey=12574478&t=1656517560512&sign=9f97e9bf1a98d36c7c7d9b2e39bf8d1d&api=mtop.taobao.detail.getdesc&v=6.0&isSec=0&ecode=0&AntiFlood=true&AntiCreep=true&H5Request=true&timeout=3000&type=jsonp&dataType=jsonp&callback=mtopjsonp3&data=%7B%22ut_sk%22%3A%221.XcInEIrcM%252BsDAGvNMEvB4zUv_21380790_1656511291996.Copy.1%22%2C%22id%22%3A%22587967140967%22%2C%22sourceType%22%3A%22item%22%2C%22price%22%3A%2245-300%22%2C%22suid%22%3A%2275DCA9FC-0661-4C7F-9678-E696887AEE32%22%2C%22shareUniqueId%22%3A%2216621286879%22%2C%22un%22%3A%2282e0d5a64a70b1f4610d075e697965a2%22%2C%22share_crt_v%22%3A%221%22%2C%22un_site%22%3A%220%22%2C%22spm%22%3A%22a2159r.13376460.0.0%22%2C%22sp_abtk%22%3A%22gray_1_code_simpleonline%22%2C%22tbSocialPopKey%22%3A%22shareItem%22%2C%22sp_tk%22%3A%22WldVUzJMUlZUbjE%253D%22%2C%22cpp%22%3A%221%22%2C%22shareurl%22%3A%22true%22%2C%22short_name%22%3A%22h.fDqG9DN%22%2C%22bxsign%22%3A%22scd5wCtVu8aat45jisoTPCl77-qvPgj83OA0Mc14WXUWci0f6ggEDlvVBfXL4hwDZLqQz81mKySox7uJbli2LZEhXPAUh9spkv5Idr-2rIAA_Vq3s8oQTM47yuHqS0DOoQ-%22%2C%22tk%22%3A%22ZWUS2LRVTn1%22%2C%22app%22%3A%22macos_safari%22%2C%22type%22%3A%220%22%7D`;
   const headers = {
     Cookie: $.cookie,
     Accept: `*/*`,
@@ -107,7 +109,7 @@ function checkin() {
       var group = JSON.parse(detail);
       var name = group.value;
       var record = name.length;
-      console.log(record);
+      $.log(record);
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("数据解析错误，请检查日志");
@@ -119,14 +121,15 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc/)
+    $request.url.match(/mtop.taobao.detail.getdesc/)
   ) {
     const cookie = $request.headers["Cookie"];
     $.log(cookie);
-    $.write(cookie, "evil_tbCookie");
+    $.write(cookie, "evil_tbcookie");
     const url = $request.url;
     $.log(url);
     $.write(url, "evil_tburl");
+    $.notify("淘宝监控", "", "获取Cookie成功🎉");
   }
 }
 
