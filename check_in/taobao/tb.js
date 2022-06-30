@@ -46,7 +46,8 @@ https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc url script-request-
 hostname =h5api.m.taobao.com
 
 【Icon】
-
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png
 */
 
 const $ = new API("taobao", true);
