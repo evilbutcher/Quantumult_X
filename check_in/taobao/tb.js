@@ -53,6 +53,7 @@ const $ = new API("taobao", true);
 const ERR = MYERR();
 $.cookie = $.read("evil_tbcookie");
 $.url = $.read("evil_tburl");
+$.record = $.read("evil_tbrecord");
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -98,14 +99,17 @@ function checkin() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
+      $.log($.url);
       var body = response.body.slice(11, -1);
       var obj = JSON.parse(body);
-      var data = obj.data.itemProperties.slice(4, -4);
-      var detail = JSON.stringify(data).slice(1, -1);
-      var group = JSON.parse(detail);
-      var name = group.value;
-      var record = name.length;
-      $.log(record);
+      var data = obj.data.itemProperties;
+      var detail;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].name == "颜色分类") {
+          detail = data[i].value;
+        }
+      }
+      $.log(detail);
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("数据解析错误，请检查日志");
