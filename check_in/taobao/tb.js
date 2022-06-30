@@ -53,7 +53,7 @@ const $ = new API("taobao", true);
 const ERR = MYERR();
 $.cookie = $.read("evil_tbcookie");
 $.url = $.read("evil_tburl");
-$.record = $.read("evil_tbrecord");
+$.record = $.read("evil_tbrecord") || [];
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -109,7 +109,14 @@ function checkin() {
           detail = data[i].value;
         }
       }
-      $.log(detail);
+      var item = detail.split(",");
+      for (j = 0; j < item.length; j++) {
+        if ($.record.indexOf(item[j]) == -1) {
+          $.record.push(item[j]);
+          $.notify("淘宝监控", "", "新增" + item[j]);
+        }
+      }
+      $.write($.record, "evil_tbrecord");
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("数据解析错误，请检查日志");
