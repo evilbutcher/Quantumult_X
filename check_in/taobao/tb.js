@@ -55,7 +55,6 @@ $.cookie = $.read("evil_tbcookie");
 $.url = $.read("evil_tburl");
 
 !(async () => {
-  $.log("here");
   if (typeof $request != "undefined") {
     getCookie();
     return;
@@ -114,6 +113,22 @@ function checkin() {
   });
 }
 
+function getCookie() {
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/mtop.taobao.detail.getdesc/)
+  ) {
+    /*const cookie = $request.headers["Cookie"];
+    $.log(cookie);
+    $.write(cookie, "evil_tbcookie");
+    const url = $request.url;
+    $.log(url);
+    $.write(url, "evil_tburl");*/
+    $.notify("淘宝监控", "", "获取Cookie成功🎉");
+  }
+}
+
 function MYERR() {
   class ParseError extends Error {
     constructor(message) {
@@ -124,22 +139,6 @@ function MYERR() {
   return {
     ParseError,
   };
-}
-
-function getCookie() {
-  if (
-    $request &&
-    $request.method != "OPTIONS" &&
-    $request.url.match(/mtop.taobao.detail.getdesc/)
-  ) {
-    const cookie = $request.headers["Cookie"];
-    $.log(cookie);
-    $.write(cookie, "evil_tbcookie");
-    /*const url = $request.url;
-      $.log(url);
-      $.write(url, "evil_tburl");*/
-    $.notify("淘宝监控", "", "获取Cookie成功🎉");
-  }
 }
 
 /**
