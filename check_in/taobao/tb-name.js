@@ -20,7 +20,7 @@
 
 
 【使用说明】
-手动获取Cookie即可使用。
+在淘宝App对商品进行分享，拷贝链接用Safari打开，自动获取Cookie、监控链接，即可使用。该脚本对应的是对标题变动监控。
 
 【Surge】
 -----------------
@@ -54,6 +54,8 @@ const $ = new API("taobao-name", true);
 const ERR = MYERR();
 $.cookie = $.read("evil_tbnamecookie");
 $.url = $.read("evil_tbnameurl");
+$.record = $.read("evil_tbnamerecord") || "";
+$.price = $.read("evil_tbnameprice") || "";
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -99,12 +101,36 @@ function checkin() {
 
   return $.http.get(myRequest).then((response) => {
     if (response.statusCode == 200) {
-      var getid = /itemId\"\:\"\d+\"/;
-      //var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
+      var getinfo = /\itemId\"\:\"\d+\"\,\"title\"\:\".*?\"\,/;
       var body = response.body.slice(11, -1);
       var obj = JSON.parse(body);
-      $.log(body)
-      //var data = obj.data.itemProperties;
+      var data = obj.data;
+      var preinfo = JSON.stringify(data).match(getinfo);
+      var id = JSON.stringify(preinfo).slice(13, 25);
+      var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
+      var title = JSON.stringify(preinfo).slice(40, -5);
+      $.log(title);
+      $.log(id);
+      var getprice = /priceText\\"\:\\\".*?\\/;
+      var preprice = JSON.stringify(data).match(getprice);
+      var price = JSON.stringify(preprice).slice(20, -4);
+      $.log(price);
+      if (title != $.record) {
+        $.record = title;
+        $.write($.record, "evil_tbnamerecord");
+        $.notify("淘宝监控-标题版", "标题更新", title, { "open-url": link });
+      } else {
+        $.log("暂未发现标题更新");
+      }
+      if (JSON.stringify(price) != $.price) {
+        $.price = price;
+        $.write(JSON.stringify($.price), "evil_tbnameprice");
+        $.notify("淘宝监控-标题版", "价格更新", "新价格为" + price, {
+          "open-url": link,
+        });
+      } else {
+        $.log("暂未发现价格更新");
+      }
     } else {
       $.error(JSON.stringify(response));
       throw new ERR.ParseError("数据解析错误，请检查日志");

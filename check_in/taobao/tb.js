@@ -20,7 +20,7 @@
 
 
 【使用说明】
-手动获取Cookie即可使用。
+在淘宝App对商品进行分享，拷贝链接用Safari打开，自动获取Cookie、监控链接，即可使用。该脚本对应的是对颜色分类变动监控。
 
 【Surge】
 -----------------
@@ -118,6 +118,8 @@ function checkin() {
         if ($.record.indexOf(item[j]) == -1) {
           $.record.push(item[j]);
           $.notify("淘宝监控", "", "新增" + item[j], { "open-url": link });
+        } else {
+          $.log("暂未发现更新");
         }
       }
       $.write($.record, "evil_tbrecord");
