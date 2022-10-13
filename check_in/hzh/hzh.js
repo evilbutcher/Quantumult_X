@@ -25,7 +25,7 @@
 【Surge】
 -----------------
 [Script]
-华住会获取签到Cookie = http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/signIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=false
+华住会获取签到Cookie = type=http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/signIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=false
 华住会 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
 
 【Loon】
