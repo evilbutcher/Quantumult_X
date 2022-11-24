@@ -12,7 +12,8 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js\">脚本地址</a>】",
         "Cookie获取指南",
         "<iframe type=\"text/html\" src=\"https://www.youtube.com/embed/SKR0stikm-8?autoplay=1\" frameborder=\"0\"></iframe>",
-        "Cookie获取分为三步，请仔细查看视频中弹出的<font class=\"error--text\">三个通知</font>。如果下面应用设置第四个，检查签到开关<font class=\"error--text\">打开</font>时，第三个Cookie必须获取；关闭时获取前两个即可运行。"
+        "Cookie获取分为三步，请仔细查看视频中弹出的<font class=\"error--text\">三个通知</font>。如果下面应用设置第四个，检查签到开关<font class=\"error--text\">打开</font>时，第三个Cookie必须获取；关闭时获取前两个即可运行。",
+        "<font class=\"error--text\">注意！</font>如果超话数量不足20个无法触发视频流程中第三个重写，请关闭检查签到状态开关运行即可。"
       ],
       "keys": [
         "evil_tokenurl",
@@ -49,7 +50,7 @@
           "name": "检查签到状态",
           "val": false,
           "type": "boolean",
-          "desc": "打开则先检查签到状态，再签到；否则将直接签到"
+          "desc": "打开则先检查签到状态，再签到（超话数量不足20个请关闭）"
         }
       ],
       "author": "@toulanboy, @evilbutcher",
@@ -77,7 +78,10 @@
         "只有关闭<font class=\"error--text\">关键词匹配</font>才会通知最新内容，否则没匹配关键词不会通知。 ",
         "<font class=\"error--text\">Quantumult X</font>用户：B站、豆瓣榜单独立推送时可显示封面；关闭附带跳转链接点击通知也可跳转。"
       ],
-      "keys": ["evil_saveditem", "evil_savedtime"],
+      "keys": [
+        "evil_saveditem",
+        "evil_savedtime"
+      ],
       "settings": [
         {
           "id": "evil_wb_keyword",
@@ -519,7 +523,11 @@
         "此版本为尝试用Cookie签到，针对有登陆验证或跳转的机场。",
         "可利用BoxJs<font class=\"error--text\">会话切换</font>功能，一次保存一个机场信息，切换会话签到。"
       ],
-      "keys": ["evil_checkincktitle", "evil_checkinurl", "evil_checkincookie"],
+      "keys": [
+        "evil_checkincktitle",
+        "evil_checkinurl",
+        "evil_checkincookie"
+      ],
       "settings": [
         {
           "id": "evil_checkincktitle",
@@ -566,7 +574,10 @@
         "注册地址：https://github.com/glados-network/GLaDOS",
         "邀请码：3JRG4-KSGZJ-8QPXF-8PPOO"
       ],
-      "keys": ["evil_gladoscookie"],
+      "keys": [
+        "evil_gladoscookie",
+        "evil_galdosauthorization"
+      ],
       "author": "@evilbutcher",
       "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/glados",
       "icons": [
@@ -627,7 +638,9 @@
         "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js\">脚本地址</a>】",
         "首先前往<a href=\"https://api.nasa.gov\">NASA</a>申请一个API，申请流程非常简单，把得到的API填入脚本即可"
       ],
-      "keys": ["@NASA.nasaapi"],
+      "keys": [
+        "@NASA.nasaapi"
+      ],
       "settings": [
         {
           "id": "@NASA.translate",
@@ -659,9 +672,11 @@
       "id": "idaily",
       "name": "iDaily",
       "descs_html": [
-        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/iDaily/iDaily.js\">脚本地址</a>】"
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js\">脚本地址</a>】"
       ],
-      "keys": ["@iDaily.random"],
+      "keys": [
+        "@iDaily.random"
+      ],
       "settings": [
         {
           "id": "@iDaily.random",
@@ -678,6 +693,128 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/idaily.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js"
+    },
+    {
+      "id": "jiumu",
+      "name": "九木杂物社",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@Jiumu.evil_jiumuSignStr",
+        "@Jiumu.evil_jiumuReferer",
+        "@Jiumu.evil_jiumuVip",
+        "@Jiumu.evil_jiumuEncrypt",
+        "@Jiumu.evil_jiumuBody"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/jiumu",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/jiumu.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js"
+    },
+    {
+      "id": "wechatsubs",
+      "name": "公众号监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@Wechatsubs.wechatkeyword1",
+        "@Wechatsubs.wechatkeyword2",
+        "@Wechatsubs.wechatsavedtime",
+        "@Wechatsubs.wechatrefreshtime",
+        "@Wechatsubs.wechatsaveditem"
+      ],
+      "settings": [
+        {
+          "id": "@Wechatsubs.wechatkeyword1",
+          "name": "关键词-1",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的第一组关键词，多个词用中文逗号“，”分隔。"
+        },
+        {
+          "id": "@Wechatsubs.wechatkeyword2",
+          "name": "关键词-2",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的第二组关键词，多个词用中文逗号“，”分隔。"
+        },
+        {
+          "id": "@Wechatsubs.wechatrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js"
+    },
+    {
+      "id": "klcwapp",
+      "name": "酷乐潮玩App",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@klcwapp.evil_klcwappBody"
+      ],
+      "settings": [
+        {
+          "id": "@klcwapp.evil_klcwappBody",
+          "name": "Cookie",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "可自行抓包填入。"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/klcw",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js"
+    },
+    {
+      "id": "klcw",
+      "name": "酷乐潮玩小程序",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@klcw.evil_klcwid",
+        "@klcw.evil_klcwSignStr",
+        "@klcw.evil_klcwReferer",
+        "@klcw.evil_klcwVip",
+        "@klcw.evil_klcwEncrypt",
+        "@klcw.evil_klcwBody"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/klcw",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/klcw.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js"
     },
     {
       "id": "funboat",
@@ -700,6 +837,211 @@
         "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/funko.png"
       ],
       "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js"
+    },
+    {
+      "id": "timepop",
+      "name": "Timepop",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js\">脚本地址</a>】",
+        "微信小程序搜索 Timepop，按照脚本提示获取Cookie。",
+        "⚠️其他基于有赞的小程序也可能触发获取Cookie，请获取完后及时禁用获取Cookie重写/脚本。"
+      ],
+      "keys": [
+        "evil_timepopurl",
+        "evil_timepopcookie",
+        "evil_timepopstatusurl",
+        "evil_timepopstatuscookie"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/timepop",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/timepop_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/timepop.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js"
+    },
+    {
+      "id": "sydwzp",
+      "name": "事业单位招聘监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@sydwzp.sydwarea",
+        "@sydwzp.sydwsavedtime",
+        "@sydwzp.sydwrefreshtime",
+        "@sydwzp.sydwsaveditem",
+        "@sydwzp.sydwdetailsetting"
+      ],
+      "settings": [
+        {
+          "id": "@sydwzp.sydwarea",
+          "name": "地区",
+          "val": "",
+          "placeholder": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 2,
+          "desc": "请填入要监控的地区。"
+        },
+        {
+          "id": "@sydwzp.sydwdetailsetting",
+          "name": "获取附件链接",
+          "val": true,
+          "type": "boolean",
+          "desc": "是否获取附件链接"
+        },
+        {
+          "id": "@sydwzp.sydwrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/sydw.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js"
+    },
+    {
+      "id": "gxrcw",
+      "name": "高校人才网招聘监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@gxrcw.gxrcwsavedtime",
+        "@gxrcw.gxrcwrefreshtime",
+        "@gxrcw.gxrcwsaveditem"
+      ],
+      "settings": [
+        {
+          "id": "@gxrcw.gxrcwrefreshtime",
+          "name": "刷新时间（时）",
+          "val": 6,
+          "type": "number",
+          "desc": "重复内容默认在6小时内不再通知，之后清空，可自行修改"
+        }
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/wechatsubs",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/gxrcw.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js"
+    },
+    {
+      "id": "ssq",
+      "name": "彩票结果查询",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js\">脚本地址</a>】"
+      ],
+      "settings": [
+        {
+          "id": "@ssq.ssq",
+          "name": "双色球",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询双色球开奖结果"
+        },
+        {
+          "id": "@ssq.dlt",
+          "name": "大乐透",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询大乐透开奖结果"
+        },
+        {
+          "id": "@ssq.3d",
+          "name": "福彩3D",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询福彩3D开奖结果"
+        },
+        {
+          "id": "@ssq.qlc",
+          "name": "七乐彩",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开即可查询七乐彩开奖结果"
+        },
+        {
+          "id": "@ssq.new",
+          "name": "仅查询当日开奖",
+          "val": true,
+          "type": "boolean",
+          "desc": "打开则会只查询今日开奖的彩票"
+        }
+      ],
+      "author": "@evilbutcher, @Phantom",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/ssq",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js"
+    },
+    {
+      "id": "hzh",
+      "name": "华住会",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@hzh.evil_hzhCookie",
+        "@hzh.evil_hzhUserToken"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hzh",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/hzh.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js"
+    },
+    {
+      "id": "taobao",
+      "name": "淘宝监控",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@taobao.evil_tbcookie",
+        "@taobao.evil_tburl",
+        "@taobao.evil_tbrecord"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/taobao",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js"
+    },
+    {
+      "id": "taobao-name",
+      "name": "淘宝监控-标题版",
+      "descs_html": [
+        "点此直达【<a href=\"https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js\">脚本地址</a>】"
+      ],
+      "keys": [
+        "@taobao-name.evil_tbnamecookie",
+        "@taobao-name.evil_tbnameurl",
+        "@taobao-name.evil_tbnamerecord",
+        "@taobao-name.evil_tbnameprice"
+      ],
+      "author": "@evilbutcher",
+      "repo": "https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/taobao",
+      "icons": [
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb_tran.png",
+        "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png"
+      ],
+      "script": "https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js"
     }
   ]
 }

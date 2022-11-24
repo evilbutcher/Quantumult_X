@@ -24,8 +24,8 @@
 【Quantumult X】
 ————————————————
 [rewrite_local]
-https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
-https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx9b5caf9d1669dc96 url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx9b5caf9d1669dc96 url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 [task_local]
 5 8 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
@@ -34,15 +34,15 @@ https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats url script-request-heade
 ————————————————
 [Script]
 Funboat签到 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
-Funboat获取签到Cookie = type=http-request,pattern=https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
-Funboat获取积分Cookie = type=http-request,pattern=https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Funboat获取签到Cookie = type=http-request,pattern=^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx9b5caf9d1669dc96,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Funboat获取积分Cookie = type=http-request,pattern=^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx9b5caf9d1669dc96,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 【Loon】
 ————————————————
 [Script]
 cron "5 0 * * *" tag=Funboat签到, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
-http-request https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin tag=Funboat获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
-http-request https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats tag=Funboat获取积分Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+http-request ^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx9b5caf9d1669dc96 tag=Funboat获取签到Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+http-request ^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx9b5caf9d1669dc96 tag=Funboat获取积分Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
 
 【All App MitM】
 hostname = h5.youzan.com
@@ -84,13 +84,13 @@ function checkin() {
     headers: { "Extra-Data": sicookie },
   };
   console.log("checkRequest");
-  console.log(checkRequest);
+  console.log(JSON.stringify(checkRequest));
   return new Promise((resolve) => {
     $.get(checkRequest, (error, response, data) => {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        console.log(obj);
+        console.log(body);
         if (obj.code == 0) {
           var prize = obj.data.prizes[0].points;
           var count = obj.data.times;
@@ -121,13 +121,13 @@ function getall() {
     headers: { "Extra-Data": stcookie },
   };
   console.log("\nallRequest");
-  console.log(allRequest);
+  console.log(JSON.stringify(allRequest));
   return new Promise((resolve) => {
     $.get(allRequest, (error, response, data) => {
       if (response.statusCode == 200) {
         var body = response.body;
         var obj = JSON.parse(body);
-        console.log(obj);
+        console.log(body);
         if (obj.code == 0) {
           var allpoints = obj.data.stats.points;
           all = "总积分 " + allpoints + "分 🎉";
@@ -503,11 +503,15 @@ function Env(name, opts) {
         this.got(opts)
           .on("redirect", (resp, nextOpts) => {
             try {
-              const ck = resp.headers["set-cookie"]
-                .map(this.cktough.Cookie.parse)
-                .toString();
-              this.ckjar.setCookieSync(ck, null);
-              nextOpts.cookieJar = this.ckjar;
+              if (resp.headers["set-cookie"]) {
+                const ck = resp.headers["set-cookie"]
+                  .map(this.cktough.Cookie.parse)
+                  .toString();
+                if (ck) {
+                  this.ckjar.setCookieSync(ck, null);
+                }
+                nextOpts.cookieJar = this.ckjar;
+              }
             } catch (e) {
               this.logErr(e);
             }
@@ -578,23 +582,25 @@ function Env(name, opts) {
      *    :$.time('yyyyMMddHHmmssS')
      *    y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
      *    其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
-     * @param {*} fmt 格式化参数
+     * @param {string} fmt 格式化参数
+     * @param {number} 可选: 根据指定时间戳返回格式化日期
      *
      */
-    time(fmt) {
+    time(fmt, ts = null) {
+      const date = ts ? new Date(ts) : new Date();
       let o = {
-        "M+": new Date().getMonth() + 1,
-        "d+": new Date().getDate(),
-        "H+": new Date().getHours(),
-        "m+": new Date().getMinutes(),
-        "s+": new Date().getSeconds(),
-        "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds(),
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "H+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        S: date.getMilliseconds(),
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
           RegExp.$1,
-          (new Date().getFullYear() + "").substr(4 - RegExp.$1.length)
+          (date.getFullYear() + "").substr(4 - RegExp.$1.length)
         );
       for (let k in o)
         if (new RegExp("(" + k + ")").test(fmt))
@@ -655,12 +661,14 @@ function Env(name, opts) {
           $notify(title, subt, desc, toEnvOpts(opts));
         }
       }
-      let logs = ["", "==============📣系统通知📣=============="];
-      logs.push(title);
-      subt ? logs.push(subt) : "";
-      desc ? logs.push(desc) : "";
-      console.log(logs.join("\n"));
-      this.logs = this.logs.concat(logs);
+      if (!this.isMuteLog) {
+        let logs = ["", "==============📣系统通知📣=============="];
+        logs.push(title);
+        subt ? logs.push(subt) : "";
+        desc ? logs.push(desc) : "";
+        console.log(logs.join("\n"));
+        this.logs = this.logs.concat(logs);
+      }
     }
 
     log(...logs) {

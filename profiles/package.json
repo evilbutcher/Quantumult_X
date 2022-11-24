@@ -1,0 +1,31 @@
+{
+  "name": "evilbutcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "checkin_env.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evilbutcher/Quantumult_X.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evilbutcher/Quantumult_X/issues"
+  },
+  "homepage": "https://github.com/evilbutcher/Quantumult_X#readme",
+  "dependencies": {
+    "got": "^11.5.1",
+    "npm": "^6.14.7",
+    "http-server": "^0.12.3",
+    "node-schedule": "^1.3.2",
+    "tough": "^0.6.0",
+    "tough-cookie": "^4.0.0",
+    "download": "^8.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  }
+}

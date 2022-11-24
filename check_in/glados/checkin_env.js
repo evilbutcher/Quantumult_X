@@ -38,7 +38,7 @@ Modified by evilbutcher
 
 */
 const $ = new Env("机场签到");
-$.autoLogout = false;
+$.autoLogout = true;
 
 if (
   $.getdata("evil_checkintitle") != undefined &&
@@ -47,7 +47,7 @@ if (
   var acc = $.getdata("evil_checkintitle");
   accounts = acc.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
+  $.msg("机场签到", "", "请在 BoxJs 检查标题填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -57,7 +57,7 @@ if (
   var ur = $.getdata("evil_checkinlogin");
   urls = ur.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
+  $.msg("机场签到", "", "请在 BoxJs 检查链接填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -67,7 +67,7 @@ if (
   var ema = $.getdata("evil_checkinemail");
   emails = ema.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
+  $.msg("机场签到", "", "请在 BoxJs 检查邮箱填写是否正确", "http://boxjs.com");
 }
 
 if (
@@ -77,12 +77,22 @@ if (
   var pwd = $.getdata("evil_checkinpwd");
   passwords = pwd.split("，");
 } else {
-  $.msg("机场签到", "", "请在 BoxJs 检查填写是否正确", "http://boxjs.com");
+  $.msg("机场签到", "", "请在 BoxJs 检查密码填写是否正确", "http://boxjs.com");
 }
 
 $.autoLogout = JSON.parse($.getdata("evil_autoLogout") || $.autoLogout);
 
-function launch() {
+!(async () => {
+  await launch();
+})()
+  .catch((e) => {
+    $.log("", `❌失败! 原因: ${e}!`, "");
+  })
+  .finally(() => {
+    $.done();
+  });
+
+async function launch() {
   for (var i in accounts) {
     let title = accounts[i];
     let url = urls[i];
@@ -94,43 +104,56 @@ function launch() {
       var logouturl = {
         url: url.replace(/(auth|user)\/login(.php)*/g, "") + logoutPath,
       };
-      console.log(logouturl);
-      $.get(logouturl, function (error, response, data) {
-        login(url, email, password, title);
-      });
+      console.log(JSON.stringify(logouturl));
+      $.get(logouturl);
+    }
+    await checkin(url, email, password, title);
+    if ($.checkinok == true) {
+      await dataResults(url, $.checkindatamsg, title);
     } else {
-      checkin(url, email, password, title);
+      await login(url, email, password, title);
+      if ($.loginok == true) {
+        await checkin(url, email, password, title);
+        if ($.checkinok == true) {
+          await dataResults(url, $.checkindatamsg, title);
+        }
+      }
     }
   }
-  $.done();
 }
-
-launch();
 
 function login(url, email, password, title) {
   let loginPath =
     url.indexOf("auth/login") != -1 ? "auth/login" : "user/_login.php";
   let table = {
-    url: url.replace(/(auth|user)\/login(.php)*/g, "") + loginPath,
-    body: `email=${email}&passwd=${password}&rumber-me=week`,
+    url:
+      url.replace(/(auth|user)\/login(.php)*/g, "") +
+      loginPath +
+      `?email=${email}&passwd=${password}&rumber-me=week`,
   };
-  console.log(table);
-  $.post(table, function (error, response, data) {
-    if (error) {
-      console.log(error);
-      $.msg(title + "登录失败", JSON.stringify(error), "");
-    } else {
-      if (
-        JSON.parse(data).msg.match(
-          /邮箱或者密码错误|Mail or password is incorrect/
-        )
-      ) {
-        console.log(response);
-        $.msg(title + "邮箱或者密码错误", "", "");
+  console.log(loginPath + " 保护隐私隐去登录信息");
+  return new Promise((resolve) => {
+    $.post(table, function (error, response, data) {
+      if (error) {
+        console.log(JSON.stringify(error));
+        $.msg(title + "登录失败", JSON.stringify(error), "");
+        resolve();
       } else {
-        checkin(url, email, password, title);
+        if (
+          JSON.parse(data).msg.match(
+            /邮箱或者密码错误|Mail or password is incorrect/
+          )
+        ) {
+          console.log(response);
+          $.msg(title + "邮箱或者密码错误", "", "");
+          $.loginok = false;
+        } else {
+          $.loginok = true;
+          $.log("登陆成功");
+        }
+        resolve();
       }
-    }
+    });
   });
 }
 
@@ -140,18 +163,25 @@ function checkin(url, email, password, title) {
   var checkinreqest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + checkinPath,
   };
-  console.log(checkinreqest);
-  $.post(checkinreqest, (error, response, data) => {
-    if (error) {
-      console.log(error);
-      $.msg(title + "签到失败", JSON.stringify(error), "");
-    } else {
-      if (data.match(/\"msg\"\:/)) {
-        dataResults(url, JSON.parse(data).msg, title);
+  console.log(JSON.stringify(checkinreqest));
+  return new Promise((resolve) => {
+    $.post(checkinreqest, function (error, response, data) {
+      if (error) {
+        console.log(JSON.stringify(error));
+        $.msg(title + "签到失败", JSON.stringify(error), "");
+        resolve();
       } else {
-        login(url, email, password, title);
+        if (data.match(/\"msg\"\:/)) {
+          $.checkinok = true;
+          $.checkindatamsg = JSON.parse(data).msg;
+          $.log("签到成功");
+        } else {
+          $.checkinok = false;
+          $.log("签到失败");
+        }
+        resolve();
       }
-    }
+    });
   });
 }
 
@@ -160,58 +190,63 @@ function dataResults(url, checkinMsg, title) {
   var datarequest = {
     url: url.replace(/(auth|user)\/login(.php)*/g, "") + userPath,
   };
-  console.log(datarequest);
-  $.get(datarequest, (error, response, data) => {
-    let resultData = "";
-    let result = [];
-    if (data.match(/theme\/malio/)) {
-      let flowInfo = data.match(/trafficDountChat\s*\(([^\)]+)/);
-      if (flowInfo) {
-        let flowData = flowInfo[1].match(/\d[^\']+/g);
-        let usedData = flowData[0];
-        let todatUsed = flowData[1];
-        let restData = flowData[2];
-        result.push(`今日：${todatUsed}\n已用：${usedData}\n剩余：${restData}`);
-      }
-      let userInfo = data.match(/ChatraIntegration\s*=\s*({[^}]+)/);
-      if (userInfo) {
-        let user_name = userInfo[1].match(/name.+'(.+)'/)[1];
-        let user_class = userInfo[1].match(/Class.+'(.+)'/)[1];
-        let class_expire = userInfo[1].match(/Class_Expire.+'(.+)'/)[1];
-        let money = userInfo[1].match(/Money.+'(.+)'/)[1];
-        result.push(
-          `用户名：${user_name}\n用户等级：lv${user_class}\n余额：${money}\n到期时间：${class_expire}`
+  console.log(JSON.stringify(datarequest));
+  return new Promise((resolve) => {
+    $.get(datarequest, function (error, response, data) {
+      let resultData = "";
+      let result = [];
+      if (data.match(/theme\/malio/)) {
+        let flowInfo = data.match(/trafficDountChat\s*\(([^\)]+)/);
+        if (flowInfo) {
+          let flowData = flowInfo[1].match(/\d[^\']+/g);
+          let usedData = flowData[0];
+          let todatUsed = flowData[1];
+          let restData = flowData[2];
+          result.push(
+            `今日：${todatUsed}\n已用：${usedData}\n剩余：${restData}`
+          );
+        }
+        let userInfo = data.match(/ChatraIntegration\s*=\s*({[^}]+)/);
+        if (userInfo) {
+          let user_name = userInfo[1].match(/name.+'(.+)'/)[1];
+          let user_class = userInfo[1].match(/Class.+'(.+)'/)[1];
+          let class_expire = userInfo[1].match(/Class_Expire.+'(.+)'/)[1];
+          let money = userInfo[1].match(/Money.+'(.+)'/)[1];
+          result.push(
+            `用户名：${user_name}\n用户等级：lv${user_class}\n余额：${money}\n到期时间：${class_expire}`
+          );
+        }
+        if (result.length != 0) {
+          resultData = result.join("\n\n");
+        }
+      } else {
+        let todayUsed = data.match(/>*\s*今日(已用|使用)*[^B]+/);
+        if (todayUsed) {
+          todayUsed = flowFormat(todayUsed[0]);
+          result.push(`今日：${todayUsed}`);
+        }
+        let usedData = data.match(
+          /(Used Transfer|>过去已用|>已用|>总已用|\"已用)[^B]+/
         );
+        if (usedData) {
+          usedData = flowFormat(usedData[0]);
+          result.push(`已用：${usedData}`);
+        }
+        let restData = data.match(
+          /(Remaining Transfer|>剩余流量|>流量剩余|>可用|\"剩余)[^B]+/
+        );
+        if (restData) {
+          restData = flowFormat(restData[0]);
+          result.push(`剩余：${restData}`);
+        }
+        if (result.length != 0) {
+          resultData = result.join("\n");
+        }
       }
-      if (result.length != 0) {
-        resultData = result.join("\n\n");
-      }
-    } else {
-      let todayUsed = data.match(/>*\s*今日(已用|使用)*[^B]+/);
-      if (todayUsed) {
-        todayUsed = flowFormat(todayUsed[0]);
-        result.push(`今日：${todayUsed}`);
-      }
-      let usedData = data.match(
-        /(Used Transfer|>过去已用|>已用|>总已用|\"已用)[^B]+/
-      );
-      if (usedData) {
-        usedData = flowFormat(usedData[0]);
-        result.push(`已用：${usedData}`);
-      }
-      let restData = data.match(
-        /(Remaining Transfer|>剩余流量|>流量剩余|>可用|\"剩余)[^B]+/
-      );
-      if (restData) {
-        restData = flowFormat(restData[0]);
-        result.push(`剩余：${restData}`);
-      }
-      if (result.length != 0) {
-        resultData = result.join("\n");
-      }
-    }
-    let flowMsg = resultData == "" ? "流量信息获取失败" : resultData;
-    $.msg(title, checkinMsg, flowMsg);
+      let flowMsg = resultData == "" ? "流量信息获取失败" : resultData;
+      $.msg(title, checkinMsg, flowMsg);
+      resolve();
+    });
   });
 }
 
@@ -539,11 +574,15 @@ function Env(name, opts) {
         this.got(opts)
           .on("redirect", (resp, nextOpts) => {
             try {
-              const ck = resp.headers["set-cookie"]
-                .map(this.cktough.Cookie.parse)
-                .toString();
-              this.ckjar.setCookieSync(ck, null);
-              nextOpts.cookieJar = this.ckjar;
+              if (resp.headers["set-cookie"]) {
+                const ck = resp.headers["set-cookie"]
+                  .map(this.cktough.Cookie.parse)
+                  .toString();
+                if (ck) {
+                  this.ckjar.setCookieSync(ck, null);
+                }
+                nextOpts.cookieJar = this.ckjar;
+              }
             } catch (e) {
               this.logErr(e);
             }
@@ -614,23 +653,25 @@ function Env(name, opts) {
      *    :$.time('yyyyMMddHHmmssS')
      *    y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
      *    其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
-     * @param {*} fmt 格式化参数
+     * @param {string} fmt 格式化参数
+     * @param {number} 可选: 根据指定时间戳返回格式化日期
      *
      */
-    time(fmt) {
+    time(fmt, ts = null) {
+      const date = ts ? new Date(ts) : new Date();
       let o = {
-        "M+": new Date().getMonth() + 1,
-        "d+": new Date().getDate(),
-        "H+": new Date().getHours(),
-        "m+": new Date().getMinutes(),
-        "s+": new Date().getSeconds(),
-        "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds(),
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "H+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        S: date.getMilliseconds(),
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
           RegExp.$1,
-          (new Date().getFullYear() + "").substr(4 - RegExp.$1.length)
+          (date.getFullYear() + "").substr(4 - RegExp.$1.length)
         );
       for (let k in o)
         if (new RegExp("(" + k + ")").test(fmt))
@@ -691,12 +732,14 @@ function Env(name, opts) {
           $notify(title, subt, desc, toEnvOpts(opts));
         }
       }
-      let logs = ["", "==============📣系统通知📣=============="];
-      logs.push(title);
-      subt ? logs.push(subt) : "";
-      desc ? logs.push(desc) : "";
-      console.log(logs.join("\n"));
-      this.logs = this.logs.concat(logs);
+      if (!this.isMuteLog) {
+        let logs = ["", "==============📣系统通知📣=============="];
+        logs.push(title);
+        subt ? logs.push(subt) : "";
+        desc ? logs.push(desc) : "";
+        console.log(logs.join("\n"));
+        this.logs = this.logs.concat(logs);
+      }
     }
 
     log(...logs) {

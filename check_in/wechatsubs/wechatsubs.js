@@ -1,13 +1,11 @@
 /*
-【app版本及价格监控】修改自t.me/QuanXApp群友分享 
-Modified by evilbutcher
+【公众号监控】@evilbutcher
 
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
 【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
 【致谢】
-感谢来自t.me/QuanXApp群友分享脚本！
 感谢Peng-YM的OpenAPI.js！
 
 ⚠️【免责声明】
@@ -20,267 +18,184 @@ Modified by evilbutcher
 6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
 7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
 
-【Quantumult X】
-————————————————
-30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
+
+【使用说明】
+脚本或BoxJs填入要监控的关键词即可，以中文逗号“，”分隔。
 
 【Surge】
-————————————————
-App价格监控 = type=cron,cronexp="30 7-22 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js,wake-system=true,timeout=600
+-----------------
+[Script]
+公众号监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js
 
 【Loon】
-————————————————
-cron "30 7-22 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, timeout=600, tag=App价格监控
+-----------------
+[Script]
+cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控
 
-app可单独设置区域，未单独设置区域，则采用reg默认区域
-设置区域方式apps=["1443988620:hk","1443988620/us","1443988620-uk","1443988620_jp","1443988620 au"]
-以上方式均可 分隔符支持 空格/:|_-
+【Quantumult X】
+-----------------
+[task_local]
+5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js, tag=公众号监控
 
+【Icon】
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/wechat.png
 */
-const $ = new API("App价格监控");
-let apps = [
-  "1443988620|hk",
-  "1312014438 cn",
-  "499470113/vn",
-  "1314212521-jp",
-  "1282297037_au",
-  "932747118:ie",
-  "1116905928",
-  "1373567447",
-]; //app跟踪id
-if ($.read("apps") != "" && $.read("apps") != undefined) {
-  apps = $.read("apps").split("，");
+
+const $ = new API("Wechatsubs", true);
+const ERR = MYERR();
+
+var keyword1 = [""]; //👈本地关键词在这里设置。
+var keyword2 = [""];
+$.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
+$.saveditem = [];
+
+!(async () => {
+  init();
+  await checkall(keyword1, keyword2);
+})()
+  .catch((err) => {
+    if (err instanceof ERR.ParseError) {
+      $.notify("公众号监控", "❌ 解析数据出现错误", err.message);
+    } else {
+      $.notify(
+        "公众号监控",
+        "❌ 出现错误",
+        JSON.stringify(err, Object.getOwnPropertyNames(err))
+      );
+    }
+  })
+  .finally(() => $.done());
+
+async function checkall(group1, group2) {
+  for (var i = 0; i < group1.length; i++) {
+    for (var j = 0; j < group2.length; j++) {
+      await check(group1[i], group2[j], $.saveditem);
+    }
+  }
+  $.write(JSON.stringify($.saveditem), "wechatsaveditem");
 }
-let reg = "cn"; //默认区域：美国us 中国cn 香港hk
-if ($.read("reg") != "" && $.read("reg") != undefined) {
-  reg = $.read("reg");
-}
-let notifys = [];
-format_apps(apps);
-function format_apps(x) {
-  let apps_f = {};
-  x.forEach((n) => {
-    if (/^[a-zA-Z0-9:/|\-_\s]{1,}$/.test(n)) {
-      n = n.replace(/[/|\-_\s]/g, ":");
-      let n_n = n.split(":");
-      if (n_n.length === 1) {
-        if (apps_f.hasOwnProperty(reg)) {
-          apps_f[reg].push(n_n);
-        } else {
-          apps_f[reg] = [];
-          apps_f[reg].push(n_n[0]);
-        }
-      } else if (n_n.length === 2) {
-        if (apps_f.hasOwnProperty(n_n[1])) {
-          apps_f[n_n[1]].push(n_n[0]);
-        } else {
-          apps_f[n_n[1]] = [];
-          apps_f[n_n[1]].push(n_n[0]);
-        }
-      } else {
-        notifys.push(`ID格式错误:【${n}】`);
+
+function check(word1, word2, saveditem) {
+  const url = `https://wx.sogou.com/weixin?type=2&query=${encodeURIComponent(
+    word1
+  )}+${encodeURIComponent(word2)}`;
+  const headers = {
+    Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
+    Connection: `keep-alive`,
+    Referer: `https://wx.sogou.com/`,
+    "Accept-Encoding": `gzip, deflate, br`,
+    Host: `wx.sogou.com`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+  };
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+  $.log(myRequest);
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      var geturl = /a\starget\=\\\"\_blank\\\"\shref\=\\\"\/.*?\\\"/;
+      var gettitle = /article\_title\_0\\\"\>.*?\<\/a/;
+      var getdescription = /summary\_0\\\"\>.*?\<\/p/;
+      $.data = JSON.stringify(response.body);
+      var pretitle = $.data.match(gettitle);
+      var preurl = $.data.match(geturl);
+      var predescription = $.data.match(getdescription);
+      var title = JSON.stringify(pretitle)
+        .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\s/, "gm"), "")
+        .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .replace(new RegExp(/&ldquo;/, "gm"), "“")
+        .replace(new RegExp(/&rdquo;/, "gm"), "”")
+        .replace(new RegExp(/&middot;/, "gm"), "·")
+        .replace(new RegExp(/&bull;/, "gm"), "•")
+        .replace(new RegExp(/&mdash;/, "gm"), "—")
+        .replace(new RegExp(/&hellip;/, "gm"), "…")
+        .slice(22, -5);
+      var description = JSON.stringify(predescription)
+        .replace(new RegExp(/\\n/, "gm"), "")
+        .replace(new RegExp(/\s/, "gm"), "")
+        .replace(new RegExp(/\<.*?\>/, "gm"), "")
+        .replace(new RegExp(/&ldquo;/, "gm"), "“")
+        .replace(new RegExp(/&rdquo;/, "gm"), "”")
+        .replace(new RegExp(/&middot;/, "gm"), "·")
+        .replace(new RegExp(/&bull;/, "gm"), "•")
+        .replace(new RegExp(/&mdash;/, "gm"), "—")
+        .replace(new RegExp(/&hellip;/, "gm"), "…")
+        .slice(16, -5);
+      var url =
+        "https://wx.sogou.com/" +
+        JSON.stringify(preurl)
+          .slice(36, -6)
+          .replace(new RegExp(/\s/, "gm"), "");
+      $.info(title);
+      $.log(description);
+      $.log(url);
+      if (saveditem.indexOf(title) == -1) {
+        $.notify("公众号监控", title, description, { "open-url": url });
+        saveditem.push(title);
       }
     } else {
-      notifys.push(`ID格式错误:【${n}】`);
+      $.error(JSON.stringify(response));
+      $.notify("公众号监控", "", "❌ 未知错误，请查看日志");
     }
   });
-  if (Object.keys(apps_f).length > 0) {
-    post_data(apps_f);
+}
+
+function init() {
+  if ($.read("wechatkeyword1") != "" && $.read("wechatkeyword1") != undefined) {
+    keyword1 = $.read("wechatkeyword1").split("，");
+  }
+  if ($.read("wechatkeyword2") != "" && $.read("wechatkeyword2") != undefined) {
+    keyword2 = $.read("wechatkeyword2").split("，");
+  }
+  $.nowtime = new Date().getTime();
+  if (
+    $.read("wechatsavedtime") != undefined &&
+    $.read("wechatsavedtime") != ""
+  ) {
+    $.savedtime = $.read("wechatsavedtime"); //读取保存时间
+  } else {
+    $.savedtime = new Date().getTime(); //保存时间为空时，保存时间=当前时间
+    $.write(JSON.stringify($.nowtime), "wechatsavedtime"); //写入时间记录
+    $.write("[]", "wechatsaveditem"); //写入本地记录
+  }
+  $.refreshtime = $.read("wechatrefreshtime") || $.refreshtime;
+  var minus = $.nowtime - $.savedtime; //判断时间
+  if (minus > $.refreshtime * 3600000) {
+    $.info("达到设定时间清空本地记录并更新时间");
+    $.write(JSON.stringify($.nowtime), "wechatsavedtime");
+    $.write("[]", "wechatsaveditem");
+  }
+  if (
+    $.read("wechatsaveditem") != undefined &&
+    $.read("wechatsaveditem") != ""
+  ) {
+    var storeitem = JSON.parse($.read("wechatsaveditem"));
+  } else {
+    storeitem = [];
+  }
+  for (var i = 0; i < storeitem.length; i++) {
+    $.saveditem.push(storeitem[i]);
+  }
+  $.info(`关键词：${keyword1}和${keyword2}`);
+  if ($.saveditem.length != 0) {
+    $.info("\n刷新时间内不再通知的内容👇\n" + $.saveditem + "\n");
   }
 }
-async function post_data(d) {
-  try {
-    let app_monitor = $.read("app_monitor");
-    if (app_monitor === "" || app_monitor === undefined) {
-      app_monitor = {};
-    } else {
-      app_monitor = JSON.parse(app_monitor);
-      console.log(JSON.stringify(app_monitor));
+
+function MYERR() {
+  class ParseError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "ParseError";
     }
-    let infos = {};
-    await Promise.all(
-      Object.keys(d).map(async (k) => {
-        let config = {
-          url: "https://itunes.apple.com/lookup?id=" + d[k] + "&country=" + k,
-        };
-        await $.http
-          .get(config)
-          .then((response) => {
-            let results = JSON.parse(response.body).results;
-            if (Array.isArray(results) && results.length > 0) {
-              results.forEach((x) => {
-                infos[x.trackId] = {
-                  n: x.trackName,
-                  v: x.version,
-                  p: x.formattedPrice,
-                };
-                if (app_monitor.hasOwnProperty(x.trackId)) {
-                  if (
-                    JSON.stringify(app_monitor[x.trackId]) !==
-                    JSON.stringify(infos[x.trackId])
-                  ) {
-                    if (x.version !== app_monitor[x.trackId].v) {
-                      notifys.push(
-                        `${flag(k)}🧩${x.trackName}:升级【${x.version}】`
-                      );
-                    }
-                    if (x.formattedPrice !== app_monitor[x.trackId].p) {
-                      notifys.push(
-                        `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                      );
-                    }
-                  }
-                } else {
-                  notifys.push(
-                    `${flag(k)}🧩${x.trackName}:版本【${x.version}】`
-                  );
-                  notifys.push(
-                    `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                  );
-                }
-              });
-            }
-            return Promise.resolve();
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-    );
-    infos = JSON.stringify(infos);
-    $.write(infos, "app_monitor");
-    if (notifys.length > 0) {
-      notify(notifys);
-      $.done();
-    } else {
-      console.log("APP监控：版本及价格无变化");
-      $.done();
-    }
-  } catch (e) {
-    console.log(e);
   }
-}
-function notify(notifys) {
-  notifys = notifys.join("\n");
-  console.log(JSON.stringify(notifys));
-  $.notify("APP监控", "", notifys);
-}
-function flag(x) {
-  var flags = new Map([
-    ["AC", "🇦🇨"],
-    ["AF", "🇦🇫"],
-    ["AI", "🇦🇮"],
-    ["AL", "🇦🇱"],
-    ["AM", "🇦🇲"],
-    ["AQ", "🇦🇶"],
-    ["AR", "🇦🇷"],
-    ["AS", "🇦🇸"],
-    ["AT", "🇦🇹"],
-    ["AU", "🇦🇺"],
-    ["AW", "🇦🇼"],
-    ["AX", "🇦🇽"],
-    ["AZ", "🇦🇿"],
-    ["BB", "🇧🇧"],
-    ["BD", "🇧🇩"],
-    ["BE", "🇧🇪"],
-    ["BF", "🇧🇫"],
-    ["BG", "🇧🇬"],
-    ["BH", "🇧🇭"],
-    ["BI", "🇧🇮"],
-    ["BJ", "🇧🇯"],
-    ["BM", "🇧🇲"],
-    ["BN", "🇧🇳"],
-    ["BO", "🇧🇴"],
-    ["BR", "🇧🇷"],
-    ["BS", "🇧🇸"],
-    ["BT", "🇧🇹"],
-    ["BV", "🇧🇻"],
-    ["BW", "🇧🇼"],
-    ["BY", "🇧🇾"],
-    ["BZ", "🇧🇿"],
-    ["CA", "🇨🇦"],
-    ["CF", "🇨🇫"],
-    ["CH", "🇨🇭"],
-    ["CK", "🇨🇰"],
-    ["CL", "🇨🇱"],
-    ["CM", "🇨🇲"],
-    ["CN", "🇨🇳"],
-    ["CO", "🇨🇴"],
-    ["CP", "🇨🇵"],
-    ["CR", "🇨🇷"],
-    ["CU", "🇨🇺"],
-    ["CV", "🇨🇻"],
-    ["CW", "🇨🇼"],
-    ["CX", "🇨🇽"],
-    ["CY", "🇨🇾"],
-    ["CZ", "🇨🇿"],
-    ["DE", "🇩🇪"],
-    ["DG", "🇩🇬"],
-    ["DJ", "🇩🇯"],
-    ["DK", "🇩🇰"],
-    ["DM", "🇩🇲"],
-    ["DO", "🇩🇴"],
-    ["DZ", "🇩🇿"],
-    ["EA", "🇪🇦"],
-    ["EC", "🇪🇨"],
-    ["EE", "🇪🇪"],
-    ["EG", "🇪🇬"],
-    ["EH", "🇪🇭"],
-    ["ER", "🇪🇷"],
-    ["ES", "🇪🇸"],
-    ["ET", "🇪🇹"],
-    ["EU", "🇪🇺"],
-    ["FI", "🇫🇮"],
-    ["FJ", "🇫🇯"],
-    ["FK", "🇫🇰"],
-    ["FM", "🇫🇲"],
-    ["FO", "🇫🇴"],
-    ["FR", "🇫🇷"],
-    ["GA", "🇬🇦"],
-    ["GB", "🇬🇧"],
-    ["HK", "🇭🇰"],
-    ["ID", "🇮🇩"],
-    ["IE", "🇮🇪"],
-    ["IL", "🇮🇱"],
-    ["IM", "🇮🇲"],
-    ["IN", "🇮🇳"],
-    ["IS", "🇮🇸"],
-    ["IT", "🇮🇹"],
-    ["JP", "🇯🇵"],
-    ["KR", "🇰🇷"],
-    ["MO", "🇲🇴"],
-    ["MX", "🇲🇽"],
-    ["MY", "🇲🇾"],
-    ["NL", "🇳🇱"],
-    ["PH", "🇵🇭"],
-    ["RO", "🇷🇴"],
-    ["RS", "🇷🇸"],
-    ["RU", "🇷🇺"],
-    ["RW", "🇷🇼"],
-    ["SA", "🇸🇦"],
-    ["SB", "🇸🇧"],
-    ["SC", "🇸🇨"],
-    ["SD", "🇸🇩"],
-    ["SE", "🇸🇪"],
-    ["SG", "🇸🇬"],
-    ["TH", "🇹🇭"],
-    ["TN", "🇹🇳"],
-    ["TO", "🇹🇴"],
-    ["TR", "🇹🇷"],
-    ["TV", "🇹🇻"],
-    ["TW", "🇨🇳"],
-    ["UK", "🇬🇧"],
-    ["UM", "🇺🇲"],
-    ["US", "🇺🇸"],
-    ["UY", "🇺🇾"],
-    ["UZ", "🇺🇿"],
-    ["VA", "🇻🇦"],
-    ["VE", "🇻🇪"],
-    ["VG", "🇻🇬"],
-    ["VI", "🇻🇮"],
-    ["VN", "🇻🇳"],
-  ]);
-  return flags.get(x.toUpperCase());
+  return {
+    ParseError,
+  };
 }
 
 /**
@@ -314,7 +229,8 @@ function HTTP(
 ) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
-  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  const URL_REGEX =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options =
@@ -393,12 +309,13 @@ function HTTP(
         })
       : null;
 
-    return (timer
-      ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid);
-          return res;
-        })
-      : worker
+    return (
+      timer
+        ? Promise.race([timer, worker]).then((res) => {
+            clearTimeout(timeoutid);
+            return res;
+          })
+        : worker
     ).then((resp) => events.onResponse(resp));
   }
 

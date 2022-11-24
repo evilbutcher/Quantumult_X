@@ -1,0 +1,20 @@
+#!name=evilbutcher Cookies Module
+#!desc=Cookies 合集模块配置
+#!system=ios
+
+[Script]
+Funboat获取签到Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx9b5caf9d1669dc96,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Funboat获取积分Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx9b5caf9d1669dc96,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Timepop获取签到Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscump\/checkin\/checkin\.json\?checkin\_id\=.*?app\_id\=wx4a1af22a88a99386,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+Timepop获取积分Cookie = http-request,pattern=^https:\/\/h5\.youzan\.com\/wscuser\/membercenter\/stats\.json\?app\_id\=wx4a1af22a88a99386,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+GLaDOS获取Cookie = http-request,pattern=https:\/\/glados\.rocks\/api\/user\/checkin, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+微博超话获取Cookie = http-request,pattern=^https?://m?api\.weibo\.c(n|om)\/2\/(cardlist|page\/button), script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.cookie.js
+九木杂物社获取Cookie = http-request, pattern = https:\/\/wxavip\-up\.ezrpro\.cn\/Vip\/SignIn\/SignIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js, requires-body=true
+酷乐潮玩小程序获取签到Cookie = http-request, pattern = https:\/\/wxavip\-tp\.ezrpro\.cn\/Vip\/SignIn\/SignIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js, requires-body=true
+酷乐潮玩App获取Cookie = http-request, pattern = https:\/\/app\.klcw\.net\.cn\/omp\_cmanage\/mallgateway, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js, requires-body=true
+华住会获取签到Cookie = http-request, pattern = https:\/\/hweb-mbf\.huazhu\.com\/api\/signIn, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js, requires-body=false
+淘宝监控获取Cookie = http-request, pattern = https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdetail, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js, requires-body=false
+淘宝监控获取Cookie = http-request, pattern = https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, requires-body=false
+
+[MITM]
+hostname = %INSERT%, h5.youzan.com, glados.rocks, api.weibo.cn, mapi.weibo.com, wxavip-up.ezrpro.cn, wxavip-tp.ezrpro.cn, app.klcw.net.cn, hweb-mbf.huazhu.com, h5api.m.taobao.com

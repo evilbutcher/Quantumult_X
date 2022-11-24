@@ -6,6 +6,9 @@
 
 绝大多数代码都用到了@chavyleung 的 Env.js 和@Peng-YM 的 OpenAPI.js，感谢！
 
+如果能请杯奶茶，就很感谢啦！  
+<img src="https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/photo.jpeg" height="40%" width="40%">
+
 ## 脚本合集
 
 ### 【BoxJs】订阅
@@ -15,7 +18,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.bo
 ### 【Quantumult X】脚本订阅合集+自己写的去广告
 
 https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.rewrite.conf
-https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.conf （需要将内容复制到[task_local]）
+https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/QuantumultX.task.json
 
 ### 【Surge】脚本订阅合集
 
@@ -46,6 +49,13 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 3. 支持 BoxJs。
 4. checkin_env.js 修改自@Neurogram-R，增加了多平台支持。
 
+### [公众号监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/wechatsubs/wechatsubs.js)
+
+#### 功能特点
+
+1. 设定关键词监控公众号推送。
+2. 可自定关键词推送间隔。
+
 ### [热门监控](https://github.com/evilbutcher/Quantumult_X/tree/master/check_in/hotsearch/hot.js)
 
 #### 功能特点
@@ -66,7 +76,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 14. 监控 36 氪关键词。
 15. 监控 Kindle 图书关键词。
 16. 监控 RSSHub 订阅，感谢@api-evangelist-[rss2json](https://github.com/api-evangelist/rss2json)。
-17. 监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。
+17. ~~监控人人影视最新上传，配合捷径[磁力离线](https://www.icloud.com/shortcuts/cfad8390798e459db458d6233d229209)可实现磁力下载，解锁追剧新姿势。~~
 18. 可自定关键词推送间隔。
 
 ### [App 价格监控](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/appstore/AppMonitor.js)
@@ -90,7 +100,7 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 #### 功能特点
 
-1. 可选择随机 or 最新内容
+1. 可选择随机 or 最新内容。
 
 ### [Funboat](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/funboat/funboat.js)
 
@@ -98,13 +108,46 @@ https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/Loon.scripts.c
 
 1. 喜欢 funko 可以关注该微信小程序。
 
+### [九木杂物社](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/jiumu/jiumu.js)
+
+#### 功能特点
+
+1. 九木杂物社自动签到。
+
+### [酷乐潮玩](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/klcw)
+
+#### 功能特点
+
+1. 酷乐潮玩小程序、App 自动签到。
+
+### [信息查询](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/wechatsubs)
+
+#### 功能特点
+
+1. 支持事业单位招聘监控。
+2. 支持高校人才网监控。
+
+### [彩票查询](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/ssq/ssq.js)
+
+#### 功能特点
+
+1. 支持双色球、大乐透、福彩 3D、七乐彩。
+2. 支持仅查询当日开奖的彩票。
+
+### [华住会](https://github.com/evilbutcher/Quantumult_X/blob/master/check_in/hzh/hzh.js)
+
+#### 功能特点
+
+1. 自动签到。
+2. 领取奖励（开发中）。
+
 ## 规则类
 
 ### [去广告](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad)
 
 #### 功能特点
 
-[readme](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad/README.md)
+[Readme](https://github.com/evilbutcher/Quantumult_X/tree/master/remove_ad/README.md)
 
 ### 免责声明
 

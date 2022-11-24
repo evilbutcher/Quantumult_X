@@ -90,8 +90,8 @@ $.amazon = true; //是否开启相应榜单监控
 $.amznum = 6; //自定Kindle图书榜单数量
 $.rss = true; //是否开启相应榜单监控
 $.rssnum = 6; //自定rss订阅推送数量
-$.zmz = true; //是否开启相应榜单监控
-$.zmznum = 6; //自定人人影视推送数量
+/*$.zmz = true; //是否开启相应榜单监控
+$.zmznum = 6; //自定人人影视推送数量*/
 $.splitpushwb = false; //是否分开推送微博榜单
 $.pushnewwb = false; //是否忽略关键词推送微博最新内容
 $.splitpushzh = false; //是否分开推送知乎榜单
@@ -110,8 +110,8 @@ $.splitpushamz = false; //是否分开推送Kindle图书榜单
 $.pushnewamz = false; //是否忽略关键词推送Kindle图书最新内容
 $.splitpushrss = false; //是否分开推送rss内容
 $.pushnewrss = false; //是否忽略关键词推送rss最新内容
-$.splitpushzmz = false; //是否分开推送人人影视内容
-$.pushnewzmz = false; //是否忽略关键词推送人人影视最新内容
+/*$.splitpushzmz = false; //是否分开推送人人影视内容
+$.pushnewzmz = false; //是否忽略关键词推送人人影视最新内容*/
 $.attachurl = false; //通知是否附带跳转链接
 $.refreshtime = 6; //重复内容默认在6小时内不再通知，之后清空，可自行修改
 $.rid = 0; //更改B站监控榜单
@@ -127,7 +127,7 @@ var itemsdy = [];
 var itemsk36 = [];
 var itemsamz = [];
 var itemsrss = [];
-var itemszmz = [];
+//var itemszmz = [];
 var urlswb = [];
 var urlszh = [];
 var urlsbd = [];
@@ -137,7 +137,7 @@ var urlsdy = [];
 var urlsk36 = [];
 var urlsamz = [];
 var urlsrss = [];
-var urlszmz = [];
+//var urlszmz = [];
 var coversbl = [];
 var coversdb = [];
 var coversamz = [];
@@ -151,7 +151,7 @@ var resultdy = [];
 var resultk36 = [];
 var resultamz = [];
 var resultrss = [];
-var resultzmz = [];
+//var resultzmz = [];
 var openurlwb = [];
 var openurlzh = [];
 var openurlbd = [];
@@ -161,7 +161,7 @@ var openurldy = [];
 var openurlk36 = [];
 var openurlamz = [];
 var openurlrss = [];
-var openurlzmz = [];
+//var openurlzmz = [];
 var mediaurlbl = [];
 var mediaurldb = [];
 var mediaurlamz = [];
@@ -217,11 +217,11 @@ var checkrssresult = false;
     } else {
       $.log("Kindle图书榜单未获取😫");
     }
-    if ($.zmz == true) {
+    /*if ($.zmz == true) {
       await getzmzlist();
     } else {
       $.log("人人影视榜单未获取😫");
-    }
+    }*/
     if ($.rss == true) {
       if (haversslink()) {
         await Promise.all(
@@ -521,7 +521,7 @@ function gethotsearch() {
         resolve();
       } catch (e) {
         $.log("获取微博热搜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -605,7 +605,7 @@ function gethotlist() {
         resolve();
       } catch (e) {
         $.log("获取知乎热榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -697,7 +697,7 @@ function getfylist() {
         resolve();
       } catch (e) {
         $.log("获取百度风云榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -785,7 +785,7 @@ function getbllist() {
         resolve();
       } catch (e) {
         $.log("获取B站日榜出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -885,7 +885,7 @@ function getdblist() {
         resolve();
       } catch (e) {
         $.log("获取豆瓣榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -947,7 +947,7 @@ function getdylist() {
         resolve();
       } catch (e) {
         $.log("获取抖音榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1008,7 +1008,7 @@ function getk36list() {
         resolve();
       } catch (e) {
         $.log("获取36氪榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1077,7 +1077,7 @@ function getamazonlist() {
         resolve();
       } catch (e) {
         $.log("获取Kindle图书榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1174,7 +1174,7 @@ function getzmzlist() {
         resolve();
       } catch (e) {
         $.log("获取人人影视榜单出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1307,7 +1307,7 @@ function getrsslist(
         resolve();
       } catch (e) {
         $.log("获取RSS内容出现错误❌原因：\n");
-        $.log(JSON.stringify(e));
+        $.log(JSON.stringify(e, Object.getOwnPropertyNames(e)));
         resolve();
       }
       setTimeout(() => {
@@ -1658,7 +1658,7 @@ function last() {
     resultdy.length == 0 &&
     resultk36.length == 0 &&
     resultamz.length == 0 &&
-    resultzmz.length == 0 &&
+    //resultzmz.length == 0 &&
     checkrssresult == false
   ) {
     $.log(`\n😫您订阅的关键词"${keyword}"暂时没有更新`);
@@ -1676,8 +1676,8 @@ function final() {
     $.douyin == false &&
     $.k36 == false &&
     $.amazon == false &&
-    $.rss == false &&
-    $.zmz == false
+    $.rss == false
+    //$.zmz == false
   ) {
     $.msg(
       "热门监控",
@@ -2141,11 +2141,15 @@ function Env(name, opts) {
         this.got(opts)
           .on("redirect", (resp, nextOpts) => {
             try {
-              const ck = resp.headers["set-cookie"]
-                .map(this.cktough.Cookie.parse)
-                .toString();
-              this.ckjar.setCookieSync(ck, null);
-              nextOpts.cookieJar = this.ckjar;
+              if (resp.headers["set-cookie"]) {
+                const ck = resp.headers["set-cookie"]
+                  .map(this.cktough.Cookie.parse)
+                  .toString();
+                if (ck) {
+                  this.ckjar.setCookieSync(ck, null);
+                }
+                nextOpts.cookieJar = this.ckjar;
+              }
             } catch (e) {
               this.logErr(e);
             }
@@ -2216,23 +2220,25 @@ function Env(name, opts) {
      *    :$.time('yyyyMMddHHmmssS')
      *    y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
      *    其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
-     * @param {*} fmt 格式化参数
+     * @param {string} fmt 格式化参数
+     * @param {number} 可选: 根据指定时间戳返回格式化日期
      *
      */
-    time(fmt) {
+    time(fmt, ts = null) {
+      const date = ts ? new Date(ts) : new Date();
       let o = {
-        "M+": new Date().getMonth() + 1,
-        "d+": new Date().getDate(),
-        "H+": new Date().getHours(),
-        "m+": new Date().getMinutes(),
-        "s+": new Date().getSeconds(),
-        "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds(),
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "H+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        S: date.getMilliseconds(),
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
           RegExp.$1,
-          (new Date().getFullYear() + "").substr(4 - RegExp.$1.length)
+          (date.getFullYear() + "").substr(4 - RegExp.$1.length)
         );
       for (let k in o)
         if (new RegExp("(" + k + ")").test(fmt))
@@ -2293,12 +2299,14 @@ function Env(name, opts) {
           $notify(title, subt, desc, toEnvOpts(opts));
         }
       }
-      let logs = ["", "==============📣系统通知📣=============="];
-      logs.push(title);
-      subt ? logs.push(subt) : "";
-      desc ? logs.push(desc) : "";
-      console.log(logs.join("\n"));
-      this.logs = this.logs.concat(logs);
+      if (!this.isMuteLog) {
+        let logs = ["", "==============📣系统通知📣=============="];
+        logs.push(title);
+        subt ? logs.push(subt) : "";
+        desc ? logs.push(desc) : "";
+        console.log(logs.join("\n"));
+        this.logs = this.logs.concat(logs);
+      }
     }
 
     log(...logs) {

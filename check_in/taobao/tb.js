@@ -1,13 +1,11 @@
 /*
-【app版本及价格监控】修改自t.me/QuanXApp群友分享 
-Modified by evilbutcher
+【淘宝监控】@evilbutcher
 
 【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
 
 【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
 【致谢】
-感谢来自t.me/QuanXApp群友分享脚本！
 感谢Peng-YM的OpenAPI.js！
 
 ⚠️【免责声明】
@@ -20,267 +18,144 @@ Modified by evilbutcher
 6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
 7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
 
-【Quantumult X】
-————————————————
-30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
+
+【使用说明】
+在淘宝App对商品进行分享，拷贝链接用Safari打开，自动获取Cookie、监控链接，即可使用。该脚本对应的是对颜色分类变动监控。
 
 【Surge】
-————————————————
-App价格监控 = type=cron,cronexp="30 7-22 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js,wake-system=true,timeout=600
+-----------------
+[Script]
+淘宝监控获取Cookie = http-request, pattern = https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, requires-body=false
+淘宝监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js
 
 【Loon】
-————————————————
-cron "30 7-22 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, timeout=600, tag=App价格监控
+-----------------
+[Script]
+http-request https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc tag=淘宝监控获取Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, requires-body=false
+cron "5 0 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/taobao/tb.js, tag=淘宝监控
 
-app可单独设置区域，未单独设置区域，则采用reg默认区域
-设置区域方式apps=["1443988620:hk","1443988620/us","1443988620-uk","1443988620_jp","1443988620 au"]
-以上方式均可 分隔符支持 空格/:|_-
+【Quantumult X】
+-----------------
+[rewrite_local]
+https:\/\/h5api.m.taobao.com\/h5\/mtop.taobao.detail.getdesc url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js
 
+[task_local]
+5 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js, tag=淘宝监控
+
+【All App MitM】
+hostname =h5api.m.taobao.com
+
+【Icon】
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb_tran.png
+彩色：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/tb.png
 */
-const $ = new API("App价格监控");
-let apps = [
-  "1443988620|hk",
-  "1312014438 cn",
-  "499470113/vn",
-  "1314212521-jp",
-  "1282297037_au",
-  "932747118:ie",
-  "1116905928",
-  "1373567447",
-]; //app跟踪id
-if ($.read("apps") != "" && $.read("apps") != undefined) {
-  apps = $.read("apps").split("，");
-}
-let reg = "cn"; //默认区域：美国us 中国cn 香港hk
-if ($.read("reg") != "" && $.read("reg") != undefined) {
-  reg = $.read("reg");
-}
-let notifys = [];
-format_apps(apps);
-function format_apps(x) {
-  let apps_f = {};
-  x.forEach((n) => {
-    if (/^[a-zA-Z0-9:/|\-_\s]{1,}$/.test(n)) {
-      n = n.replace(/[/|\-_\s]/g, ":");
-      let n_n = n.split(":");
-      if (n_n.length === 1) {
-        if (apps_f.hasOwnProperty(reg)) {
-          apps_f[reg].push(n_n);
-        } else {
-          apps_f[reg] = [];
-          apps_f[reg].push(n_n[0]);
-        }
-      } else if (n_n.length === 2) {
-        if (apps_f.hasOwnProperty(n_n[1])) {
-          apps_f[n_n[1]].push(n_n[0]);
-        } else {
-          apps_f[n_n[1]] = [];
-          apps_f[n_n[1]].push(n_n[0]);
-        }
-      } else {
-        notifys.push(`ID格式错误:【${n}】`);
-      }
+
+const $ = new API("taobao", true);
+const ERR = MYERR();
+$.cookie = $.read("evil_tbcookie");
+$.url = $.read("evil_tburl");
+$.record = $.read("evil_tbrecord") || [];
+
+!(async () => {
+  if (typeof $request != "undefined") {
+    getCookie();
+    return;
+  }
+  if ($.url != undefined && $.cookie != undefined) {
+    await checkin();
+  } else {
+    $.notify("淘宝监控", "", "❌ 请先获取Cookie");
+  }
+})()
+  .catch((err) => {
+    if (err instanceof ERR.ParseError) {
+      $.notify("淘宝监控", "❌ 解析数据出现错误", err.message);
     } else {
-      notifys.push(`ID格式错误:【${n}】`);
+      $.notify(
+        "淘宝监控",
+        "❌ 出现错误",
+        JSON.stringify(err, Object.getOwnPropertyNames(err))
+      );
+    }
+  })
+  .finally(() => $.done());
+
+function checkin() {
+  const url = $.url;
+  const headers = {
+    Cookie: $.cookie,
+    Accept: `*/*`,
+    Connection: `keep-alive`,
+    Referer: `https://h5.m.taobao.com/`,
+    "Accept-Encoding": `gzip, deflate, br`,
+    Host: `h5api.m.taobao.com`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-CN,zh-Hans;q=0.9`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      var getid = /id%22%3A%22\d+%22/;
+      var preid = $.url.match(getid);
+      var id = JSON.stringify(preid).slice(13, -5);
+      var link = "https://h5.m.taobao.com/awp/core/detail.htm?id=" + id;
+      var body = response.body.slice(11, -1);
+      var obj = JSON.parse(body);
+      var data = obj.data.itemProperties;
+      var detail;
+      for (i = 0; i < data.length; i++) {
+        if (data[i].name == "颜色分类") {
+          detail = data[i].value;
+        }
+      }
+      var item = detail.split(",");
+      for (j = 0; j < item.length; j++) {
+        if ($.record.indexOf(item[j]) == -1) {
+          $.record.push(item[j]);
+          $.notify("淘宝监控", "", "新增" + item[j], { "open-url": link });
+        } else {
+          $.log("暂未发现更新");
+        }
+      }
+      $.write($.record, "evil_tbrecord");
+    } else {
+      $.error(JSON.stringify(response));
+      throw new ERR.ParseError("数据解析错误，请检查日志");
     }
   });
-  if (Object.keys(apps_f).length > 0) {
-    post_data(apps_f);
+}
+
+function getCookie() {
+  if (
+    $request &&
+    $request.method != "OPTIONS" &&
+    $request.url.match(/mtop.taobao.detail.getdesc/)
+  ) {
+    const cookie = $request.headers["Cookie"];
+    $.log(cookie);
+    $.write(cookie, "evil_tbcookie");
+    const url = $request.url;
+    $.log(url);
+    $.write(url, "evil_tburl");
+    $.notify("淘宝监控", "", "获取Cookie成功🎉");
   }
 }
-async function post_data(d) {
-  try {
-    let app_monitor = $.read("app_monitor");
-    if (app_monitor === "" || app_monitor === undefined) {
-      app_monitor = {};
-    } else {
-      app_monitor = JSON.parse(app_monitor);
-      console.log(JSON.stringify(app_monitor));
+
+function MYERR() {
+  class ParseError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "ParseError";
     }
-    let infos = {};
-    await Promise.all(
-      Object.keys(d).map(async (k) => {
-        let config = {
-          url: "https://itunes.apple.com/lookup?id=" + d[k] + "&country=" + k,
-        };
-        await $.http
-          .get(config)
-          .then((response) => {
-            let results = JSON.parse(response.body).results;
-            if (Array.isArray(results) && results.length > 0) {
-              results.forEach((x) => {
-                infos[x.trackId] = {
-                  n: x.trackName,
-                  v: x.version,
-                  p: x.formattedPrice,
-                };
-                if (app_monitor.hasOwnProperty(x.trackId)) {
-                  if (
-                    JSON.stringify(app_monitor[x.trackId]) !==
-                    JSON.stringify(infos[x.trackId])
-                  ) {
-                    if (x.version !== app_monitor[x.trackId].v) {
-                      notifys.push(
-                        `${flag(k)}🧩${x.trackName}:升级【${x.version}】`
-                      );
-                    }
-                    if (x.formattedPrice !== app_monitor[x.trackId].p) {
-                      notifys.push(
-                        `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                      );
-                    }
-                  }
-                } else {
-                  notifys.push(
-                    `${flag(k)}🧩${x.trackName}:版本【${x.version}】`
-                  );
-                  notifys.push(
-                    `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                  );
-                }
-              });
-            }
-            return Promise.resolve();
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-    );
-    infos = JSON.stringify(infos);
-    $.write(infos, "app_monitor");
-    if (notifys.length > 0) {
-      notify(notifys);
-      $.done();
-    } else {
-      console.log("APP监控：版本及价格无变化");
-      $.done();
-    }
-  } catch (e) {
-    console.log(e);
   }
-}
-function notify(notifys) {
-  notifys = notifys.join("\n");
-  console.log(JSON.stringify(notifys));
-  $.notify("APP监控", "", notifys);
-}
-function flag(x) {
-  var flags = new Map([
-    ["AC", "🇦🇨"],
-    ["AF", "🇦🇫"],
-    ["AI", "🇦🇮"],
-    ["AL", "🇦🇱"],
-    ["AM", "🇦🇲"],
-    ["AQ", "🇦🇶"],
-    ["AR", "🇦🇷"],
-    ["AS", "🇦🇸"],
-    ["AT", "🇦🇹"],
-    ["AU", "🇦🇺"],
-    ["AW", "🇦🇼"],
-    ["AX", "🇦🇽"],
-    ["AZ", "🇦🇿"],
-    ["BB", "🇧🇧"],
-    ["BD", "🇧🇩"],
-    ["BE", "🇧🇪"],
-    ["BF", "🇧🇫"],
-    ["BG", "🇧🇬"],
-    ["BH", "🇧🇭"],
-    ["BI", "🇧🇮"],
-    ["BJ", "🇧🇯"],
-    ["BM", "🇧🇲"],
-    ["BN", "🇧🇳"],
-    ["BO", "🇧🇴"],
-    ["BR", "🇧🇷"],
-    ["BS", "🇧🇸"],
-    ["BT", "🇧🇹"],
-    ["BV", "🇧🇻"],
-    ["BW", "🇧🇼"],
-    ["BY", "🇧🇾"],
-    ["BZ", "🇧🇿"],
-    ["CA", "🇨🇦"],
-    ["CF", "🇨🇫"],
-    ["CH", "🇨🇭"],
-    ["CK", "🇨🇰"],
-    ["CL", "🇨🇱"],
-    ["CM", "🇨🇲"],
-    ["CN", "🇨🇳"],
-    ["CO", "🇨🇴"],
-    ["CP", "🇨🇵"],
-    ["CR", "🇨🇷"],
-    ["CU", "🇨🇺"],
-    ["CV", "🇨🇻"],
-    ["CW", "🇨🇼"],
-    ["CX", "🇨🇽"],
-    ["CY", "🇨🇾"],
-    ["CZ", "🇨🇿"],
-    ["DE", "🇩🇪"],
-    ["DG", "🇩🇬"],
-    ["DJ", "🇩🇯"],
-    ["DK", "🇩🇰"],
-    ["DM", "🇩🇲"],
-    ["DO", "🇩🇴"],
-    ["DZ", "🇩🇿"],
-    ["EA", "🇪🇦"],
-    ["EC", "🇪🇨"],
-    ["EE", "🇪🇪"],
-    ["EG", "🇪🇬"],
-    ["EH", "🇪🇭"],
-    ["ER", "🇪🇷"],
-    ["ES", "🇪🇸"],
-    ["ET", "🇪🇹"],
-    ["EU", "🇪🇺"],
-    ["FI", "🇫🇮"],
-    ["FJ", "🇫🇯"],
-    ["FK", "🇫🇰"],
-    ["FM", "🇫🇲"],
-    ["FO", "🇫🇴"],
-    ["FR", "🇫🇷"],
-    ["GA", "🇬🇦"],
-    ["GB", "🇬🇧"],
-    ["HK", "🇭🇰"],
-    ["ID", "🇮🇩"],
-    ["IE", "🇮🇪"],
-    ["IL", "🇮🇱"],
-    ["IM", "🇮🇲"],
-    ["IN", "🇮🇳"],
-    ["IS", "🇮🇸"],
-    ["IT", "🇮🇹"],
-    ["JP", "🇯🇵"],
-    ["KR", "🇰🇷"],
-    ["MO", "🇲🇴"],
-    ["MX", "🇲🇽"],
-    ["MY", "🇲🇾"],
-    ["NL", "🇳🇱"],
-    ["PH", "🇵🇭"],
-    ["RO", "🇷🇴"],
-    ["RS", "🇷🇸"],
-    ["RU", "🇷🇺"],
-    ["RW", "🇷🇼"],
-    ["SA", "🇸🇦"],
-    ["SB", "🇸🇧"],
-    ["SC", "🇸🇨"],
-    ["SD", "🇸🇩"],
-    ["SE", "🇸🇪"],
-    ["SG", "🇸🇬"],
-    ["TH", "🇹🇭"],
-    ["TN", "🇹🇳"],
-    ["TO", "🇹🇴"],
-    ["TR", "🇹🇷"],
-    ["TV", "🇹🇻"],
-    ["TW", "🇨🇳"],
-    ["UK", "🇬🇧"],
-    ["UM", "🇺🇲"],
-    ["US", "🇺🇸"],
-    ["UY", "🇺🇾"],
-    ["UZ", "🇺🇿"],
-    ["VA", "🇻🇦"],
-    ["VE", "🇻🇪"],
-    ["VG", "🇻🇬"],
-    ["VI", "🇻🇮"],
-    ["VN", "🇻🇳"],
-  ]);
-  return flags.get(x.toUpperCase());
+  return {
+    ParseError,
+  };
 }
 
 /**
@@ -314,7 +189,8 @@ function HTTP(
 ) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
-  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  const URL_REGEX =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options =
@@ -326,6 +202,9 @@ function HTTP(
     const baseURL = defaultOptions.baseURL;
     if (baseURL && !URL_REGEX.test(options.url || "")) {
       options.url = baseURL ? baseURL + options.url : options.url;
+    }
+    if (options.body && options.headers && !options.headers["Content-Type"]) {
+      options.headers["Content-Type"] = "application/x-www-form-urlencoded";
     }
     options = {
       ...defaultOptions,
@@ -393,12 +272,13 @@ function HTTP(
         })
       : null;
 
-    return (timer
-      ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid);
-          return res;
-        })
-      : worker
+    return (
+      timer
+        ? Promise.race([timer, worker]).then((res) => {
+            clearTimeout(timeoutid);
+            return res;
+          })
+        : worker
     ).then((resp) => events.onResponse(resp));
   }
 

@@ -27,20 +27,20 @@
 [Script]
 GLaDOS签到 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
-获取GLaDOS_Cookie = type=http-request, pattern=https:\/\/glados\.rocks\/api\/user\/status, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+获取GLaDOS_Cookie = type=http-request, pattern=https:\/\/glados\.rocks\/api\/user\/checkin, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
 【Loon】
 -----------------
 [Script]
 cron "5 0 * * *" tag=GLaDOS签到, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
-http-request https:\/\/glados\.rocks\/api\/user\/status tag=获取GLaDOS_Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+http-request https:\/\/glados\.rocks\/api\/user\/checkin tag=获取GLaDOS_Cookie, script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
 
 【Quantumult X】
 -----------------
 [rewrite_local]
-https:\/\/glados\.rocks\/api\/user\/status url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+https:\/\/glados\.rocks\/api\/user\/checkin url script-request-header https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
 
 [task_local]
 1 0 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
@@ -52,15 +52,18 @@ hostname = glados.rocks
 
 const $ = new Env("GLaDOS");
 const signcookie = "evil_gladoscookie";
+const signauthorization = "evil_galdosauthorization"
 
 var sicookie = $.getdata(signcookie);
+var siauthorization = $.getdata(siauthorization)
 var account;
 var expday;
 var remain;
 var remainday;
 var change;
+var changeday;
 var msge;
-var message = [];
+var message = "";
 
 !(async () => {
   if (typeof $request != "undefined") {
@@ -79,22 +82,50 @@ var message = [];
 
 function signin() {
   return new Promise((resolve) => {
+    const header = {
+      Accept: `application/json, text/plain, */*`,
+      Origin: `https://glados.rocks`,
+      "Accept-Encoding": `gzip, deflate, br`,
+      Cookie: sicookie,
+      "Content-Type": `application/json;charset=utf-8`,
+      Host: `glados.rocks`,
+      Connection: `keep-alive`,
+      "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1`,
+      'Authorization': siauthorization,
+      "Accept-Language": `zh-cn`,
+    };
+    const body = `{ "token": "glados.network" }`;
     const signinRequest = {
       url: "https://glados.rocks/api/user/checkin",
-      headers: { Cookie: sicookie },
+      headers: header,
+      body: body,
     };
     $.post(signinRequest, (error, response, data) => {
       var body = response.body;
       var obj = JSON.parse(body);
-      if (obj.code == 0) {
-        change = obj.list[0].change;
-        changeday = parseInt(change);
-        msge = obj.message;
-        if (msge == "Please Checkin Tomorrow") {
-          message.push("今日已签到");
+      if (obj.message != "oops, token error") {
+        if (obj.message != "Please Try Tomorrow") {
+          var date = new Date();
+          var y = date.getFullYear();
+          var m = date.getMonth() + 1;
+          if (m < 10) m = "0" + m;
+          var d = date.getDate();
+          if (d < 10) d = "0" + d;
+          var time = y + "-" + m + "-" + d;
+          var business = obj.list[0].business;
+          var sysdate = business.slice(-10);
+          if (JSON.stringify(time) == JSON.stringify(sysdate)) {
+            change = obj.list[0].change;
+            changeday = parseInt(change);
+            message += `今日签到获得${changeday}天`;
+          } else {
+            message += `今日签到获得0天`;
+          }
         } else {
-          message.push(`签到获得${changeday}天`);
+          message += "今日已签到";
         }
+      } else {
+        message += obj.message;
       }
       resolve();
     });
@@ -115,7 +146,7 @@ function status() {
         expday = obj.data.days;
         remain = obj.data.leftDays;
         remainday = parseInt(remain);
-        message.push(`已用${expday}天,剩余${remainday}天`);
+        message += `\n已用${expday}天,剩余${remainday}天`;
         $.msg("GLaDOS", `账户：${account}`, message);
       } else {
         $.log(response);
@@ -130,11 +161,14 @@ function getCookie() {
   if (
     $request &&
     $request.method != "OPTIONS" &&
-    $request.url.match(/status/)
+    $request.url.match(/checkin/)
   ) {
     const sicookie = $request.headers["Cookie"];
     $.log(sicookie);
     $.setdata(sicookie, signcookie);
+    const siauthorization = $request.headers["Authorization"];
+    $.log(siauthorization);
+    $.setdata(siauthorization, signauthorization);
     $.msg("GLaDOS", "", "获取签到Cookie成功🎉");
   }
 }
@@ -222,7 +256,7 @@ function Env(name, opts) {
       if (val) {
         try {
           json = JSON.parse(this.getdata(key));
-        } catch {}
+        } catch { }
       }
       return json;
     }
@@ -423,7 +457,7 @@ function Env(name, opts) {
       }
     }
 
-    get(opts, callback = () => {}) {
+    get(opts, callback = () => { }) {
       if (opts.headers) {
         delete opts.headers["Content-Type"];
         delete opts.headers["Content-Length"];
@@ -457,11 +491,15 @@ function Env(name, opts) {
         this.got(opts)
           .on("redirect", (resp, nextOpts) => {
             try {
-              const ck = resp.headers["set-cookie"]
-                .map(this.cktough.Cookie.parse)
-                .toString();
-              this.ckjar.setCookieSync(ck, null);
-              nextOpts.cookieJar = this.ckjar;
+              if (resp.headers["set-cookie"]) {
+                const ck = resp.headers["set-cookie"]
+                  .map(this.cktough.Cookie.parse)
+                  .toString();
+                if (ck) {
+                  this.ckjar.setCookieSync(ck, null);
+                }
+                nextOpts.cookieJar = this.ckjar;
+              }
             } catch (e) {
               this.logErr(e);
             }
@@ -480,7 +518,7 @@ function Env(name, opts) {
       }
     }
 
-    post(opts, callback = () => {}) {
+    post(opts, callback = () => { }) {
       // 如果指定了请求体, 但没指定`Content-Type`, 则自动生成
       if (opts.body && opts.headers && !opts.headers["Content-Type"]) {
         opts.headers["Content-Type"] = "application/x-www-form-urlencoded";
@@ -532,23 +570,25 @@ function Env(name, opts) {
      *    :$.time('yyyyMMddHHmmssS')
      *    y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
      *    其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
-     * @param {*} fmt 格式化参数
+     * @param {string} fmt 格式化参数
+     * @param {number} 可选: 根据指定时间戳返回格式化日期
      *
      */
-    time(fmt) {
+    time(fmt, ts = null) {
+      const date = ts ? new Date(ts) : new Date();
       let o = {
-        "M+": new Date().getMonth() + 1,
-        "d+": new Date().getDate(),
-        "H+": new Date().getHours(),
-        "m+": new Date().getMinutes(),
-        "s+": new Date().getSeconds(),
-        "q+": Math.floor((new Date().getMonth() + 3) / 3),
-        S: new Date().getMilliseconds(),
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "H+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        S: date.getMilliseconds(),
       };
       if (/(y+)/.test(fmt))
         fmt = fmt.replace(
           RegExp.$1,
-          (new Date().getFullYear() + "").substr(4 - RegExp.$1.length)
+          (date.getFullYear() + "").substr(4 - RegExp.$1.length)
         );
       for (let k in o)
         if (new RegExp("(" + k + ")").test(fmt))
@@ -609,12 +649,14 @@ function Env(name, opts) {
           $notify(title, subt, desc, toEnvOpts(opts));
         }
       }
-      let logs = ["", "==============📣系统通知📣=============="];
-      logs.push(title);
-      subt ? logs.push(subt) : "";
-      desc ? logs.push(desc) : "";
-      console.log(logs.join("\n"));
-      this.logs = this.logs.concat(logs);
+      if (!this.isMuteLog) {
+        let logs = ["", "==============📣系统通知📣=============="];
+        logs.push(title);
+        subt ? logs.push(subt) : "";
+        desc ? logs.push(desc) : "";
+        console.log(logs.join("\n"));
+        this.logs = this.logs.concat(logs);
+      }
     }
 
     log(...logs) {

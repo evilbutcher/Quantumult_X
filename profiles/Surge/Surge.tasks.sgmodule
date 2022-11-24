@@ -1,0 +1,25 @@
+#!name=evilbutcher Tasks Module
+#!desc=Tasks 合集模块配置
+#!system=ios
+
+[Script]
+NASA每日一图 = type=cron,cronexp=0 0 6 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/nasa/nasapic.js
+iDaily每日环球视野 = type=cron,cronexp=0 0 6 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/idaily/idaily.js
+App价格监控 = type=cron,cronexp=30 7-22 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js
+热门监控 = type=cron,cronexp=30 0 8-22/2 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hotsearch/hot.js
+微博超话 = type=cron,cronexp=5 0  * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/weibo/weibotalk.js
+GLaDOS签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/glados.js
+机场签到 = type=cron,cronexp=0 1 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkin_env.js
+机场签到Cookie = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/glados/checkincookie_env.js
+Funboat签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/funboat/funboat.js
+Timepop签到 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/timepop/timepop.js
+九木杂物社 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/jiumu/jiumu.js
+酷乐潮玩小程序 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw.js
+酷乐潮玩App = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/klcw/klcw-app.js
+公众号监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/wechatsubs.js
+事业单位招聘监控 = type=cron,cronexp=5 * * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/sydwzp.js
+高校人才网招聘监控 = type=cron,cronexp=5 * * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/wechatsubs/gxrcw.js
+彩票监控 = type=cron,cronexp=0 30 21 * * * ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
+华住会 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/hzh/hzh.js
+淘宝监控-标题版 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb-name.js
+淘宝监控 = type=cron,cronexp=5 0 * * *,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/taobao/tb.js

@@ -1,13 +1,11 @@
 /*
-【app版本及价格监控】修改自t.me/QuanXApp群友分享 
-Modified by evilbutcher
+【彩票查询】@evilbutcher, @Phantom
 
-【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）
+【仓库地址】https://github.com/evilbutcher/Quantumult_X/tree/master（欢迎star🌟）；https://github.com/sjzcook/phantom（欢迎star🌟）
 
 【BoxJs】https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/evilbutcher.boxjs.json
 
 【致谢】
-感谢来自t.me/QuanXApp群友分享脚本！
 感谢Peng-YM的OpenAPI.js！
 
 ⚠️【免责声明】
@@ -20,267 +18,279 @@ Modified by evilbutcher
 6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
 7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
 
-【Quantumult X】
-————————————————
-30 7-22 * * * https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, tag=App价格监控
+
+【使用说明】
+添加任务即可使用
 
 【Surge】
-————————————————
-App价格监控 = type=cron,cronexp="30 7-22 * * *",script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js,wake-system=true,timeout=600
+-----------------
+[Script]
+彩票查询 = type=cron,cronexp=0 30 21 * * * ,script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js
 
 【Loon】
-————————————————
-cron "30 7-22 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/appstore/AppMonitor.js, timeout=600, tag=App价格监控
+-----------------
+[Script]
+cron "0 30 21 * * *" script-path=https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
 
-app可单独设置区域，未单独设置区域，则采用reg默认区域
-设置区域方式apps=["1443988620:hk","1443988620/us","1443988620-uk","1443988620_jp","1443988620 au"]
-以上方式均可 分隔符支持 空格/:|_-
+【Quantumult X】
+-----------------
+[task_local]
+0 30 21 * * *  https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/check_in/ssq/ssq.js, tag=彩票查询
 
+【Icon】
+透明：https://raw.githubusercontent.com/evilbutcher/Quantumult_X/master/picture/ssq_tran.png
+彩色：https://raw.githubusercontent.com/58xinian/icon/master/Two_color_ball.png
 */
-const $ = new API("App价格监控");
-let apps = [
-  "1443988620|hk",
-  "1312014438 cn",
-  "499470113/vn",
-  "1314212521-jp",
-  "1282297037_au",
-  "932747118:ie",
-  "1116905928",
-  "1373567447",
-]; //app跟踪id
-if ($.read("apps") != "" && $.read("apps") != undefined) {
-  apps = $.read("apps").split("，");
-}
-let reg = "cn"; //默认区域：美国us 中国cn 香港hk
-if ($.read("reg") != "" && $.read("reg") != undefined) {
-  reg = $.read("reg");
-}
-let notifys = [];
-format_apps(apps);
-function format_apps(x) {
-  let apps_f = {};
-  x.forEach((n) => {
-    if (/^[a-zA-Z0-9:/|\-_\s]{1,}$/.test(n)) {
-      n = n.replace(/[/|\-_\s]/g, ":");
-      let n_n = n.split(":");
-      if (n_n.length === 1) {
-        if (apps_f.hasOwnProperty(reg)) {
-          apps_f[reg].push(n_n);
-        } else {
-          apps_f[reg] = [];
-          apps_f[reg].push(n_n[0]);
-        }
-      } else if (n_n.length === 2) {
-        if (apps_f.hasOwnProperty(n_n[1])) {
-          apps_f[n_n[1]].push(n_n[0]);
-        } else {
-          apps_f[n_n[1]] = [];
-          apps_f[n_n[1]].push(n_n[0]);
-        }
+const $ = new API("ssq", true);
+const ERR = MYERR();
+const ssq = $.read("ssq") || true; //默认查询
+const dlt = $.read("dlt") || true; //默认查询
+const fc3d = $.read("3d") || true; //默认查询
+const qlc = $.read("qlc") || true; //默认查询
+const findlatest = $.read("new") || true; //默认仅查询当日开奖的彩票
+
+!(async () => {
+  var week = new Date().getDay();
+  if (ssq == true || ssq == "true") {
+    if (findlatest == true || findlatest == "true") {
+      if (week == 2 || week == 4 || week == 0) {
+        $.log("查询双色球");
+        await checkssq();
       } else {
-        notifys.push(`ID格式错误:【${n}】`);
+        $.log("双色球今日未开奖");
       }
     } else {
-      notifys.push(`ID格式错误:【${n}】`);
+      await checkssq();
+    }
+  }
+  if (dlt == true || dlt == "true") {
+    if (findlatest == true || findlatest == "true") {
+      if (week == 1 || week == 3 || week == 6) {
+        $.log("查询大乐透");
+        await checkdlt();
+      } else {
+        $.log("大乐透今日未开奖");
+      }
+    } else {
+      await checkdlt();
+    }
+  }
+  if (fc3d == true || fc3d == "true") {
+    $.log("查询福彩3D");
+    await check3d();
+  }
+  if (qlc == true || qlc == "true") {
+    if (findlatest == true || findlatest == "true") {
+      if (week == 1 || week == 3 || week == 5) {
+        $.log("查询七乐彩");
+        await checkqlc();
+      } else {
+        $.log("七乐彩今日未开奖");
+      }
+    } else {
+      await checkqlc();
+    }
+  }
+})()
+  .catch((err) => {
+    if (err instanceof ERR.ParseError) {
+      $.notify("彩票查询", "❌ 解析数据出现错误", err.message);
+    } else {
+      $.notify(
+        "彩票查询",
+        "❌ 出现错误",
+        JSON.stringify(err, Object.getOwnPropertyNames(err))
+      );
+    }
+  })
+  .finally(() => $.done());
+
+function checkssq() {
+  const url = `http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=ssq&issueCount=5`;
+  const headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `http://www.cwl.gov.cn/kjxx/ssq/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    Host: `www.cwl.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+    "X-Requested-With": `XMLHttpRequest`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body).result[0];
+      var poolmoney = JSON.stringify(
+        ($.data.poolmoney / 10000).toFixed(2)
+      ).slice(1, -1);
+      var content = $.data.content;
+      var date = $.data.date;
+      var name = $.data.name;
+      var red = $.data.red;
+      var blue = $.data.blue;
+      if (content == "") {
+        var detail = "红球：" + red + "\n蓝球：" + blue + "\n奖池信息暂未更新";
+      } else {
+        var detail =
+          date +
+          "\n红球：" +
+          red +
+          "\n蓝球：" +
+          blue +
+          "\n奖池：" +
+          poolmoney +
+          "万元\n一等奖 " +
+          content;
+      }
+      $.notify("彩票查询", name, detail);
+      $.log(name + "\n" + detail);
     }
   });
-  if (Object.keys(apps_f).length > 0) {
-    post_data(apps_f);
-  }
 }
-async function post_data(d) {
-  try {
-    let app_monitor = $.read("app_monitor");
-    if (app_monitor === "" || app_monitor === undefined) {
-      app_monitor = {};
-    } else {
-      app_monitor = JSON.parse(app_monitor);
-      console.log(JSON.stringify(app_monitor));
+
+function checkdlt() {
+  const url = `https://webapi.sporttery.cn/gateway/lottery/getDigitalDrawInfoV1.qry?isVerify=1&param=85%2C0%3B35%2C0%3B350133%2C0%3B04%2C0%3B20%2C23%3B03%2C32%3B06%2C33%3B19%2C33%3B18%2C35%3B19%2C35%3B190001%2C35%3B72%2C35%3B55%2C46`;
+  const headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `https://www.lottery.gov.cn/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body).value.dlt;
+      var dltmp = $.data.lotteryDrawResult.split(/\s+/);
+      var redArr = [];
+      var blueArr = [];
+      for (var i = 0; i < dltmp.length; i++) {
+        if (i < 5) {
+          redArr.push(dltmp[i]);
+        } else {
+          blueArr.push(dltmp[i]);
+        }
+      }
+      var date = $.data.lotterySaleEndtime.split(/\s+/)[0];
+      var detail =
+        date + "\n前区：" + redArr.join(",") + "\n后区：" + blueArr.join(",");
+      $.notify("彩票查询", "大乐透", detail);
+      $.log("大乐透" + "\n" + detail);
     }
-    let infos = {};
-    await Promise.all(
-      Object.keys(d).map(async (k) => {
-        let config = {
-          url: "https://itunes.apple.com/lookup?id=" + d[k] + "&country=" + k,
-        };
-        await $.http
-          .get(config)
-          .then((response) => {
-            let results = JSON.parse(response.body).results;
-            if (Array.isArray(results) && results.length > 0) {
-              results.forEach((x) => {
-                infos[x.trackId] = {
-                  n: x.trackName,
-                  v: x.version,
-                  p: x.formattedPrice,
-                };
-                if (app_monitor.hasOwnProperty(x.trackId)) {
-                  if (
-                    JSON.stringify(app_monitor[x.trackId]) !==
-                    JSON.stringify(infos[x.trackId])
-                  ) {
-                    if (x.version !== app_monitor[x.trackId].v) {
-                      notifys.push(
-                        `${flag(k)}🧩${x.trackName}:升级【${x.version}】`
-                      );
-                    }
-                    if (x.formattedPrice !== app_monitor[x.trackId].p) {
-                      notifys.push(
-                        `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                      );
-                    }
-                  }
-                } else {
-                  notifys.push(
-                    `${flag(k)}🧩${x.trackName}:版本【${x.version}】`
-                  );
-                  notifys.push(
-                    `${flag(k)}💰${x.trackName}:价格【${x.formattedPrice}】`
-                  );
-                }
-              });
-            }
-            return Promise.resolve();
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-    );
-    infos = JSON.stringify(infos);
-    $.write(infos, "app_monitor");
-    if (notifys.length > 0) {
-      notify(notifys);
-      $.done();
-    } else {
-      console.log("APP监控：版本及价格无变化");
-      $.done();
+  });
+}
+
+function check3d() {
+  const url = `http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=3d&issueCount=30`;
+  const headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `http://www.cwl.gov.cn/kjxx/fc3d/kjgg/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    Host: `www.cwl.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+    "X-Requested-With": `XMLHttpRequest`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body).result[0];
+      var poolmoney = JSON.stringify(
+        ($.data.poolmoney / 10000).toFixed(2)
+      ).slice(1, -1);
+      var date = $.data.date;
+      var name = $.data.name;
+      var red = $.data.red;
+      var num = red.split(",");
+      var all = 0;
+      for (var i = 0; i < num.length; i++) {
+        all = all + parseInt(num[i]);
+      }
+      if (poolmoney == "NaN") {
+        var detail = "结果：" + red + "\n和值：" + all + "\n奖池信息暂未更新";
+      } else {
+        var detail =
+          date +
+          "\n结果：" +
+          red +
+          "\n和值：" +
+          all +
+          "\n奖池：" +
+          poolmoney +
+          "万元";
+      }
+      $.notify("彩票查询", name, detail);
+      $.log(name + "\n" + detail);
     }
-  } catch (e) {
-    console.log(e);
+  });
+}
+
+function checkqlc() {
+  const url = `http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=qlc&issueCount=5`;
+  headers = {
+    "Accept-Encoding": `gzip, deflate`,
+    Connection: `keep-alive`,
+    Referer: `http://www.cwl.gov.cn/kjxx/qlc/`,
+    Accept: `application/json, text/javascript, */*; q=0.01`,
+    Host: `www.cwl.gov.cn`,
+    "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1`,
+    "Accept-Language": `zh-cn`,
+    "X-Requested-With": `XMLHttpRequest`,
+  };
+
+  const myRequest = {
+    url: url,
+    headers: headers,
+  };
+
+  return $.http.get(myRequest).then((response) => {
+    if (response.statusCode == 200) {
+      $.data = JSON.parse(response.body).result[0];
+      var content = $.data.content;
+      var name = $.data.name;
+      var date = $.data.date;
+      var red = $.data.red;
+      var blue = $.data.blue;
+      if (content == undefined) {
+        var detail = "红球：" + red + "\n蓝球：" + blue + "\n信息暂未更新";
+      } else {
+        var detail =
+          date + "\n红球：" + red + "\n蓝球：" + blue + "\n一等奖 " + content;
+      }
+      $.notify("彩票查询", name, detail);
+      $.log(name + "\n" + detail);
+    }
+  });
+}
+
+function MYERR() {
+  class ParseError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "ParseError";
+    }
   }
-}
-function notify(notifys) {
-  notifys = notifys.join("\n");
-  console.log(JSON.stringify(notifys));
-  $.notify("APP监控", "", notifys);
-}
-function flag(x) {
-  var flags = new Map([
-    ["AC", "🇦🇨"],
-    ["AF", "🇦🇫"],
-    ["AI", "🇦🇮"],
-    ["AL", "🇦🇱"],
-    ["AM", "🇦🇲"],
-    ["AQ", "🇦🇶"],
-    ["AR", "🇦🇷"],
-    ["AS", "🇦🇸"],
-    ["AT", "🇦🇹"],
-    ["AU", "🇦🇺"],
-    ["AW", "🇦🇼"],
-    ["AX", "🇦🇽"],
-    ["AZ", "🇦🇿"],
-    ["BB", "🇧🇧"],
-    ["BD", "🇧🇩"],
-    ["BE", "🇧🇪"],
-    ["BF", "🇧🇫"],
-    ["BG", "🇧🇬"],
-    ["BH", "🇧🇭"],
-    ["BI", "🇧🇮"],
-    ["BJ", "🇧🇯"],
-    ["BM", "🇧🇲"],
-    ["BN", "🇧🇳"],
-    ["BO", "🇧🇴"],
-    ["BR", "🇧🇷"],
-    ["BS", "🇧🇸"],
-    ["BT", "🇧🇹"],
-    ["BV", "🇧🇻"],
-    ["BW", "🇧🇼"],
-    ["BY", "🇧🇾"],
-    ["BZ", "🇧🇿"],
-    ["CA", "🇨🇦"],
-    ["CF", "🇨🇫"],
-    ["CH", "🇨🇭"],
-    ["CK", "🇨🇰"],
-    ["CL", "🇨🇱"],
-    ["CM", "🇨🇲"],
-    ["CN", "🇨🇳"],
-    ["CO", "🇨🇴"],
-    ["CP", "🇨🇵"],
-    ["CR", "🇨🇷"],
-    ["CU", "🇨🇺"],
-    ["CV", "🇨🇻"],
-    ["CW", "🇨🇼"],
-    ["CX", "🇨🇽"],
-    ["CY", "🇨🇾"],
-    ["CZ", "🇨🇿"],
-    ["DE", "🇩🇪"],
-    ["DG", "🇩🇬"],
-    ["DJ", "🇩🇯"],
-    ["DK", "🇩🇰"],
-    ["DM", "🇩🇲"],
-    ["DO", "🇩🇴"],
-    ["DZ", "🇩🇿"],
-    ["EA", "🇪🇦"],
-    ["EC", "🇪🇨"],
-    ["EE", "🇪🇪"],
-    ["EG", "🇪🇬"],
-    ["EH", "🇪🇭"],
-    ["ER", "🇪🇷"],
-    ["ES", "🇪🇸"],
-    ["ET", "🇪🇹"],
-    ["EU", "🇪🇺"],
-    ["FI", "🇫🇮"],
-    ["FJ", "🇫🇯"],
-    ["FK", "🇫🇰"],
-    ["FM", "🇫🇲"],
-    ["FO", "🇫🇴"],
-    ["FR", "🇫🇷"],
-    ["GA", "🇬🇦"],
-    ["GB", "🇬🇧"],
-    ["HK", "🇭🇰"],
-    ["ID", "🇮🇩"],
-    ["IE", "🇮🇪"],
-    ["IL", "🇮🇱"],
-    ["IM", "🇮🇲"],
-    ["IN", "🇮🇳"],
-    ["IS", "🇮🇸"],
-    ["IT", "🇮🇹"],
-    ["JP", "🇯🇵"],
-    ["KR", "🇰🇷"],
-    ["MO", "🇲🇴"],
-    ["MX", "🇲🇽"],
-    ["MY", "🇲🇾"],
-    ["NL", "🇳🇱"],
-    ["PH", "🇵🇭"],
-    ["RO", "🇷🇴"],
-    ["RS", "🇷🇸"],
-    ["RU", "🇷🇺"],
-    ["RW", "🇷🇼"],
-    ["SA", "🇸🇦"],
-    ["SB", "🇸🇧"],
-    ["SC", "🇸🇨"],
-    ["SD", "🇸🇩"],
-    ["SE", "🇸🇪"],
-    ["SG", "🇸🇬"],
-    ["TH", "🇹🇭"],
-    ["TN", "🇹🇳"],
-    ["TO", "🇹🇴"],
-    ["TR", "🇹🇷"],
-    ["TV", "🇹🇻"],
-    ["TW", "🇨🇳"],
-    ["UK", "🇬🇧"],
-    ["UM", "🇺🇲"],
-    ["US", "🇺🇸"],
-    ["UY", "🇺🇾"],
-    ["UZ", "🇺🇿"],
-    ["VA", "🇻🇦"],
-    ["VE", "🇻🇪"],
-    ["VG", "🇻🇬"],
-    ["VI", "🇻🇮"],
-    ["VN", "🇻🇳"],
-  ]);
-  return flags.get(x.toUpperCase());
+  return {
+    ParseError,
+  };
 }
 
 /**
@@ -314,7 +324,8 @@ function HTTP(
 ) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
-  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  const URL_REGEX =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options =
@@ -393,12 +404,13 @@ function HTTP(
         })
       : null;
 
-    return (timer
-      ? Promise.race([timer, worker]).then((res) => {
-          clearTimeout(timeoutid);
-          return res;
-        })
-      : worker
+    return (
+      timer
+        ? Promise.race([timer, worker]).then((res) => {
+            clearTimeout(timeoutid);
+            return res;
+          })
+        : worker
     ).then((resp) => events.onResponse(resp));
   }
 
