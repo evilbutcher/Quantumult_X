@@ -94,7 +94,7 @@ function signin() {
       'Authorization': siauthorization,
       "Accept-Language": `zh-cn`,
     };
-    const body = `{ "token": "glados.network" }`;
+    const body = `{ "token": "glados.one" }`;
     const signinRequest = {
       url: "https://glados.rocks/api/user/checkin",
       headers: header,
